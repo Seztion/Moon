@@ -9,119 +9,120 @@
     <!-- Google Fonts: Prompt -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Prompt', sans-serif; background: #030712; overflow: hidden; }
+        body { font-family: 'Prompt', sans-serif; background: #020617; overflow: hidden; }
         canvas { touch-action: none; }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.4); border-radius: 4px; }
-        .glass-panel { background: rgba(10, 15, 35, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(99, 102, 241, 0.25); }
-        .glow-text { text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.5); border-radius: 4px; }
+        .glass-panel { background: rgba(8, 12, 30, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(129, 140, 248, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .glow-text { text-shadow: 0 0 20px rgba(251, 191, 36, 0.7); }
+        .modal-glow { box-shadow: 0 0 50px rgba(251, 191, 36, 0.2); }
     </style>
 </head>
 <body class="text-white h-screen flex flex-col justify-between select-none">
 
     <!-- Top Navigation Header -->
-    <header class="glass-panel border-b border-indigo-900/40 px-4 py-3 flex justify-between items-center z-20 shadow-2xl">
-        <div class="flex items-center space-x-3">
+    <header class="glass-panel border-b border-indigo-900/50 px-5 py-3.5 flex justify-between items-center z-20">
+        <div class="flex items-center space-x-3.5">
             <span class="text-3xl animate-bounce">🌕</span>
             <div>
                 <h1 class="font-bold text-sm md:text-base text-amber-300 tracking-wide glow-text">ชมจันทร์ร่วมกัน (Moonlit Gathering)</h1>
-                <p class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1">
-                    <span id="current-room-dot" class="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse"></span>
+                <p class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-ping"></span>
                     <span id="current-room-label">กำลังอยู่ใน: ล็อบบี้สวนจันทรา</span>
                 </p>
             </div>
         </div>
 
-        <div class="flex items-center space-x-2 md:space-x-3">
+        <div class="flex items-center space-x-3">
             <!-- Room Switcher Buttons -->
-            <div class="bg-indigo-950/80 p-1.5 rounded-2xl border border-indigo-700/50 flex space-x-1 shadow-inner">
-                <button onclick="switchRoom('lobby')" id="btn-room-lobby" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-md transition transform active:scale-95">🏡 ล็อบบี้</button>
-                <button onclick="switchRoom('pagoda')" id="btn-room-pagoda" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🏮 หอชมจันทร์</button>
-                <button onclick="switchRoom('minigame')" id="btn-room-minigame" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🎮 ลานแข่งขนม</button>
+            <div class="bg-indigo-950/90 p-1.5 rounded-2xl border border-indigo-700/60 flex space-x-1 shadow-inner">
+                <button onclick="switchRoom('lobby')" id="btn-room-lobby" class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95">🏡 ล็อบบี้</button>
+                <button onclick="switchRoom('pagoda')" id="btn-room-pagoda" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🏮 หอชมจันทร์</button>
+                <button onclick="switchRoom('minigame')" id="btn-room-minigame" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🎮 ลานแข่งขนม</button>
             </div>
 
             <!-- Online Player Counter -->
-            <div class="hidden sm:flex bg-indigo-950/80 border border-indigo-700/50 px-3 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-md">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <div class="hidden sm:flex bg-indigo-950/90 border border-indigo-700/60 px-3.5 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-lg">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span id="player-count" class="font-medium text-emerald-300">ผู้เล่น: 0</span>
             </div>
         </div>
     </header>
 
     <!-- Main Game Canvas & Overlay Area -->
-    <main class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#030712]">
+    <main class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#020617]">
         <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
 
         <!-- HUD Overlays -->
         <div id="hud-overlay" class="absolute top-4 left-4 z-10 pointer-events-none flex flex-col space-y-3 max-w-xs w-full">
             <!-- Leaderboard (Active in Minigame) -->
-            <div id="minigame-hud" class="glass-panel border-amber-500/40 p-3.5 rounded-3xl shadow-2xl hidden pointer-events-auto">
-                <h3 class="text-xs font-bold text-amber-400 mb-2 flex items-center justify-between border-b border-indigo-800/50 pb-1.5">
+            <div id="minigame-hud" class="glass-panel border-amber-500/50 p-4 rounded-3xl hidden pointer-events-auto">
+                <h3 class="text-xs font-bold text-amber-400 mb-2 flex items-center justify-between border-b border-indigo-800/60 pb-2">
                     <span>🏆 คะแนนชิงขนมไหว้พระจันทร์</span>
                     <span id="timer-display" class="text-rose-400 font-mono font-bold animate-pulse">01:00</span>
                 </h3>
-                <div id="leaderboard" class="space-y-1 text-xs max-h-32 overflow-y-auto custom-scrollbar">
+                <div id="leaderboard" class="space-y-1.5 text-xs max-h-36 overflow-y-auto custom-scrollbar">
                     <div class="text-slate-400 italic">กำลังโหลดตารางคะแนน...</div>
                 </div>
             </div>
 
             <!-- Pagoda Controls -->
-            <div id="pagoda-hud" class="glass-panel border-indigo-500/40 p-3.5 rounded-3xl shadow-2xl hidden pointer-events-auto text-center space-y-2.5">
+            <div id="pagoda-hud" class="glass-panel border-indigo-500/50 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-3">
                 <h3 class="text-xs font-bold text-indigo-200">🏮 ปล่อยโคมอธิษฐานลอยฟ้า</h3>
                 <div class="flex space-x-2">
-                    <input type="text" id="wishInput" maxlength="30" placeholder="พิมพ์คำอธิษฐานของคุณ..." class="flex-1 bg-slate-900/90 border border-indigo-500/40 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
-                    <button onclick="releaseLantern()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-indigo-950 font-bold px-3.5 py-1.5 rounded-xl text-xs transition shadow-md active:scale-95">ปล่อยโคม 🌙</button>
+                    <input type="text" id="wishInput" maxlength="35" placeholder="พิมพ์คำอธิษฐานของคุณ..." class="flex-1 bg-slate-900/90 border border-indigo-500/50 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
+                    <button onclick="releaseLantern()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg active:scale-95">ปล่อย 🌙</button>
                 </div>
             </div>
         </div>
 
         <!-- Collapsible Live Chat Box -->
-        <div class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/60 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-            <div class="bg-indigo-950/80 px-3.5 py-2.5 border-b border-indigo-800/40 flex justify-between items-center cursor-pointer hover:bg-indigo-900/50 transition" onclick="toggleChatExpand()">
-                <span class="text-xs font-bold text-amber-300 flex items-center space-x-1.5">
+        <div class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/70 rounded-3xl flex flex-col overflow-hidden">
+            <div class="bg-indigo-950/90 px-4 py-3 border-b border-indigo-800/50 flex justify-between items-center cursor-pointer hover:bg-indigo-900/60 transition" onclick="toggleChatExpand()">
+                <span class="text-xs font-bold text-amber-300 flex items-center space-x-2">
                     <span>💬</span><span>แชทสนทนากลุ่ม (Live Chat)</span>
                 </span>
                 <span id="chat-toggle-icon" class="text-xs text-indigo-400 font-bold transition transform">▲</span>
             </div>
-            <div id="chat-body" class="flex flex-col h-36 md:h-44 transition-all duration-300">
-                <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-1.5 text-xs custom-scrollbar">
+            <div id="chat-body" class="flex flex-col h-40 md:h-48 transition-all duration-300">
+                <div id="chat-messages" class="flex-1 p-3.5 overflow-y-auto space-y-2 text-xs custom-scrollbar">
                     <div class="text-indigo-300/80 italic">✨ ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์ พิมพ์ทักทายเพื่อนๆ ได้เลยครับ...</div>
                 </div>
-                <div class="p-2 bg-slate-950/90 border-t border-indigo-900/60 flex space-x-2">
-                    <input type="text" id="chatInput" maxlength="80" placeholder="พิมพ์ข้อความสนทนา..." class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner" onkeydown="if(event.key==='Enter') sendChatMessage()">
-                    <button onclick="sendChatMessage()" class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-3.5 py-1.5 rounded-xl text-xs transition shadow active:scale-95">ส่ง</button>
+                <div class="p-2.5 bg-slate-950/95 border-t border-indigo-900/60 flex space-x-2">
+                    <input type="text" id="chatInput" maxlength="90" placeholder="พิมพ์ข้อความสนทนา..." class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner" onkeydown="if(event.key==='Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md active:scale-95">ส่ง</button>
                 </div>
             </div>
         </div>
 
-        <!-- Name & Avatar Selection Modal -->
-        <div id="nameModal" class="absolute inset-0 bg-indigo-950/95 backdrop-blur-xl flex items-center justify-center p-4 z-50">
-            <div class="bg-slate-900/90 border border-amber-500/50 max-w-md w-full p-7 rounded-3xl shadow-2xl text-center space-y-5 relative overflow-hidden">
-                <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="text-5xl animate-bounce">🌕🐇</div>
+        <!-- Rabbit Avatar Selection Modal -->
+        <div id="nameModal" class="absolute inset-0 bg-indigo-950/95 backdrop-blur-2xl flex items-center justify-center p-4 z-50">
+            <div class="bg-slate-900/95 border border-amber-500/50 max-w-md w-full p-8 rounded-3xl modal-glow text-center space-y-6 relative overflow-hidden">
+                <div class="absolute -top-16 -right-16 w-40 h-40 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="text-6xl animate-bounce">🌕🐇</div>
                 <div>
                     <h2 class="text-2xl font-bold text-amber-300 tracking-wide glow-text">เทศกาลชมจันทร์ร่วมกัน</h2>
-                    <p class="text-xs text-slate-400 mt-1">เลือกตัวละครและตั้งชื่อของคุณเพื่อเข้าร่วมเฉลิมฉลองกับเพื่อนๆ</p>
+                    <p class="text-xs text-slate-400 mt-1.5">เลือกคาแรคเตอร์กระต่ายและตั้งชื่อของคุณเพื่อเข้าร่วมงาน</p>
                 </div>
 
-                <!-- Avatar Selection Grid -->
-                <div class="space-y-2 text-left">
-                    <label class="text-xs font-semibold text-indigo-300">เลือกตัวละครของคุณ:</label>
-                    <div class="grid grid-cols-4 gap-2.5" id="avatarSelector">
-                        <button type="button" onclick="selectAvatar('🐇')" class="avatar-btn p-3 bg-indigo-950/90 border-2 border-amber-400 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🐇</button>
-                        <button type="button" onclick="selectAvatar('🏮')" class="avatar-btn p-3 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🏮</button>
-                        <button type="button" onclick="selectAvatar('🥮')" class="avatar-btn p-3 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🥮</button>
-                        <button type="button" onclick="selectAvatar('🌸')" class="avatar-btn p-3 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🌸</button>
+                <!-- Rabbit Avatar Selection Grid -->
+                <div class="space-y-2.5 text-left">
+                    <label class="text-xs font-semibold text-indigo-300">เลือกคาแรคเตอร์กระต่ายของคุณ:</label>
+                    <div class="grid grid-cols-4 gap-3" id="avatarSelector">
+                        <button type="button" onclick="selectAvatar('🐇')" class="avatar-btn p-3.5 bg-indigo-950/90 border-2 border-amber-400 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🐇</button>
+                        <button type="button" onclick="selectAvatar('🐰')" class="avatar-btn p-3.5 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🐰</button>
+                        <button type="button" onclick="selectAvatar('🪷')" class="avatar-btn p-3.5 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">🪷</button>
+                        <button type="button" onclick="selectAvatar('✨')" class="avatar-btn p-3.5 bg-indigo-950/50 border border-indigo-800/80 rounded-2xl text-2xl flex items-center justify-center transition shadow-lg transform hover:scale-105">✨</button>
                     </div>
                 </div>
 
                 <!-- Username Input -->
                 <div class="space-y-2 text-left">
                     <label class="text-xs font-semibold text-indigo-300">ชื่อตัวละคร (ไม่เกิน 12 ตัวอักษร):</label>
-                    <input type="text" id="usernameInput" maxlength="12" placeholder="เช่น CodeAgent7" class="w-full bg-slate-950 border border-indigo-700/60 rounded-2xl px-4 py-3 text-sm text-center text-white focus:outline-none focus:border-amber-400 shadow-inner">
+                    <input type="text" id="usernameInput" maxlength="12" placeholder="เช่น CodeAgent7" class="w-full bg-slate-950 border border-indigo-700/70 rounded-2xl px-4 py-3 text-sm text-center text-white focus:outline-none focus:border-amber-400 shadow-inner">
                 </div>
 
-                <button onclick="joinGame()" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:opacity-95 text-indigo-950 font-bold py-3.5 rounded-2xl text-sm transition shadow-xl tracking-wide transform active:scale-95">
+                <button onclick="joinGame()" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:opacity-95 text-indigo-950 font-bold py-3.5 rounded-2xl text-sm transition shadow-2xl tracking-wide transform active:scale-95">
                     เข้าสู่เทศกาลชมจันทร์ 🌕✨
                 </button>
             </div>
@@ -158,14 +159,27 @@
         let itemsData = {};
         let lanternsData = {};
 
-        // Background Particles & Fireflies Array
-        const particles = Array.from({ length: 45 }, () => ({
+        // Starfield & Shooting Stars System
+        const stars = Array.from({ length: 80 }, () => ({
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
-            size: Math.random() * 2.2 + 0.8,
-            speedY: Math.random() * 0.3 + 0.1,
-            opacity: Math.random() * 0.7 + 0.2
+            size: Math.random() * 2.2 + 0.4,
+            opacity: Math.random() * 0.8 + 0.2,
+            twinkleSpeed: Math.random() * 0.025 + 0.005
         }));
+
+        let shootingStars = [];
+        function triggerShootingStar() {
+            shootingStars.push({
+                x: Math.random() * window.innerWidth,
+                y: 0,
+                length: Math.random() * 80 + 40,
+                speed: Math.random() * 12 + 8,
+                opacity: 1
+            });
+            setTimeout(triggerShootingStar, Math.random() * 6000 + 4000);
+        }
+        setTimeout(triggerShootingStar, 2000);
 
         window.selectAvatar = function(av) {
             myAvatar = av;
@@ -219,9 +233,9 @@
             ['lobby', 'pagoda', 'minigame'].forEach(r => {
                 const btn = document.getElementById(`btn-room-${r}`);
                 if (r === roomName) {
-                    btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-md transition transform active:scale-95";
+                    btn.className = "px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95";
                 } else {
-                    btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
+                    btn.className = "px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
                 }
             });
 
@@ -290,7 +304,7 @@
                 lbArr.sort((a, b) => b.score - a.score);
                 lbArr.slice(0, 5).forEach((p, idx) => {
                     const badge = idx === 0 ? '👑' : `#${idx+1}`;
-                    lbHTML += `<div class="flex justify-between items-center py-1 border-b border-indigo-900/40">
+                    lbHTML += `<div class="flex justify-between items-center py-1.5 border-b border-indigo-900/50">
                         <span class="truncate pr-2 font-medium">${badge} <span class="text-amber-300">${p.name}</span></span>
                         <span class="font-bold text-amber-400">${p.score} แต้ม</span>
                     </div>`;
@@ -327,7 +341,7 @@
             try {
                 const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'items'));
                 if (snap.empty) {
-                    for (let i = 0; i < 10; i++) {
+                    for (let i = 0; i < 12; i++) {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'items', 'mooncake_' + i), {
                             x: Math.random() * (window.innerWidth - 120) + 60,
                             y: Math.random() * (window.innerHeight - 180) + 60,
@@ -372,7 +386,7 @@
 
         function update() {
             if (!isJoined) return;
-            const spd = 5.0;
+            const spd = 5.2;
             if (keys['w'] || keys['arrowup']) myY -= spd;
             if (keys['s'] || keys['arrowdown']) myY += spd;
             if (keys['a'] || keys['arrowleft']) myX -= spd;
@@ -399,7 +413,7 @@
 
                 if (myRoom === 'minigame') {
                     for (const [id, item] of Object.entries(itemsData)) {
-                        if (Math.hypot(myX - item.x, myY - item.y) < 40) {
+                        if (Math.hypot(myX - item.x, myY - item.y) < 42) {
                             myScore += item.type === 'mooncake' ? 10 : 25;
                             setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'items', id), {
                                 x: Math.random() * (window.innerWidth - 120) + 60,
@@ -415,64 +429,111 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Render Background Particles / Fireflies
+            // 1. STARFIELD & TWINKLE
             ctx.save();
-            particles.forEach(p => {
-                p.y -= p.speedY;
-                if (p.y < 0) p.y = canvas.height;
-                ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`;
+            stars.forEach(s => {
+                s.opacity += s.twinkleSpeed;
+                if (s.opacity > 1 || s.opacity < 0.2) s.twinkleSpeed = -s.twinkleSpeed;
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
                 ctx.fill();
+            });
+
+            // SHOOTING STARS
+            shootingStars.forEach((st, idx) => {
+                st.x += st.speed;
+                st.y += st.speed * 0.6;
+                st.opacity -= 0.015;
+                if (st.opacity <= 0) {
+                    shootingStars.splice(idx, 1);
+                    return;
+                }
+                ctx.strokeStyle = `rgba(254, 240, 138, ${st.opacity})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(st.x, st.y);
+                ctx.lineTo(st.x - st.length, st.y - st.length * 0.6);
+                ctx.stroke();
             });
             ctx.restore();
 
-            // Room specific background decorations
+            // 2. LAYERED MOUNTAIN SILHOUETTES
+            ctx.save();
+            // Far Mountain
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            ctx.lineTo(0, canvas.height - 160);
+            ctx.quadraticCurveTo(canvas.width * 0.35, canvas.height - 250, canvas.width * 0.65, canvas.height - 170);
+            ctx.quadraticCurveTo(canvas.width * 0.88, canvas.height - 270, canvas.width, canvas.height - 140);
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+
+            // Near Mountain Silhouette
+            ctx.fillStyle = 'rgba(7, 11, 24, 0.95)';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            ctx.lineTo(0, canvas.height - 90);
+            ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height - 140, canvas.width * 0.52, canvas.height - 100);
+            ctx.quadraticCurveTo(canvas.width * 0.8, canvas.height - 160, canvas.width, canvas.height - 75);
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            // 3. ROOM SPECIFIC BACKGROUNDS
             if (myRoom === 'lobby') {
                 ctx.save();
                 ctx.beginPath();
-                ctx.arc(canvas.width / 2, canvas.height / 2, 180, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(251, 191, 36, 0.03)';
+                ctx.arc(canvas.width / 2, 90, 75, 0, Math.PI * 2);
+                const lobbyMoon = ctx.createRadialGradient(canvas.width / 2 - 20, 75, 5, canvas.width / 2, 90, 75);
+                lobbyMoon.addColorStop(0, '#fffbeb');
+                lobbyMoon.addColorStop(1, '#d97706');
+                ctx.fillStyle = lobbyMoon;
+                ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+                ctx.shadowBlur = 40;
                 ctx.fill();
-                ctx.strokeStyle = 'rgba(251, 191, 36, 0.08)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+
                 ctx.font = '13px Prompt, sans-serif';
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
                 ctx.textAlign = 'center';
                 ctx.fillText('🌳 สวนจันทรา (Lobby) - พื้นที่พบปะสังสรรค์ใต้แสงจันทร์ 🌳', canvas.width / 2, 35);
                 ctx.restore();
+
             } else if (myRoom === 'pagoda') {
                 ctx.save();
                 ctx.beginPath();
-                ctx.arc(canvas.width / 2, 140, 85, 0, Math.PI * 2);
-                const moonGrad = ctx.createRadialGradient(canvas.width / 2 - 20, 120, 10, canvas.width / 2, 140, 85);
+                ctx.arc(canvas.width / 2, 135, 100, 0, Math.PI * 2);
+                const moonGrad = ctx.createRadialGradient(canvas.width / 2 - 25, 115, 10, canvas.width / 2, 135, 100);
                 moonGrad.addColorStop(0, '#fef08a');
-                moonGrad.addColorStop(1, '#d97706');
+                moonGrad.addColorStop(1, '#b45309');
                 ctx.fillStyle = moonGrad;
-                ctx.shadowColor = 'rgba(253, 224, 71, 0.5)';
-                ctx.shadowBlur = 35;
+                ctx.shadowColor = 'rgba(253, 224, 71, 0.7)';
+                ctx.shadowBlur = 60;
                 ctx.fill();
                 ctx.restore();
 
                 for (const [id, l] of Object.entries(lanternsData)) {
                     l.y -= l.speed;
                     ctx.save();
-                    ctx.font = '24px sans-serif';
+                    ctx.font = '26px sans-serif';
                     ctx.textAlign = 'center';
                     ctx.fillText('🏮', l.x, l.y);
                     ctx.font = '11px Prompt, sans-serif';
                     ctx.fillStyle = '#fde047';
-                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                    ctx.shadowBlur = 4;
+                    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+                    ctx.shadowBlur = 6;
                     ctx.fillText(`${l.name}: "${l.wish}"`, l.x, l.y - 14);
                     ctx.restore();
                 }
+
             } else if (myRoom === 'minigame') {
                 ctx.save();
-                ctx.fillStyle = 'rgba(245, 158, 11, 0.04)';
+                ctx.fillStyle = 'rgba(245, 158, 11, 0.05)';
                 ctx.fillRect(40, 40, canvas.width - 80, canvas.height - 80);
-                ctx.strokeStyle = 'rgba(245, 158, 11, 0.15)';
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.2)';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
                 ctx.fillStyle = '#f59e0b';
@@ -491,25 +552,29 @@
                 }
             }
 
-            // Render Players
+            // 4. RENDER ALL PLAYERS (Rabbit Avatars)
             const allPlayers = { ...playersData };
             if (isJoined) allPlayers[myPlayerId] = { name: myName, avatar: myAvatar, room: myRoom, x: myX, y: myY, score: myScore };
 
             for (const [id, p] of Object.entries(allPlayers)) {
                 if (p.room !== myRoom) continue;
                 ctx.save();
-                ctx.font = '36px sans-serif';
+                
+                // Floating hover effect
+                const floatOffset = Math.sin(Date.now() / 250 + p.x) * 3;
+
+                ctx.font = '38px sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(p.avatar || '🐇', p.x, p.y);
+                ctx.fillText(p.avatar || '🐇', p.x, p.y + floatOffset);
 
                 ctx.font = 'bold 11px Prompt, sans-serif';
                 ctx.fillStyle = '#fde047';
                 ctx.textAlign = 'center';
                 ctx.shadowColor = 'rgba(0,0,0,0.9)';
-                ctx.shadowBlur = 6;
+                ctx.shadowBlur = 8;
                 const tag = myRoom === 'minigame' ? `${p.name} (${p.score})` : p.name;
-                ctx.fillText(tag, p.x, p.y - 28);
+                ctx.fillText(tag, p.x, p.y + floatOffset - 30);
                 ctx.restore();
             }
         }
