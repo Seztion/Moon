@@ -1225,22 +1225,36 @@
 
             let renderLanterns = [];
 
+            // ปรับปรุงการสร้างและอัปเดตตำแหน่งโคมไฟให้ต่อเนื่อง ลอยวนลูปราบรื่น
             function updateLanterns() {
                 const onlineData = window.onlineLanternsList || [];
                 renderLanterns = onlineData.map((d, index) => {
-                    return {
-                        x: (index * 80 + 50) % (canvas.width || 360),
-                        y: ((index * 120) % (canvas.height || 600)) + 100,
-                        size: 32,
-                        speed: 0.4 + (index % 3) * 0.2,
-                        wobble: index,
-                        flicker: Math.random(),
-                        color: d.color || '#B91C1C',
-                        stamp: d.stamp || '福',
-                        deity: d.deity || '👸🏻✨ เทพธิดาฉางเอ๋อร์',
-                        author: d.author || 'ผู้เล่นออนไลน์',
-                        wish: d.wish || 'ขอให้สมปรารถนา'
-                    };
+                    const existing = renderLanterns.find(l => l.id === d.id);
+                    if (existing) {
+                        return {
+                            ...existing,
+                            color: d.color || '#B91C1C',
+                            stamp: d.stamp || '福',
+                            deity: d.deity || '👸🏻✨ เทพธิดาฉางเอ๋อร์',
+                            author: d.author || 'ผู้เล่นออนไลน์',
+                            wish: d.wish || 'ขอให้สมปรารถนา'
+                        };
+                    } else {
+                        return {
+                            id: d.id || index,
+                            x: (index * 80 + 50) % (canvas.width || 360),
+                            y: Math.random() * (canvas.height || 600),
+                            size: 32,
+                            speed: 0.4 + (index % 3) * 0.2,
+                            wobble: Math.random() * Math.PI * 2,
+                            flicker: Math.random(),
+                            color: d.color || '#B91C1C',
+                            stamp: d.stamp || '福',
+                            deity: d.deity || '👸🏻✨ เทพธิดาฉางเอ๋อร์',
+                            author: d.author || 'ผู้เล่นออนไลน์',
+                            wish: d.wish || 'ขอให้สมปรารถนา'
+                        };
+                    }
                 });
             }
 
@@ -1267,9 +1281,10 @@
                     l.flicker += 0.1;
                     const curX = l.x + Math.sin(l.wobble) * 14;
 
+                    // วนลูปโคมไฟกลับมาปล่อยจากด้านล่างเมื่อลอยพ้นขอบบน
                     if (l.y < -70) {
-                        l.y = canvas.height + 50;
-                        l.x = Math.random() * canvas.width;
+                        l.y = canvas.height + 70;
+                        l.x = Math.random() * (canvas.width - 40) + 20;
                     }
 
                     ctx.save();
