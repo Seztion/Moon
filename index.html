@@ -3,15 +3,15 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>MOONLIGHT FESTIVAL</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- Online connection -->
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <style>
@@ -20,18 +20,18 @@
     box-sizing:border-box;
     margin:0;
     padding:0;
+    -webkit-tap-highlight-color:transparent;
 }
 
 :root{
-    --night:#070b20;
-    --night2:#11183c;
-    --purple:#6c4cff;
-    --purple2:#9c7bff;
+    --bg:#07091d;
+    --bg2:#141536;
+    --purple:#7256ff;
+    --purple2:#a889ff;
     --gold:#ffd86b;
-    --cream:#fff4cf;
-    --pink:#ff91c8;
-    --glass:rgba(11,15,45,.72);
-    --border:rgba(255,216,107,.35);
+    --pink:#ff719d;
+    --white:#fff;
+    --glass:rgba(8,11,36,.82);
 }
 
 html,
@@ -44,35 +44,43 @@ body{
 body{
     font-family:'Kanit',sans-serif;
     color:white;
-    background:#070b20;
+    background:var(--bg);
 }
 
-/* =========================
-   BACKGROUND
-========================= */
+/* =====================================================
+   GAME
+===================================================== */
 
 #game{
     position:relative;
     width:100vw;
     height:100vh;
     overflow:hidden;
+
     background:
-        radial-gradient(circle at 50% 20%,rgba(105,78,255,.22),transparent 35%),
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(102,80,255,.28),
+            transparent 35%
+        ),
         linear-gradient(
             180deg,
-            #070a1d 0%,
-            #11153b 45%,
-            #24164e 72%,
-            #100d28 100%
+            #07091d 0%,
+            #101436 45%,
+            #24194d 75%,
+            #08091b 100%
         );
 }
 
-/* stars */
+/* =====================================================
+   STARS
+===================================================== */
 
-.stars{
+#stars{
     position:absolute;
     inset:0;
     pointer-events:none;
+    z-index:1;
 }
 
 .star{
@@ -81,675 +89,1098 @@ body{
     height:3px;
     border-radius:50%;
     background:white;
-    opacity:.6;
     animation:twinkle 3s infinite ease-in-out;
 }
 
 @keyframes twinkle{
+
     0%,100%{
-        opacity:.25;
+        opacity:.2;
         transform:scale(.7);
     }
+
     50%{
         opacity:1;
-        transform:scale(1.4);
+        transform:scale(1.5);
     }
+
 }
 
-/* moon */
+/* =====================================================
+   MOON
+===================================================== */
 
 .moon{
     position:absolute;
-    top:80px;
-    right:11vw;
-    width:180px;
-    height:180px;
+    width:190px;
+    height:190px;
+
+    top:95px;
+    right:10%;
+
     border-radius:50%;
+
     background:
-        radial-gradient(circle at 35% 30%,#fffdf0,#fff2a9 45%,#eacb65 100%);
+        radial-gradient(
+            circle at 35% 30%,
+            #fffef0,
+            #fff0a3 50%,
+            #d6b74e
+        );
+
     box-shadow:
-        0 0 35px rgba(255,231,142,.5),
-        0 0 100px rgba(255,220,90,.22);
-    z-index:1;
+        0 0 35px rgba(255,225,116,.5),
+        0 0 100px rgba(255,220,100,.2);
+
+    z-index:2;
 }
 
-.moon:before,
-.moon:after{
+.moon::before{
     content:"";
     position:absolute;
-    border-radius:50%;
-    background:rgba(190,155,70,.12);
-}
 
-.moon:before{
     width:35px;
     height:35px;
+
     left:45px;
-    top:40px;
+    top:50px;
+
+    border-radius:50%;
+
+    background:rgba(170,140,60,.12);
 }
 
-.moon:after{
-    width:24px;
-    height:24px;
-    right:38px;
-    bottom:42px;
+.moon::after{
+    content:"";
+    position:absolute;
+
+    width:25px;
+    height:25px;
+
+    right:40px;
+    bottom:45px;
+
+    border-radius:50%;
+
+    background:rgba(170,140,60,.12);
 }
 
-/* mountains */
+/* =====================================================
+   BACKGROUND MOUNTAIN
+===================================================== */
 
-.mountains{
+.mountain{
     position:absolute;
     left:0;
     right:0;
-    bottom:150px;
-    height:180px;
+    bottom:135px;
+    height:220px;
+
     background:
-        linear-gradient(135deg,transparent 25%,#0b0e2c 25%),
-        linear-gradient(225deg,transparent 25%,#0b0e2c 25%);
-    background-size:50% 100%;
-    background-position:left,right;
-    background-repeat:no-repeat;
+        linear-gradient(
+            135deg,
+            transparent 35%,
+            #0b0d2b 35%,
+            #0b0d2b 65%,
+            transparent 65%
+        );
+
     opacity:.9;
+
+    z-index:3;
 }
 
-/* ground */
+/* =====================================================
+   GROUND
+===================================================== */
 
 .ground{
     position:absolute;
     left:0;
     right:0;
     bottom:0;
+
     height:190px;
+
     background:
         radial-gradient(
             ellipse at center top,
-            rgba(101,75,174,.7),
+            rgba(101,72,170,.65),
             transparent 65%
         ),
         linear-gradient(
             180deg,
-            #19113b,
-            #08091c
+            #1c143d,
+            #070817
         );
-    border-top:1px solid rgba(255,216,107,.1);
+
+    border-top:1px solid rgba(255,216,107,.12);
+
+    z-index:4;
 }
 
-/* =========================
-   LANTERNS
-========================= */
+/* =====================================================
+   LANTERNS DECOR
+===================================================== */
 
-.lantern{
+.decor-lantern{
     position:absolute;
-    width:40px;
+
+    width:38px;
     height:55px;
+
+    border-radius:10px 10px 15px 15px;
+
     background:
         linear-gradient(
             90deg,
-            #8d174d,
-            #ff5c8d,
-            #8d174d
+            #7e1947,
+            #ff5b8b,
+            #7e1947
         );
-    border-radius:10px 10px 14px 14px;
-    box-shadow:0 0 25px rgba(255,84,133,.35);
-    z-index:2;
-    animation:floatLantern 4s ease-in-out infinite;
+
+    box-shadow:
+        0 0 25px rgba(255,85,135,.35);
+
+    z-index:6;
+
+    animation:lanternFloat 4s ease-in-out infinite;
 }
 
-.lantern:before{
+.decor-lantern::before{
     content:"";
+
     position:absolute;
-    top:-8px;
+
+    top:-7px;
     left:7px;
     right:7px;
-    height:8px;
-    background:#ffd66b;
+
+    height:7px;
+
+    background:#ffd86b;
     border-radius:4px;
 }
 
-.lantern:after{
+.decor-lantern::after{
     content:"";
+
     position:absolute;
-    bottom:-16px;
+
     left:50%;
+    bottom:-15px;
+
     width:2px;
-    height:18px;
-    background:#ffd66b;
+    height:16px;
+
+    background:#ffd86b;
 }
 
-.lantern span{
-    position:absolute;
-    inset:0;
+.decor-lantern span{
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:18px;
+
+    width:100%;
+    height:100%;
+
+    font-size:17px;
 }
 
-@keyframes floatLantern{
+@keyframes lanternFloat{
+
     0%,100%{
         transform:translateY(0);
     }
+
     50%{
-        transform:translateY(-12px);
+        transform:translateY(-10px);
     }
+
 }
 
-/* =========================
-   UI
-========================= */
+/* =====================================================
+   TOP BAR
+===================================================== */
 
 .topbar{
     position:absolute;
+
     top:0;
     left:0;
     right:0;
-    height:76px;
+
+    height:72px;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:12px 22px;
-    background:linear-gradient(
-        180deg,
-        rgba(4,7,22,.88),
-        rgba(4,7,22,.25)
-    );
+
+    padding:10px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(4,6,20,.94),
+            rgba(4,6,20,.15)
+        );
+
     z-index:50;
 }
 
 .logo{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
 }
 
 .logo-icon{
-    width:48px;
-    height:48px;
+    width:45px;
+    height:45px;
+
     border-radius:50%;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:25px;
+
     background:rgba(255,216,107,.1);
+
     border:1px solid rgba(255,216,107,.3);
+
+    font-size:23px;
 }
 
 .logo h1{
     font-family:'Itim',cursive;
-    color:#ffe69a;
+
     font-size:24px;
+
+    color:#ffe59a;
 }
 
 .logo small{
     display:block;
-    color:#aaaed0;
-    font-size:10px;
+
+    color:#999dbf;
+
+    font-size:9px;
 }
 
-.top-actions{
+.top-buttons{
     display:flex;
-    gap:8px;
+    gap:7px;
 }
 
-.icon-btn{
-    border:1px solid rgba(255,255,255,.13);
+.top-button{
+    width:40px;
+    height:40px;
+
+    border-radius:13px;
+
+    border:1px solid rgba(255,255,255,.12);
+
     background:rgba(255,255,255,.07);
+
     color:white;
-    width:42px;
-    height:42px;
-    border-radius:14px;
+
     cursor:pointer;
-    font-size:18px;
-    transition:.2s;
+
+    font-size:17px;
 }
 
-.icon-btn:hover{
-    background:rgba(255,255,255,.15);
-    transform:translateY(-2px);
+.top-button:active{
+    transform:scale(.92);
 }
 
-/* player badge */
+/* =====================================================
+   PLAYER INFO
+===================================================== */
 
-.player-badge{
+.player-card{
     position:absolute;
+
     top:88px;
-    left:20px;
-    z-index:20;
-    background:var(--glass);
-    border:1px solid rgba(255,255,255,.1);
-    backdrop-filter:blur(12px);
-    border-radius:18px;
-    padding:9px 14px;
+    left:18px;
+
+    z-index:40;
+
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:9px;
+
+    padding:8px 13px;
+
+    border-radius:17px;
+
+    background:var(--glass);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(12px);
 }
 
 .avatar{
     width:38px;
     height:38px;
+
     border-radius:50%;
-    background:linear-gradient(135deg,#ffb4d9,#705cff);
+
     display:flex;
     align-items:center;
     justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffb4d8,
+            #7058ff
+        );
+
     font-size:19px;
 }
 
-.player-info strong{
+.player-card strong{
     display:block;
-    font-size:13px;
+    font-size:12px;
 }
 
-.player-info small{
+.player-card small{
     color:#ffd86b;
-    font-size:10px;
+    font-size:9px;
 }
 
-/* room */
-
-.room-info{
+.score-card{
     position:absolute;
-    top:88px;
-    right:20px;
-    z-index:20;
-    padding:10px 15px;
-    background:var(--glass);
-    border:1px solid var(--border);
-    border-radius:15px;
-    backdrop-filter:blur(10px);
-    text-align:right;
+
+    top:142px;
+    left:18px;
+
+    z-index:40;
+
+    padding:7px 12px;
+
+    border-radius:13px;
+
+    background:rgba(7,10,30,.72);
+
+    border:1px solid rgba(255,216,107,.18);
+
+    font-size:10px;
 }
 
-.room-info small{
-    color:#aaaed0;
+.score-card b{
+    color:#ffd86b;
+}
+
+/* =====================================================
+   ROOM
+===================================================== */
+
+.room-card{
+    position:absolute;
+
+    top:88px;
+    right:18px;
+
+    z-index:40;
+
+    padding:8px 13px;
+
+    text-align:right;
+
+    border-radius:15px;
+
+    background:var(--glass);
+
+    border:1px solid rgba(255,216,107,.25);
+
+    backdrop-filter:blur(10px);
+}
+
+.room-card small{
     display:block;
-    font-size:10px;
+    color:#9296b9;
+    font-size:9px;
 }
 
 .room-code{
     color:#ffd86b;
+
+    font-size:13px;
     font-weight:600;
+
     letter-spacing:2px;
 }
 
-/* =========================
-   WORLD
-========================= */
-
-.world{
-    position:absolute;
-    inset:0;
-    z-index:5;
-}
-
-/* player */
-
-.player{
-    position:absolute;
-    width:55px;
-    height:75px;
-    transform:translate(-50%,-50%);
-    z-index:15;
-    transition:left .08s linear,top .08s linear;
-}
-
-.player-character{
-    width:50px;
-    height:55px;
-    border-radius:45% 45% 35% 35%;
-    background:linear-gradient(135deg,#ffb5d7,#754eff);
-    border:3px solid rgba(255,255,255,.8);
-    box-shadow:0 8px 20px rgba(0,0,0,.3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:25px;
-}
-
-.player-name{
-    position:absolute;
-    top:58px;
-    left:50%;
-    transform:translateX(-50%);
-    background:rgba(5,7,20,.75);
-    padding:2px 8px;
-    border-radius:10px;
-    font-size:10px;
-    white-space:nowrap;
-}
-
-/* =========================
-   OBJECTS
-========================= */
+/* =====================================================
+   WORLD OBJECT
+===================================================== */
 
 .object{
     position:absolute;
+
     cursor:pointer;
+
+    z-index:15;
+
+    user-select:none;
+
     transition:.2s;
-    z-index:10;
 }
 
 .object:hover{
-    transform:scale(1.08);
+    transform:scale(1.06);
 }
 
-.table{
-    left:35%;
-    bottom:85px;
-    width:180px;
-    height:85px;
+.object:active{
+    transform:scale(.94);
+}
+
+/* =====================================================
+   MOON VIEW
+===================================================== */
+
+.moon-view{
+    right:9%;
+    bottom:115px;
+
+    width:145px;
+    height:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,216,107,.2),
+            transparent 70%
+        );
+
+    color:#ffe89c;
+
+    font-size:13px;
+}
+
+/* =====================================================
+   MOONCAKE TABLE
+===================================================== */
+
+.mooncake-table{
+    left:32%;
+    bottom:72px;
+
+    width:190px;
+    height:100px;
 }
 
 .table-top{
     position:absolute;
+
+    top:0;
     left:0;
     right:0;
-    top:0;
-    height:35px;
+
+    height:40px;
+
     border-radius:50%;
-    background:#9b4b3b;
-    border:3px solid #d47a4c;
+
+    background:#914a3e;
+
+    border:3px solid #cf7952;
 }
 
 .table-leg{
     position:absolute;
-    top:20px;
-    left:40px;
-    width:100px;
-    height:65px;
-    background:#5c2c2b;
-    clip-path:polygon(15% 0,85% 0,100% 100%,0 100%);
+
+    top:25px;
+    left:42px;
+
+    width:105px;
+    height:75px;
+
+    background:#5b2c2b;
+
+    clip-path:
+        polygon(
+            15% 0,
+            85% 0,
+            100% 100%,
+            0 100%
+        );
 }
 
-.mooncake{
+.cake{
     position:absolute;
+
     width:38px;
-    height:20px;
-    border-radius:50%;
-    background:#e8ad4d;
-    border:2px solid #ffdb83;
+    height:21px;
+
     top:5px;
+
+    border-radius:50%;
+
+    background:#e5aa4c;
+
+    border:2px solid #ffd987;
 }
 
-.mooncake.one{
+.cake:nth-child(1){
     left:30px;
 }
 
-.mooncake.two{
-    left:80px;
+.cake:nth-child(2){
+    left:78px;
 }
 
-.mooncake.three{
+.cake:nth-child(3){
     left:125px;
 }
 
+/* =====================================================
+   LANTERN STATION
+===================================================== */
+
 .lantern-station{
-    right:23%;
-    bottom:100px;
-    width:120px;
-    height:130px;
+    right:24%;
+    bottom:90px;
+
+    width:125px;
+    height:135px;
+
+    cursor:pointer;
+
+    z-index:16;
 }
 
 .station-roof{
     position:absolute;
+
     top:0;
     left:0;
     right:0;
-    height:30px;
-    background:#ad3854;
-    clip-path:polygon(0 100%,50% 0,100% 100%);
+
+    height:35px;
+
+    background:#a92f4d;
+
+    clip-path:
+        polygon(
+            0 100%,
+            50% 0,
+            100% 100%
+        );
 }
 
 .station-body{
     position:absolute;
+
     left:25px;
     right:25px;
-    top:25px;
+
+    top:30px;
     bottom:0;
-    background:#632746;
-    border:2px solid #e0a35a;
+
+    background:#5f2744;
+
+    border:2px solid #dca25c;
+
     border-radius:5px;
 }
 
 .station-text{
     position:absolute;
-    inset:45px 0 auto;
+
+    left:0;
+    right:0;
+
+    top:50px;
+
     text-align:center;
-    font-size:11px;
+
     color:#ffd66b;
+
+    font-size:11px;
 }
 
-.view-point{
-    right:8%;
-    bottom:105px;
-    width:150px;
-    height:90px;
-    border-radius:50%;
-    background:radial-gradient(
-        ellipse,
-        rgba(255,216,107,.2),
-        transparent 70%
-    );
+/* =====================================================
+   PLAYER
+===================================================== */
+
+.player{
+    position:absolute;
+
+    width:58px;
+    height:75px;
+
+    transform:translate(-50%,-50%);
+
+    z-index:30;
+
+    transition:
+        left .12s linear,
+        top .12s linear;
 }
 
-.view-text{
-    text-align:center;
-    color:#ffe89a;
-    font-size:13px;
+.player-character{
+    width:52px;
+    height:54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:45% 45% 38% 38%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffb8d8,
+            #7659ff
+        );
+
+    border:3px solid rgba(255,255,255,.85);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.35);
+
+    font-size:24px;
 }
 
-/* =========================
+.player-name{
+    position:absolute;
+
+    left:50%;
+    top:57px;
+
+    transform:translateX(-50%);
+
+    padding:2px 7px;
+
+    border-radius:10px;
+
+    white-space:nowrap;
+
+    background:rgba(3,5,17,.8);
+
+    font-size:9px;
+}
+
+/* =====================================================
    CHAT
-========================= */
+===================================================== */
 
 .chat{
     position:absolute;
-    left:20px;
-    bottom:20px;
+
+    left:18px;
+    bottom:18px;
+
     width:310px;
-    height:265px;
-    background:rgba(7,10,29,.84);
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:20px;
-    backdrop-filter:blur(15px);
-    z-index:60;
-    overflow:hidden;
+    height:245px;
+
     display:flex;
     flex-direction:column;
+
+    overflow:hidden;
+
+    z-index:70;
+
+    border-radius:20px;
+
+    background:rgba(6,9,29,.9);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(15px);
 }
 
 .chat-header{
-    padding:11px 14px;
-    border-bottom:1px solid rgba(255,255,255,.08);
+    height:42px;
+
+    flex-shrink:0;
+
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
+
+    padding:0 13px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .chat-header strong{
-    font-size:13px;
+    font-size:12px;
 }
 
 .online{
-    color:#7dffa4;
-    font-size:10px;
+    color:#76ff9d;
+    font-size:9px;
 }
 
-.chat-messages{
+.messages{
     flex:1;
-    padding:10px;
+
     overflow-y:auto;
+
+    padding:10px;
 }
 
 .message{
     margin-bottom:8px;
-    font-size:12px;
-    line-height:1.4;
+
+    font-size:11px;
+
+    line-height:1.45;
+
+    word-break:break-word;
 }
 
 .message b{
     color:#ffd86b;
 }
 
-.chat-input{
+.chat-form{
     display:flex;
-    padding:8px;
+
     gap:6px;
+
+    padding:7px;
+
     border-top:1px solid rgba(255,255,255,.08);
 }
 
-.chat-input input{
+.chat-form input{
     flex:1;
+
     min-width:0;
+
     border:0;
     outline:0;
+
+    color:white;
+
     background:rgba(255,255,255,.07);
-    color:white;
-    border-radius:12px;
+
+    border-radius:11px;
+
     padding:9px;
+
     font-family:inherit;
 }
 
-.send{
-    border:0;
-    background:#765aff;
-    color:white;
+.chat-form button{
     width:40px;
-    border-radius:12px;
-    cursor:pointer;
-}
 
-/* =========================
-   ACTION BAR
-========================= */
+    border:0;
 
-.actions{
-    position:absolute;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:9px;
-    z-index:50;
-    padding:8px;
-    background:rgba(5,7,22,.72);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:20px;
-}
+    border-radius:11px;
 
-.action{
-    min-width:74px;
-    height:58px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.06);
+    background:#7256ff;
+
     color:white;
-    border-radius:15px;
+
     cursor:pointer;
-    font-family:inherit;
-    transition:.2s;
 }
 
-.action:hover{
-    background:rgba(255,216,107,.14);
-    border-color:rgba(255,216,107,.35);
-    transform:translateY(-4px);
-}
-
-.action span{
-    display:block;
-    font-size:20px;
-}
-
-.action small{
-    font-size:9px;
-}
-
-/* =========================
+/* =====================================================
    PLAYER LIST
-========================= */
+===================================================== */
 
 .players-panel{
     position:absolute;
-    right:20px;
+
+    right:18px;
     top:145px;
+
     width:190px;
-    max-height:220px;
-    background:rgba(7,10,29,.75);
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:18px;
+
+    max-height:230px;
+
+    overflow:auto;
+
     padding:12px;
-    z-index:25;
+
+    z-index:40;
+
+    border-radius:18px;
+
+    background:rgba(7,10,29,.78);
+
+    border:1px solid rgba(255,255,255,.1);
+
     backdrop-filter:blur(12px);
 }
 
 .players-title{
-    font-size:12px;
     color:#ffd86b;
-    margin-bottom:8px;
+
+    font-size:11px;
+
+    margin-bottom:9px;
 }
 
 .player-row{
     display:flex;
+
     align-items:center;
-    gap:8px;
-    margin-bottom:7px;
-    font-size:11px;
+
+    gap:7px;
+
+    margin-bottom:8px;
+
+    font-size:10px;
 }
 
 .mini-avatar{
     width:27px;
     height:27px;
+
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
     border-radius:50%;
-    background:linear-gradient(135deg,#ffb5d7,#705cff);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffb7d8,
+            #7158ff
+        );
 }
 
-/* =========================
-   POPUP
-========================= */
+/* =====================================================
+   ACTION BAR
+===================================================== */
 
-.overlay{
+.actions{
     position:absolute;
-    inset:0;
-    z-index:100;
-    background:rgba(2,4,16,.75);
-    backdrop-filter:blur(12px);
+
+    left:50%;
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    z-index:80;
+
     display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+
+    gap:7px;
+
+    padding:7px;
+
+    border-radius:19px;
+
+    background:rgba(5,7,23,.86);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(15px);
 }
 
-.modal{
-    width:min(480px,100%);
+.action{
+    width:68px;
+    height:58px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+    transition:.18s;
+}
+
+.action:hover{
+    background:rgba(255,216,107,.13);
+
+    border-color:rgba(255,216,107,.3);
+}
+
+.action:active{
+    transform:scale(.9);
+}
+
+.action span{
+    display:block;
+
+    font-size:20px;
+
+    line-height:23px;
+}
+
+.action small{
+    font-size:8px;
+
+    color:#d2d3e5;
+}
+
+/* =====================================================
+   MOBILE CONTROLS
+===================================================== */
+
+.mobile-controls{
+    display:none;
+
+    position:absolute;
+
+    left:15px;
+    bottom:90px;
+
+    z-index:90;
+}
+
+.dpad{
+    width:120px;
+    height:120px;
+
+    position:relative;
+}
+
+.dpad button{
+    position:absolute;
+
+    width:40px;
+    height:40px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,.14);
+
+    background:rgba(10,12,35,.78);
+
+    color:white;
+
+    font-size:18px;
+
+    backdrop-filter:blur(8px);
+}
+
+.dpad button:active{
+    background:#7256ff;
+}
+
+.up{
+    top:0;
+    left:40px;
+}
+
+.down{
+    bottom:0;
+    left:40px;
+}
+
+.left{
+    top:40px;
+    left:0;
+}
+
+.right{
+    top:40px;
+    right:0;
+}
+
+/* =====================================================
+   START SCREEN
+===================================================== */
+
+.start-screen{
+    position:absolute;
+
+    inset:0;
+
+    z-index:200;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(67,54,154,.3),
+            rgba(3,5,18,.92)
+        );
+
+    backdrop-filter:blur(10px);
+}
+
+.start-box{
+    width:min(470px,100%);
+
+    padding:30px;
+
+    border-radius:28px;
+
     background:
         linear-gradient(
             145deg,
-            rgba(28,25,75,.97),
-            rgba(9,11,34,.98)
+            rgba(28,25,75,.98),
+            rgba(7,10,31,.98)
         );
+
     border:1px solid rgba(255,216,107,.28);
-    border-radius:28px;
-    padding:28px;
-    box-shadow:0 30px 100px rgba(0,0,0,.5);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.55);
 }
 
-.modal h2{
+.start-icon{
+    text-align:center;
+
+    font-size:55px;
+
+    animation:moonPulse 3s infinite;
+}
+
+@keyframes moonPulse{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+}
+
+.start-box h1{
+    text-align:center;
+
     font-family:'Itim',cursive;
-    color:#ffe39a;
-    font-size:32px;
-    text-align:center;
+
+    font-size:38px;
+
+    color:#ffe49a;
 }
 
-.modal-sub{
+.start-box .subtitle{
     text-align:center;
-    color:#aaaed0;
-    font-size:12px;
-    margin:5px 0 22px;
+
+    color:#a8abc6;
+
+    font-size:11px;
+
+    margin-bottom:22px;
 }
 
 .field{
@@ -758,126 +1189,216 @@ body{
 
 .field label{
     display:block;
-    font-size:11px;
-    color:#aaaed0;
+
     margin-bottom:5px;
+
+    color:#a8abc6;
+
+    font-size:10px;
 }
 
 .field input{
     width:100%;
+
     border:1px solid rgba(255,255,255,.1);
-    background:rgba(255,255,255,.06);
-    color:white;
+
     outline:0;
+
+    color:white;
+
+    background:rgba(255,255,255,.06);
+
     border-radius:13px;
+
     padding:13px;
+
     font-family:inherit;
+
+    font-size:13px;
 }
 
-.main-btn{
+.field input:focus{
+    border-color:#816cff;
+}
+
+.primary-button,
+.secondary-button{
     width:100%;
-    border:0;
+
+    border-radius:13px;
+
     padding:13px;
-    border-radius:14px;
-    background:linear-gradient(135deg,#7358ff,#a26cff);
-    color:white;
+
     font-family:inherit;
+
     font-weight:600;
+
     cursor:pointer;
-    margin-top:7px;
+
+    transition:.15s;
 }
 
-.secondary-btn{
-    width:100%;
-    border:1px solid rgba(255,255,255,.1);
-    padding:12px;
-    border-radius:14px;
-    background:rgba(255,255,255,.05);
+.primary-button{
+    border:0;
+
     color:white;
-    font-family:inherit;
-    cursor:pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6e52ff,
+            #a36cff
+        );
+}
+
+.secondary-button{
     margin-top:8px;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    color:white;
+
+    background:rgba(255,255,255,.05);
+}
+
+.primary-button:active,
+.secondary-button:active{
+    transform:scale(.97);
 }
 
 .divider{
     text-align:center;
+
     color:#777b9d;
+
     font-size:10px;
+
     margin:14px 0;
 }
 
-.connection{
-    margin-top:10px;
+.connection-status{
     text-align:center;
-    color:#7dffa4;
+
+    margin-top:12px;
+
     font-size:10px;
+
+    color:#77ffa1;
 }
 
-/* =========================
-   EVENT POPUP
-========================= */
+/* =====================================================
+   MODAL
+===================================================== */
 
-.event-popup{
+.modal-bg{
     position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%) scale(.8);
-    z-index:90;
-    width:min(520px,90%);
-    padding:25px;
-    text-align:center;
-    border-radius:25px;
-    background:rgba(13,15,47,.93);
-    border:1px solid rgba(255,216,107,.4);
-    box-shadow:0 20px 80px rgba(0,0,0,.5);
-    opacity:0;
-    pointer-events:none;
-    transition:.3s;
-}
 
-.event-popup.show{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1);
-}
-
-.event-popup .big{
-    font-size:55px;
-}
-
-.event-popup h2{
-    color:#ffe39a;
-    font-family:'Itim',cursive;
-    font-size:30px;
-}
-
-.event-popup p{
-    color:#c8c9df;
-    font-size:12px;
-    line-height:1.7;
-    margin:8px 0;
-}
-
-/* =========================
-   MOON MODE
-========================= */
-
-.moon-mode{
-    position:absolute;
     inset:0;
-    z-index:80;
+
+    z-index:150;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:rgba(2,4,15,.72);
+
+    backdrop-filter:blur(10px);
+}
+
+.modal-bg.show{
+    display:flex;
+}
+
+.modal{
+    width:min(500px,100%);
+
+    padding:28px;
+
+    border-radius:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d1a4d,
+            #090b25
+        );
+
+    border:1px solid rgba(255,216,107,.25);
+
+    text-align:center;
+}
+
+.modal-icon{
+    font-size:48px;
+}
+
+.modal h2{
+    font-family:'Itim',cursive;
+
+    color:#ffe39a;
+
+    font-size:30px;
+
+    margin:5px 0;
+}
+
+.modal p{
+    color:#c6c8df;
+
+    font-size:12px;
+
+    line-height:1.8;
+}
+
+.close-modal{
+    margin-top:16px;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    background:rgba(255,255,255,.06);
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-family:inherit;
+}
+
+/* =====================================================
+   MOON MODE
+===================================================== */
+
+#moonMode{
+    position:absolute;
+
+    inset:0;
+
+    z-index:140;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
     background:
         radial-gradient(
             circle at center,
-            rgba(255,228,131,.18),
-            rgba(5,7,23,.94) 65%
+            rgba(255,225,120,.2),
+            rgba(3,5,20,.96) 70%
         );
-    display:none;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
 }
 
-.moon-mode.active{
+#moonMode.show{
     display:flex;
 }
 
@@ -888,133 +1409,182 @@ body{
 .big-moon{
     width:210px;
     height:210px;
+
     margin:auto;
+
     border-radius:50%;
+
     background:
-        radial-gradient(circle at 35% 30%,#fffef2,#fff0a1 50%,#d8b95a);
-    box-shadow:0 0 100px rgba(255,224,110,.35);
+        radial-gradient(
+            circle at 35% 30%,
+            #fffef1,
+            #ffefa0 50%,
+            #d6b653
+        );
+
+    box-shadow:
+        0 0 100px rgba(255,222,105,.4);
 }
 
 .moon-scene h2{
     font-family:'Itim',cursive;
-    color:#ffe6a0;
-    font-size:42px;
-    margin-top:20px;
+
+    color:#ffe69e;
+
+    font-size:40px;
+
+    margin-top:18px;
 }
 
 .moon-scene p{
-    color:#c7c9e4;
-    font-size:13px;
-    line-height:1.8;
+    color:#c4c6df;
+
+    font-size:12px;
+
+    line-height:1.9;
+
+    margin-top:5px;
 }
 
-.close-btn{
-    margin-top:18px;
-    border:1px solid rgba(255,255,255,.15);
-    background:rgba(255,255,255,.07);
+.moon-close{
+    margin-top:17px;
+
+    border:1px solid rgba(255,255,255,.13);
+
     color:white;
-    border-radius:13px;
+
+    background:rgba(255,255,255,.07);
+
     padding:10px 22px;
+
+    border-radius:12px;
+
     cursor:pointer;
+
     font-family:inherit;
 }
 
-/* =========================
-   LANTERN ANIMATION
-========================= */
+/* =====================================================
+   FLYING LANTERN
+===================================================== */
 
 .flying-lantern{
     position:absolute;
-    width:35px;
+
+    width:34px;
     height:48px;
+
     border-radius:9px;
-    background:linear-gradient(90deg,#b53261,#ff668e,#b53261);
-    box-shadow:0 0 30px #ff668e;
-    z-index:70;
+
+    background:
+        linear-gradient(
+            90deg,
+            #a92c58,
+            #ff668e,
+            #a92c58
+        );
+
+    box-shadow:
+        0 0 30px #ff668e;
+
+    z-index:100;
+
     pointer-events:none;
-    animation:rise 7s linear forwards;
+
+    animation:
+        lanternRise 7s linear forwards;
 }
 
-.flying-lantern:after{
+.flying-lantern::after{
     content:"";
+
     position:absolute;
+
     left:50%;
-    bottom:-10px;
+    bottom:-11px;
+
     width:2px;
     height:12px;
+
     background:#ffd86b;
 }
 
-@keyframes rise{
+@keyframes lanternRise{
+
     from{
-        transform:translate(-50%,0) rotate(-2deg);
+        transform:
+            translate(-50%,0)
+            rotate(-2deg);
+
         opacity:1;
     }
+
     to{
-        transform:translate(
-            calc(-50% + 80px),
-            -100vh
-        ) rotate(8deg);
+        transform:
+            translate(
+                calc(-50% + 80px),
+                -105vh
+            )
+            rotate(8deg);
+
         opacity:0;
     }
+
 }
 
-/* =========================
+/* =====================================================
    TOAST
-========================= */
+===================================================== */
 
-.toast{
+#toast{
     position:absolute;
+
     top:85px;
     left:50%;
-    transform:translateX(-50%) translateY(-20px);
-    background:rgba(10,12,35,.92);
-    border:1px solid rgba(255,216,107,.3);
-    padding:10px 17px;
-    border-radius:15px;
-    z-index:200;
-    opacity:0;
-    pointer-events:none;
-    transition:.3s;
-    font-size:12px;
-}
 
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-}
+    transform:
+        translate(-50%,-20px);
 
-/* =========================
-   SCORE
-========================= */
+    z-index:300;
 
-.score{
-    position:absolute;
-    top:145px;
-    left:20px;
-    z-index:20;
-    background:rgba(7,10,29,.72);
-    border:1px solid rgba(255,216,107,.18);
-    padding:9px 13px;
+    padding:10px 18px;
+
     border-radius:14px;
+
+    background:rgba(8,10,31,.94);
+
+    border:1px solid rgba(255,216,107,.3);
+
+    color:white;
+
     font-size:11px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
 }
 
-.score strong{
-    color:#ffd86b;
+#toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
 }
 
-/* =========================
+/* =====================================================
    RESPONSIVE
-========================= */
+===================================================== */
 
 @media(max-width:900px){
 
     .moon{
-        width:120px;
-        height:120px;
-        top:90px;
-        right:7%;
+        width:130px;
+        height:130px;
+
+        top:85px;
+        right:6%;
     }
 
     .players-panel{
@@ -1022,54 +1592,74 @@ body{
     }
 
     .chat{
-        width:calc(100% - 30px);
-        left:15px;
-        bottom:90px;
-        height:185px;
+        left:12px;
+        right:12px;
+
+        width:auto;
+
+        bottom:78px;
+
+        height:150px;
     }
 
     .actions{
-        left:15px;
-        right:15px;
+        left:12px;
+        right:12px;
+
+        bottom:8px;
+
         transform:none;
-        justify-content:center;
+
+        justify-content:flex-start;
+
         overflow-x:auto;
+
+        scrollbar-width:none;
+    }
+
+    .actions::-webkit-scrollbar{
+        display:none;
     }
 
     .action{
-        min-width:62px;
-        height:54px;
+        flex-shrink:0;
     }
 
-    .action small{
-        font-size:8px;
+    .mobile-controls{
+        display:block;
     }
 
-    .room-info{
-        right:15px;
-        top:82px;
+    .moon-view{
+        right:4%;
     }
 
-    .player-badge{
-        left:15px;
-        top:82px;
-    }
-
-    .score{
-        top:130px;
-        left:15px;
-    }
-
-    .table{
-        left:30%;
+    .mooncake-table{
+        left:26%;
+        transform:scale(.8);
+        transform-origin:bottom;
     }
 
     .lantern-station{
-        right:12%;
+        right:8%;
+        transform:scale(.8);
+        transform-origin:bottom;
     }
 
-    .view-point{
-        display:none;
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        height:65px;
+
+        padding:8px 10px;
+    }
+
+    .logo-icon{
+        width:38px;
+        height:38px;
+
+        font-size:19px;
     }
 
     .logo h1{
@@ -1079,77 +1669,88 @@ body{
     .logo small{
         display:none;
     }
-}
 
-@media(max-width:600px){
-
-    .topbar{
-        height:65px;
-        padding:8px 12px;
+    .top-button{
+        width:35px;
+        height:35px;
     }
 
-    .logo-icon{
-        width:38px;
-        height:38px;
-        font-size:19px;
-    }
+    .player-card{
+        top:76px;
+        left:10px;
 
-    .icon-btn{
-        width:36px;
-        height:36px;
-    }
-
-    .chat{
-        bottom:82px;
-        height:160px;
-    }
-
-    .actions{
-        bottom:10px;
-        padding:5px;
-        gap:5px;
-        border-radius:15px;
-    }
-
-    .action{
-        min-width:55px;
-        height:52px;
-        border-radius:12px;
-    }
-
-    .action span{
-        font-size:17px;
-    }
-
-    .action small{
-        font-size:7px;
-    }
-
-    .player-badge{
-        transform:scale(.85);
+        transform:scale(.82);
         transform-origin:left top;
     }
 
-    .room-info{
-        transform:scale(.85);
+    .score-card{
+        top:118px;
+        left:10px;
+    }
+
+    .room-card{
+        top:76px;
+        right:10px;
+
+        transform:scale(.82);
         transform-origin:right top;
     }
 
-    .score{
-        top:125px;
+    .chat{
+        bottom:72px;
+
+        height:145px;
     }
 
-    .table{
-        left:25%;
-        transform:scale(.8);
-        transform-origin:bottom;
+    .mobile-controls{
+        bottom:225px;
+        left:10px;
+    }
+
+    .moon{
+        width:105px;
+        height:105px;
+
+        top:100px;
+    }
+
+    .moon-view{
+        display:none;
+    }
+
+    .mooncake-table{
+        left:16%;
+        bottom:120px;
+
+        transform:scale(.65);
     }
 
     .lantern-station{
-        right:4%;
-        transform:scale(.8);
-        transform-origin:bottom;
+        right:0;
+        bottom:120px;
+
+        transform:scale(.65);
     }
+
+    .start-box{
+        padding:22px;
+    }
+
+    .start-box h1{
+        font-size:31px;
+    }
+
+}
+
+/* =====================================================
+   DISABLE TEXT SELECTION
+===================================================== */
+
+button,
+.object,
+.player{
+    user-select:none;
+    -webkit-user-select:none;
 }
 
 </style>
@@ -1159,49 +1760,83 @@ body{
 
 <div id="game">
 
-    <div class="stars" id="stars"></div>
+    <!-- STARS -->
+    <div id="stars"></div>
 
+    <!-- MOON -->
     <div class="moon"></div>
 
-    <div class="lantern" style="left:8%;top:120px;animation-delay:.5s;">
+    <!-- DECORATIVE LANTERNS -->
+
+    <div
+        class="decor-lantern"
+        style="left:7%;top:120px;"
+    >
         <span>🏮</span>
     </div>
 
-    <div class="lantern" style="left:22%;top:180px;animation-delay:1.4s;">
+    <div
+        class="decor-lantern"
+        style="left:22%;top:180px;animation-delay:1s;"
+    >
         <span>🏮</span>
     </div>
 
-    <div class="lantern" style="right:29%;top:130px;animation-delay:2s;">
+    <div
+        class="decor-lantern"
+        style="right:29%;top:125px;animation-delay:2s;"
+    >
         <span>🏮</span>
     </div>
 
-    <div class="lantern" style="right:8%;top:210px;animation-delay:.9s;">
+    <div
+        class="decor-lantern"
+        style="right:7%;top:205px;animation-delay:.7s;"
+    >
         <span>🏮</span>
     </div>
 
-    <div class="mountains"></div>
+    <div class="mountain"></div>
+
     <div class="ground"></div>
 
-    <!-- TOPBAR -->
+
+    <!-- =================================================
+         TOP BAR
+    ================================================= -->
 
     <div class="topbar">
 
         <div class="logo">
-            <div class="logo-icon">🌕</div>
+
+            <div class="logo-icon">
+                🌕
+            </div>
 
             <div>
                 <h1>MOONLIGHT FESTIVAL</h1>
-                <small>คืนแห่งแสงจันทร์ • เทศกาลไหว้พระจันทร์</small>
+
+                <small>
+                    คืนแห่งแสงจันทร์ • เทศกาลไหว้พระจันทร์
+                </small>
             </div>
+
         </div>
 
-        <div class="top-actions">
+        <div class="top-buttons">
 
-            <button class="icon-btn" onclick="showEvent('help')">
+            <button
+                class="top-button"
+                onclick="openHelp()"
+            >
                 ❔
             </button>
 
-            <button class="icon-btn" onclick="toggleSound()" id="soundBtn">
+            <button
+                class="top-button"
+                id="soundButton"
+                onclick="toggleSound()"
+            >
                 🔊
             </button>
 
@@ -1209,63 +1844,95 @@ body{
 
     </div>
 
-    <!-- PLAYER -->
 
-    <div class="player-badge">
+    <!-- =================================================
+         PLAYER INFO
+    ================================================= -->
 
-        <div class="avatar" id="myAvatar">
+    <div class="player-card">
+
+        <div
+            class="avatar"
+            id="myAvatar"
+        >
             🐰
         </div>
 
-        <div class="player-info">
-            <strong id="myName">Guest</strong>
-            <small>🌙 Moon Traveler</small>
+        <div>
+
+            <strong id="myName">
+                Guest
+            </strong>
+
+            <small>
+                🌙 Moon Traveler
+            </small>
+
         </div>
 
     </div>
 
-    <div class="score">
+
+    <div class="score-card">
+
         🌕 Moon Points:
-        <strong id="myScore">0</strong>
+        <b id="score">
+            0
+        </b>
+
     </div>
 
-    <!-- ROOM -->
 
-    <div class="room-info">
-        <small>ROOM</small>
-        <div class="room-code" id="roomCode">
+    <!-- =================================================
+         ROOM
+    ================================================= -->
+
+    <div class="room-card">
+
+        <small>
+            ROOM
+        </small>
+
+        <div
+            class="room-code"
+            id="roomCode"
+        >
             OFFLINE
         </div>
+
     </div>
 
-    <!-- WORLD -->
 
-    <div class="world" id="world">
+    <!-- =================================================
+         WORLD
+    ================================================= -->
 
-        <!-- moon viewing -->
+    <div id="world">
+
+
+        <!-- MOON VIEW -->
 
         <div
-            class="object view-point"
+            class="object moon-view"
             onclick="watchMoon()"
         >
-            <div class="view-text">
-                🌕<br>
-                จุดชมจันทร์
-            </div>
+            🌕<br>
+            จุดชมจันทร์
         </div>
 
-        <!-- mooncake table -->
+
+        <!-- MOONCAKE -->
 
         <div
-            class="object table"
+            class="object mooncake-table"
             onclick="eatMooncake()"
         >
 
             <div class="table-top">
 
-                <div class="mooncake one"></div>
-                <div class="mooncake two"></div>
-                <div class="mooncake three"></div>
+                <div class="cake"></div>
+                <div class="cake"></div>
+                <div class="cake"></div>
 
             </div>
 
@@ -1273,7 +1940,8 @@ body{
 
         </div>
 
-        <!-- lantern station -->
+
+        <!-- LANTERN -->
 
         <div
             class="object lantern-station"
@@ -1291,23 +1959,29 @@ body{
 
         </div>
 
-        <!-- players -->
+
+        <!-- PLAYERS -->
 
         <div id="players"></div>
 
     </div>
 
-    <!-- CHAT -->
+
+    <!-- =================================================
+         CHAT
+    ================================================= -->
 
     <div class="chat">
 
         <div class="chat-header">
 
-            <strong>💬 คุยกันในงาน</strong>
+            <strong>
+                💬 คุยกันในงาน
+            </strong>
 
             <span
                 class="online"
-                id="onlineCount"
+                id="online"
             >
                 ● 1 ออนไลน์
             </span>
@@ -1315,33 +1989,31 @@ body{
         </div>
 
         <div
-            class="chat-messages"
+            class="messages"
             id="messages"
         >
 
             <div class="message">
                 <b>ระบบ:</b>
-                ยินดีต้อนรับสู่คืนแห่งแสงจันทร์ 🌕
+                ยินดีต้อนรับสู่ MOONLIGHT FESTIVAL 🌕
             </div>
 
             <div class="message">
                 <b>ระบบ:</b>
-                ชวนเพื่อนเข้าห้อง แล้วไปปล่อยโคมด้วยกันเลย 🏮
+                สร้างห้องแล้วชวนเพื่อนเข้ามาได้เลย 🏮
             </div>
 
         </div>
 
-        <div class="chat-input">
+        <div class="chat-form">
 
             <input
                 id="chatInput"
-                maxlength="120"
                 placeholder="พิมพ์ข้อความ..."
-                onkeydown="if(event.key==='Enter')sendChat()"
+                maxlength="120"
             >
 
             <button
-                class="send"
                 onclick="sendChat()"
             >
                 ➤
@@ -1351,7 +2023,10 @@ body{
 
     </div>
 
-    <!-- PLAYERS -->
+
+    <!-- =================================================
+         PLAYER LIST
+    ================================================= -->
 
     <div class="players-panel">
 
@@ -1363,116 +2038,205 @@ body{
 
     </div>
 
-    <!-- ACTION BAR -->
+
+    <!-- =================================================
+         ACTIONS
+    ================================================= -->
 
     <div class="actions">
 
-        <button class="action" onclick="releaseLantern()">
+        <button
+            class="action"
+            onclick="releaseLantern()"
+        >
             <span>🏮</span>
             <small>ปล่อยโคม</small>
         </button>
 
-        <button class="action" onclick="watchMoon()">
+        <button
+            class="action"
+            onclick="watchMoon()"
+        >
             <span>🌕</span>
             <small>ชมจันทร์</small>
         </button>
 
-        <button class="action" onclick="eatMooncake()">
+        <button
+            class="action"
+            onclick="eatMooncake()"
+        >
             <span>🥮</span>
             <small>กินขนม</small>
         </button>
 
-        <button class="action" onclick="sendEmote('❤️')">
+        <button
+            class="action"
+            onclick="sendEmote('❤️')"
+        >
             <span>❤️</span>
-            <small>ส่งหัวใจ</small>
+            <small>หัวใจ</small>
         </button>
 
-        <button class="action" onclick="sendEmote('🎉')">
+        <button
+            class="action"
+            onclick="sendEmote('🎉')"
+        >
             <span>🎉</span>
             <small>เฮ!</small>
         </button>
 
-        <button class="action" onclick="showEvent('photo')">
+        <button
+            class="action"
+            onclick="takePhoto()"
+        >
             <span>📸</span>
             <small>ถ่ายรูป</small>
         </button>
 
     </div>
 
-    <!-- TOAST -->
 
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+    <!-- =================================================
+         MOBILE D-PAD
+    ================================================= -->
 
-    <!-- EVENT -->
+    <div class="mobile-controls">
 
-    <div
-        class="event-popup"
-        id="eventPopup"
-    >
-
-        <div
-            class="big"
-            id="eventIcon"
-        >
-            🌕
-        </div>
-
-        <h2 id="eventTitle">
-            คืนแห่งแสงจันทร์
-        </h2>
-
-        <p id="eventText">
-            คืนนี้มานั่งชมจันทร์ด้วยกัน
-        </p>
-
-    </div>
-
-    <!-- MOON MODE -->
-
-    <div
-        class="moon-mode"
-        id="moonMode"
-    >
-
-        <div class="moon-scene">
-
-            <div class="big-moon"></div>
-
-            <h2>คืนนี้จันทร์สวยจัง 🌕</h2>
-
-            <p>
-                บางคืนเราไม่จำเป็นต้องทำอะไรเลย<br>
-                แค่นั่งมองพระจันทร์กับคนที่เราชอบคุยด้วยก็พอ
-            </p>
+        <div class="dpad">
 
             <button
-                class="close-btn"
-                onclick="closeMoon()"
+                class="up"
+                onclick="movePlayer(0,-1)"
             >
-                กลับไปที่งาน 🎑
+                ▲
+            </button>
+
+            <button
+                class="left"
+                onclick="movePlayer(-1,0)"
+            >
+                ◀
+            </button>
+
+            <button
+                class="right"
+                onclick="movePlayer(1,0)"
+            >
+                ▶
+            </button>
+
+            <button
+                class="down"
+                onclick="movePlayer(0,1)"
+            >
+                ▼
             </button>
 
         </div>
 
     </div>
 
-    <!-- START -->
+
+    <!-- =================================================
+         TOAST
+    ================================================= -->
+
+    <div id="toast"></div>
+
+
+    <!-- =================================================
+         MODAL
+    ================================================= -->
 
     <div
-        class="overlay"
-        id="startScreen"
+        class="modal-bg"
+        id="modal"
     >
 
         <div class="modal">
 
-            <h2>🌕 MOONLIGHT FESTIVAL</h2>
-
-            <div class="modal-sub">
-                คืนนี้...มาสนุกกับเพื่อนใต้แสงจันทร์
+            <div
+                class="modal-icon"
+                id="modalIcon"
+            >
+                🌕
             </div>
+
+            <h2 id="modalTitle">
+                Moonlight
+            </h2>
+
+            <p id="modalText">
+                คืนนี้พระจันทร์สวยจัง
+            </p>
+
+            <button
+                class="close-modal"
+                onclick="closeModal()"
+            >
+                ปิด
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MOON MODE
+    ================================================= -->
+
+    <div id="moonMode">
+
+        <div class="moon-scene">
+
+            <div class="big-moon"></div>
+
+            <h2>
+                คืนนี้จันทร์สวยจัง 🌕
+            </h2>
+
+            <p>
+                บางคืนเราไม่จำเป็นต้องรีบไปไหน<br>
+                แค่นั่งมองพระจันทร์กับเพื่อน<br>
+                ก็กลายเป็นความทรงจำดี ๆ ได้แล้ว
+            </p>
+
+            <button
+                class="moon-close"
+                onclick="closeMoon()"
+            >
+                กลับไปงานเทศกาล
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         START SCREEN
+    ================================================= -->
+
+    <div
+        class="start-screen"
+        id="startScreen"
+    >
+
+        <div class="start-box">
+
+            <div class="start-icon">
+                🌕
+            </div>
+
+            <h1>
+                MOONLIGHT FESTIVAL
+            </h1>
+
+            <div class="subtitle">
+                เทศกาลไหว้พระจันทร์ออนไลน์
+            </div>
+
 
             <div class="field">
 
@@ -1483,48 +2247,54 @@ body{
                 <input
                     id="nameInput"
                     maxlength="18"
-                    placeholder="เช่น Moon, Alice, บอส..."
+                    placeholder="ใส่ชื่อของคุณ..."
                 >
 
             </div>
 
+
             <button
-                class="main-btn"
+                class="primary-button"
                 onclick="createRoom()"
             >
                 🌙 สร้างห้องใหม่
             </button>
 
+
             <div class="divider">
-                — หรือ —
+                หรือเข้าร่วมกับเพื่อน
             </div>
+
 
             <div class="field">
 
                 <label>
-                    รหัสห้องของเพื่อน
+                    รหัสห้อง
                 </label>
 
                 <input
-                    id="joinCode"
-                    maxlength="8"
-                    placeholder="เช่น MOON123"
+                    id="roomInput"
+                    maxlength="6"
+                    placeholder="เช่น ABC123"
+                    style="text-transform:uppercase"
                 >
 
             </div>
 
+
             <button
-                class="secondary-btn"
+                class="secondary-button"
                 onclick="joinRoom()"
             >
                 🏮 เข้าห้องเพื่อน
             </button>
 
+
             <div
-                class="connection"
+                class="connection-status"
                 id="connectionStatus"
             >
-                ● พร้อมเชื่อมต่อ
+                ● พร้อมเริ่มเทศกาล
             </div>
 
         </div>
@@ -1533,43 +2303,67 @@ body{
 
 </div>
 
+
 <script>
 
 /* =====================================================
-   MOONLIGHT FESTIVAL
-   ONLINE SOCIAL GAME
+   VARIABLES
 ===================================================== */
 
 let peer = null;
+
 let connections = [];
+
 let hostConnection = null;
 
-let roomId = null;
-let playerId = null;
+let roomCode = "";
+
+let playerId = "";
 
 let playerName = "Guest";
 
-let myX = 50;
-let myY = 55;
+let isHost = false;
+
+let onlineReady = false;
 
 let score = 0;
 
 let soundEnabled = true;
 
-const players = {};
+let audioContext = null;
+
+let players = {};
+
+let myX = 50;
+
+let myY = 70;
 
 
 /* =====================================================
-   INITIALIZE
+   INIT
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded",function(){
 
     createStars();
 
+    const input =
+        document.getElementById("nameInput");
+
+    input.focus();
+
     document
-        .getElementById("nameInput")
-        .focus();
+        .getElementById("chatInput")
+        .addEventListener(
+            "keydown",
+            function(e){
+
+                if(e.key === "Enter"){
+                    sendChat();
+                }
+
+            }
+        );
 
 });
 
@@ -1580,10 +2374,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function createStars(){
 
-    const container =
+    const stars =
         document.getElementById("stars");
 
-    for(let i=0;i<100;i++){
+    for(let i=0;i<110;i++){
 
         const star =
             document.createElement("div");
@@ -1594,15 +2388,12 @@ function createStars(){
             Math.random()*100+"%";
 
         star.style.top =
-            Math.random()*70+"%";
+            Math.random()*75+"%";
 
         star.style.animationDelay =
             Math.random()*3+"s";
 
-        star.style.opacity =
-            .2+Math.random()*.8;
-
-        container.appendChild(star);
+        stars.appendChild(star);
 
     }
 
@@ -1613,11 +2404,13 @@ function createStars(){
    SOUND
 ===================================================== */
 
-let audioContext = null;
+function beep(
+    frequency=500,
+    duration=.08
+){
 
-function beep(freq=500,duration=.08){
-
-    if(!soundEnabled) return;
+    if(!soundEnabled)
+        return;
 
     try{
 
@@ -1631,89 +2424,120 @@ function beep(freq=500,duration=.08){
 
         }
 
+        if(
+            audioContext.state ===
+            "suspended"
+        ){
+
+            audioContext.resume();
+
+        }
+
         const oscillator =
             audioContext.createOscillator();
 
         const gain =
             audioContext.createGain();
 
-        oscillator.frequency.value = freq;
-
         oscillator.type="sine";
 
+        oscillator.frequency.value =
+            frequency;
+
         gain.gain.setValueAtTime(
-            .06,
+            .05,
             audioContext.currentTime
         );
 
         gain.gain.exponentialRampToValueAtTime(
             .001,
-            audioContext.currentTime+duration
+            audioContext.currentTime+
+            duration
         );
 
         oscillator.connect(gain);
 
-        gain.connect(audioContext.destination);
+        gain.connect(
+            audioContext.destination
+        );
 
         oscillator.start();
 
         oscillator.stop(
-            audioContext.currentTime+duration
+            audioContext.currentTime+
+            duration
         );
 
-    }catch(e){}
+    }catch(error){
+
+        console.log(
+            "Audio unavailable"
+        );
+
+    }
 
 }
 
 
 function toggleSound(){
 
-    soundEnabled=!soundEnabled;
+    soundEnabled =
+        !soundEnabled;
 
-    document.getElementById("soundBtn")
-        .textContent =
+    document.getElementById(
+        "soundButton"
+    ).textContent =
         soundEnabled ? "🔊" : "🔇";
+
+    showToast(
+        soundEnabled ?
+        "🔊 เปิดเสียง" :
+        "🔇 ปิดเสียง"
+    );
 
 }
 
 
 /* =====================================================
-   ROOM ID
+   RANDOM ID
 ===================================================== */
 
-function generateRoom(){
+function randomCode(){
 
     const chars =
         "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-    let result="";
+    let code="";
 
-    for(let i=0;i<6;i++){
+    for(
+        let i=0;
+        i<6;
+        i++
+    ){
 
-        result +=
+        code +=
             chars[
                 Math.floor(
-                    Math.random()*chars.length
+                    Math.random()*
+                    chars.length
                 )
             ];
 
     }
 
-    return result;
+    return code;
 
 }
 
 
-/* =====================================================
-   PLAYER ID
-===================================================== */
+function randomPlayerId(){
 
-function generatePlayerId(){
-
-    return "player-" +
+    return (
+        "p-" +
         Math.random()
             .toString(36)
-            .substring(2,10);
+            .substring(2,10)
+    );
 
 }
 
@@ -1725,66 +2549,153 @@ function generatePlayerId(){
 function createRoom(){
 
     playerName =
-        document.getElementById("nameInput")
-            .value.trim() ||
-        "Moon Traveler";
+        document
+            .getElementById("nameInput")
+            .value
+            .trim();
 
-    roomId = generateRoom();
+    if(!playerName){
 
-    playerId = generatePlayerId();
+        playerName="Moon Traveler";
 
-    document.getElementById("connectionStatus")
-        .textContent =
-        "● กำลังสร้างห้อง...";
+    }
+
+    roomCode=randomCode();
+
+    playerId=randomPlayerId();
+
+    isHost=true;
+
+    setStatus(
+        "● กำลังสร้างห้อง..."
+    );
 
     /*
-       PeerJS ID:
-       moonlight-room-player
+       IMPORTANT:
+       Host ID uses room code directly.
     */
 
-    peer =
-        new Peer(
-            "moonlight-" +
-            roomId +
-            "-host-" +
-            Math.random()
-                .toString(36)
-                .substring(2,6),
-            {
-                debug:0
+    const hostId =
+        "moonlight-" +
+        roomCode;
+
+    if(
+        typeof Peer ===
+        "undefined"
+    ){
+
+        /*
+           If PeerJS failed,
+           game still starts locally.
+        */
+
+        startLocalGame();
+
+        showToast(
+            "เล่นแบบ Offline เนื่องจากระบบออนไลน์โหลดไม่สำเร็จ"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        peer =
+            new Peer(
+                hostId,
+                {
+                    debug:1
+                }
+            );
+
+
+        peer.on(
+            "open",
+            function(){
+
+                onlineReady=true;
+
+                startGame();
+
+                addChat(
+                    "ระบบ",
+                    "สร้างห้อง "+roomCode+
+                    " สำเร็จ 🎑"
+                );
+
+                addChat(
+                    "ระบบ",
+                    "ส่งรหัสห้องให้เพื่อนเข้ามาได้เลย 🏮"
+                );
+
             }
         );
 
-    peer.on("open",id=>{
 
-        window.roomPeerId=id;
+        peer.on(
+            "connection",
+            function(conn){
 
-        startGame();
+                setupConnection(
+                    conn,
+                    true
+                );
 
-        addChat(
-            "ระบบ",
-            "สร้างห้องแล้ว! ส่งรหัส " +
-            roomId +
-            " ให้เพื่อนของคุณ 🎑"
+            }
         );
 
-    });
 
-    peer.on("connection",conn=>{
+        peer.on(
+            "error",
+            function(error){
 
-        setupConnection(conn,true);
+                console.error(
+                    "Peer error:",
+                    error
+                );
 
-    });
+                /*
+                   Even if online fails,
+                   game remains usable.
+                */
 
-    peer.on("error",err=>{
+                if(
+                    error.type ===
+                    "unavailable-id"
+                ){
 
-        console.error(err);
+                    showToast(
+                        "รหัสห้องซ้ำ กำลังสร้างใหม่..."
+                    );
 
-        showToast(
-            "ไม่สามารถสร้างห้องได้ ลองใหม่อีกครั้ง"
+                    setTimeout(
+                        createRoom,
+                        800
+                    );
+
+                    return;
+
+                }
+
+                startLocalGame();
+
+                showToast(
+                    "ระบบออนไลน์มีปัญหา แต่สามารถเล่นในเครื่องได้"
+                );
+
+            }
         );
 
-    });
+
+    }catch(error){
+
+        console.error(error);
+
+        startLocalGame();
+
+    }
 
 }
 
@@ -1796,503 +2707,115 @@ function createRoom(){
 function joinRoom(){
 
     playerName =
-        document.getElementById("nameInput")
-            .value.trim() ||
-        "Moon Traveler";
+        document
+            .getElementById("nameInput")
+            .value
+            .trim();
 
-    const code =
-        document.getElementById("joinCode")
-            .value.trim()
+    if(!playerName){
+
+        playerName="Moon Traveler";
+
+    }
+
+    roomCode =
+        document
+            .getElementById("roomInput")
+            .value
+            .trim()
             .toUpperCase();
 
-    if(!code){
-
-        showToast("กรุณาใส่รหัสห้อง");
-
-        return;
-
-    }
-
-    roomId=code;
-
-    playerId=generatePlayerId();
-
-    document.getElementById("connectionStatus")
-        .textContent =
-        "● กำลังเข้าห้อง...";
-
-    /*
-       เพราะ PeerJS ต้องมี peer id ที่รู้ได้
-       ห้องจะใช้ deterministic host ID
-       พร้อม suffix ที่ผู้สร้างส่งไม่ได้
-       ดังนั้นใช้วิธี discovery ผ่าน public PeerJS ID
-       ด้วยห้องกลาง
-    */
-
-    /*
-       เพื่อให้ GitHub Pages ใช้ง่าย:
-       สร้าง peer ตัวเองก่อน
-    */
-
-    peer =
-        new Peer({
-            debug:0
-        });
-
-    peer.on("open",id=>{
-
-        window.roomPeerId=id;
-
-        /*
-           เชื่อมต่อผ่าน lobby peer
-           ที่ผู้สร้างห้องประกาศไว้ใน local
-           ในเวอร์ชัน P2P จริง production
-           ควรใช้ signaling server เพิ่ม
-        */
-
-        /*
-           ใช้ room discovery แบบ hash
-           ผ่าน BroadcastChannel ไม่สามารถข้ามเครื่องได้
-
-           ดังนั้นสำหรับการเล่นออนไลน์จริง
-           เราจะใช้ public signaling endpoint
-           ด้านล่าง
-        */
-
-        connectToRoomHost();
-
-    });
-
-    peer.on("error",err=>{
-
-        console.error(err);
+    if(!roomCode){
 
         showToast(
-            "เข้าห้องไม่สำเร็จ"
+            "กรุณาใส่รหัสห้อง"
         );
 
-    });
-
-}
-
-
-/* =====================================================
-   ROOM HOST DISCOVERY
-===================================================== */
-
-/*
-   หมายเหตุ:
-
-   PeerJS public cloud ต้องรู้ peer ID
-   ของ host ก่อน
-
-   เราสร้าง ID จาก room code โดยตรง
-
-   Host ID:
-   moon-room-[ROOM]
-
-   ดังนั้นทุกคนรู้ว่าจะ connect ไปที่ไหน
-*/
-
-function createRoom(){
-
-    playerName =
-        document.getElementById("nameInput")
-            .value.trim() ||
-        "Moon Traveler";
-
-    roomId = generateRoom();
-
-    playerId = generatePlayerId();
-
-    const hostId =
-        "moon-room-" +
-        roomId;
-
-    document.getElementById("connectionStatus")
-        .textContent =
-        "● กำลังสร้างห้อง...";
-
-    peer =
-        new Peer(
-            hostId,
-            {
-                debug:0
-            }
-        );
-
-    peer.on("open",id=>{
-
-        window.roomPeerId=id;
-
-        startGame();
-
-        addChat(
-            "ระบบ",
-            "สร้างห้องแล้ว 🎑 รหัสห้อง: " +
-            roomId
-        );
-
-        addChat(
-            "ระบบ",
-            "ส่งรหัสนี้ให้เพื่อนเพื่อเข้าร่วม"
-        );
-
-    });
-
-    peer.on("connection",conn=>{
-
-        setupConnection(conn,true);
-
-    });
-
-    peer.on("error",err=>{
-
-        console.error(err);
-
-        if(err.type==="unavailable-id"){
-
-            showToast(
-                "รหัสห้องชนกัน ลองสร้างใหม่"
-            );
-
-        }else{
-
-            showToast(
-                "เกิดข้อผิดพลาดในการเชื่อมต่อ"
-            );
-
-        }
-
-    });
-
-}
-
-
-/* =====================================================
-   CONNECT TO HOST
-===================================================== */
-
-function connectToRoomHost(){
-
-    const hostId =
-        "moon-room-" +
-        roomId;
-
-    const conn =
-        peer.connect(
-            hostId,
-            {
-                reliable:true
-            }
-        );
-
-    setupConnection(conn,false);
-
-}
-
-
-/* =====================================================
-   CONNECTION
-===================================================== */
-
-function setupConnection(conn,isHost){
-
-    conn.on("open",()=>{
-
-        connections.push(conn);
-
-        if(!isHost){
-
-            hostConnection=conn;
-
-        }
-
-        /*
-           send player information
-        */
-
-        conn.send({
-
-            type:"join",
-
-            id:playerId,
-
-            name:playerName,
-
-            x:myX,
-
-            y:myY,
-
-            score:score
-
-        });
-
-        updateOnlineCount();
-
-    });
-
-    conn.on("data",data=>{
-
-        handleNetworkData(
-            data,
-            conn,
-            isHost
-        );
-
-    });
-
-    conn.on("close",()=>{
-
-        connections =
-            connections.filter(
-                c=>c!==conn
-            );
-
-        updateOnlineCount();
-
-    });
-
-    conn.on("error",err=>{
-
-        console.error(err);
-
-    });
-
-}
-
-
-/* =====================================================
-   NETWORK DATA
-===================================================== */
-
-function handleNetworkData(
-    data,
-    conn,
-    isHost
-){
-
-    if(!data || !data.type)
         return;
 
+    }
 
-    /* player joined */
+    playerId=randomPlayerId();
 
-    if(data.type==="join"){
+    isHost=false;
 
-        if(isHost){
+    setStatus(
+        "● กำลังเข้าห้อง..."
+    );
 
-            /*
-               add player
-            */
 
-            players[data.id]={
-                id:data.id,
-                name:data.name,
-                x:data.x,
-                y:data.y,
-                score:data.score||0
-            };
+    if(
+        typeof Peer ===
+        "undefined"
+    ){
 
-            renderPlayer(
-                players[data.id]
-            );
+        showToast(
+            "ระบบออนไลน์ยังโหลดไม่เสร็จ"
+        );
 
-            /*
-               tell everyone
-            */
+        return;
 
-            broadcast({
+    }
 
-                type:"playerJoined",
 
-                player:players[data.id]
+    try{
 
+        peer =
+            new Peer({
+                debug:1
             });
 
-            /*
-               send existing players
-            */
 
-            Object.values(players)
-                .forEach(p=>{
+        peer.on(
+            "open",
+            function(){
 
-                    conn.send({
+                const hostId =
+                    "moonlight-" +
+                    roomCode;
 
-                        type:"playerJoined",
+                const conn =
+                    peer.connect(
+                        hostId,
+                        {
+                            reliable:true
+                        }
+                    );
 
-                        player:p
-
-                    });
-
-                });
-
-            }
-
-            updatePlayerList();
-
-        }
-
-        return;
-
-    }
-
-
-    /* player joined */
-
-    if(data.type==="playerJoined"){
-
-        if(
-            data.player &&
-            data.player.id!==playerId
-        ){
-
-            players[data.player.id] =
-                data.player;
-
-            renderPlayer(
-                data.player
-            );
-
-            updatePlayerList();
-
-        }
-
-        return;
-
-    }
-
-
-    /* player movement */
-
-    if(data.type==="move"){
-
-        if(isHost){
-
-            if(players[data.id]){
-
-                players[data.id].x=data.x;
-                players[data.id].y=data.y;
-
-            }
-
-            broadcast(
-                data,
-                conn
-            );
-
-        }else{
-
-            if(
-                data.id &&
-                data.id!==playerId
-            ){
-
-                if(!players[data.id]){
-
-                    players[data.id]={
-                        id:data.id,
-                        name:data.name||"Player",
-                        x:data.x,
-                        y:data.y
-                    };
-
-                }else{
-
-                    players[data.id].x=data.x;
-                    players[data.id].y=data.y;
-
-                }
-
-                renderPlayer(
-                    players[data.id]
+                setupConnection(
+                    conn,
+                    false
                 );
 
             }
-
-        }
-
-        return;
-
-    }
-
-
-    /* chat */
-
-    if(data.type==="chat"){
-
-        if(isHost){
-
-            broadcast(
-                data,
-                conn
-            );
-
-        }
-
-        addChat(
-            data.name,
-            data.message
         );
 
-        return;
 
-    }
+        peer.on(
+            "error",
+            function(error){
 
+                console.error(error);
 
-    /* event */
+                setStatus(
+                    "● เชื่อมต่อไม่ได้"
+                );
 
-    if(data.type==="event"){
-
-        if(isHost){
-
-            broadcast(
-                data,
-                conn
-            );
-
-        }
-
-        handleEvent(
-            data
-        );
-
-        return;
-
-    }
-
-
-    /* score */
-
-    if(data.type==="score"){
-
-        if(isHost){
-
-            if(players[data.id]){
-
-                players[data.id].score =
-                    data.score;
+                showToast(
+                    "ไม่พบห้องนี้ หรือเจ้าของห้องยังไม่เปิดเกม"
+                );
 
             }
+        );
 
-            broadcast(
-                data,
-                conn
-            );
 
-        }
+    }catch(error){
 
-        if(
-            data.id!==playerId &&
-            players[data.id]
-        ){
+        console.error(error);
 
-            players[data.id].score =
-                data.score;
-
-            updatePlayerList();
-
-        }
+        showToast(
+            "ไม่สามารถเชื่อมต่อได้"
+        );
 
     }
 
@@ -2300,28 +2823,14 @@ function handleNetworkData(
 
 
 /* =====================================================
-   BROADCAST
+   START LOCAL GAME
 ===================================================== */
 
-function broadcast(data,except=null){
+function startLocalGame(){
 
-    connections.forEach(conn=>{
+    onlineReady=false;
 
-        if(
-            conn &&
-            conn.open &&
-            conn!==except
-        ){
-
-            try{
-
-                conn.send(data);
-
-            }catch(e){}
-
-        }
-
-    });
+    startGame();
 
 }
 
@@ -2332,31 +2841,18 @@ function broadcast(data,except=null){
 
 function startGame(){
 
-    document.getElementById("startScreen")
+    document
+        .getElementById("startScreen")
         .style.display="none";
 
-    document.getElementById("myName")
+    document
+        .getElementById("myName")
         .textContent=playerName;
 
-    document.getElementById("roomCode")
-        .textContent=roomId;
-
-    addMyPlayer();
-
-    updateOnlineCount();
-
-    showToast(
-        "เข้าสู่ MOONLIGHT FESTIVAL 🌕"
-    );
-
-}
-
-
-/* =====================================================
-   MY PLAYER
-===================================================== */
-
-function addMyPlayer(){
+    document
+        .getElementById("roomCode")
+        .textContent=
+        roomCode || "OFFLINE";
 
     players[playerId]={
         id:playerId,
@@ -2373,53 +2869,407 @@ function addMyPlayer(){
 
     updatePlayerList();
 
+    updateOnline();
+
+    beep(700,.1);
+
+    showToast(
+        "🌕 ยินดีต้อนรับสู่เทศกาล!"
+    );
+
 }
 
 
 /* =====================================================
-   RENDER PLAYER
+   CONNECTION
 ===================================================== */
 
-function renderPlayer(player,isMe=false){
+function setupConnection(
+    conn,
+    host
+){
 
-    let el =
-        document.getElementById(
-            "player-"+player.id
-        );
+    if(!conn)
+        return;
 
-    if(!el){
 
-        el =
-            document.createElement("div");
+    conn.on(
+        "open",
+        function(){
 
-        el.className="player";
+            connections.push(conn);
 
-        el.id =
-            "player-"+player.id;
+            if(!host){
 
-        el.innerHTML=`
+                hostConnection=conn;
 
-            <div class="player-character">
-                ${isMe ? "🐰" : "🧑"}
-            </div>
+            }
 
-            <div class="player-name">
-                ${escapeHTML(player.name)}
-            </div>
 
-        `;
+            conn.send({
 
-        document
-            .getElementById("players")
-            .appendChild(el);
+                type:"join",
+
+                id:playerId,
+
+                name:playerName,
+
+                x:myX,
+
+                y:myY,
+
+                score:score
+
+            });
+
+
+            if(
+                host &&
+                players[playerId]
+            ){
+
+                updatePlayerList();
+
+            }
+
+        }
+    );
+
+
+    conn.on(
+        "data",
+        function(data){
+
+            handleNetworkData(
+                data,
+                conn,
+                host
+            );
+
+        }
+    );
+
+
+    conn.on(
+        "close",
+        function(){
+
+            connections =
+                connections.filter(
+                    function(c){
+                        return c!==conn;
+                    }
+                );
+
+            updateOnline();
+
+        }
+    );
+
+
+    conn.on(
+        "error",
+        function(error){
+
+            console.error(
+                "Connection error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   NETWORK
+===================================================== */
+
+function handleNetworkData(
+    data,
+    conn,
+    host
+){
+
+    if(
+        !data ||
+        !data.type
+    )
+        return;
+
+
+    /* JOIN */
+
+    if(
+        data.type ===
+        "join"
+    ){
+
+        if(host){
+
+            players[data.id]={
+                id:data.id,
+                name:data.name,
+                x:data.x,
+                y:data.y,
+                score:data.score || 0
+            };
+
+
+            /*
+               Send all existing players
+            */
+
+            Object.values(players)
+                .forEach(function(p){
+
+                    conn.send({
+
+                        type:"player",
+
+                        player:p
+
+                    });
+
+                });
+
+
+            /*
+               Tell everybody new player joined
+            */
+
+            broadcast(
+                {
+                    type:"player",
+                    player:players[data.id]
+                },
+                conn
+            );
+
+
+            addChat(
+                "ระบบ",
+                data.name+
+                " เข้าร่วมงานแล้ว 👋"
+            );
+
+            updatePlayerList();
+
+        }
+
+        return;
 
     }
 
-    el.style.left =
-        player.x+"%";
 
-    el.style.top =
-        player.y+"%";
+    /* PLAYER */
+
+    if(
+        data.type ===
+        "player"
+    ){
+
+        if(
+            data.player &&
+            data.player.id !==
+            playerId
+        ){
+
+            players[
+                data.player.id
+            ] =
+                data.player;
+
+            renderPlayer(
+                data.player
+            );
+
+            updatePlayerList();
+
+            updateOnline();
+
+        }
+
+        return;
+
+    }
+
+
+    /* MOVE */
+
+    if(
+        data.type ===
+        "move"
+    ){
+
+        if(
+            data.id !==
+            playerId
+        ){
+
+            if(
+                !players[data.id]
+            ){
+
+                players[data.id]={
+                    id:data.id,
+                    name:data.name || "Player",
+                    x:data.x,
+                    y:data.y,
+                    score:data.score || 0
+                };
+
+            }else{
+
+                players[data.id].x =
+                    data.x;
+
+                players[data.id].y =
+                    data.y;
+
+            }
+
+            renderPlayer(
+                players[data.id]
+            );
+
+        }
+
+
+        if(host){
+
+            broadcast(
+                data,
+                conn
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /* CHAT */
+
+    if(
+        data.type ===
+        "chat"
+    ){
+
+        addChat(
+            data.name,
+            data.message
+        );
+
+
+        if(host){
+
+            broadcast(
+                data,
+                conn
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /* EVENT */
+
+    if(
+        data.type ===
+        "event"
+    ){
+
+        handleEvent(
+            data
+        );
+
+
+        if(host){
+
+            broadcast(
+                data,
+                conn
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /* SCORE */
+
+    if(
+        data.type ===
+        "score"
+    ){
+
+        if(
+            players[data.id]
+        ){
+
+            players[data.id].score =
+                data.score;
+
+        }
+
+
+        updatePlayerList();
+
+
+        if(host){
+
+            broadcast(
+                data,
+                conn
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   BROADCAST
+===================================================== */
+
+function broadcast(
+    data,
+    except=null
+){
+
+    connections.forEach(
+        function(conn){
+
+            if(
+                conn &&
+                conn.open &&
+                conn !== except
+            ){
+
+                try{
+
+                    conn.send(data);
+
+                }catch(error){
+
+                    console.log(error);
+
+                }
+
+            }
+
+        }
+    );
 
 }
 
@@ -2430,79 +3280,72 @@ function renderPlayer(player,isMe=false){
 
 document.addEventListener(
     "keydown",
-    e=>{
+    function(e){
+
+        const start =
+            document.getElementById(
+                "startScreen"
+            );
 
         if(
-            document.getElementById("startScreen")
-                .style.display!=="none"
+            start.style.display !==
+            "none"
         )
             return;
 
-        const step=2;
 
-        let moved=false;
+        let dx=0;
+        let dy=0;
 
-        if(
-            e.key==="ArrowLeft" ||
-            e.key.toLowerCase()==="a"
-        ){
-
-            myX-=step;
-            moved=true;
-
-        }
-
-        if(
-            e.key==="ArrowRight" ||
-            e.key.toLowerCase()==="d"
-        ){
-
-            myX+=step;
-            moved=true;
-
-        }
 
         if(
             e.key==="ArrowUp" ||
             e.key.toLowerCase()==="w"
         ){
 
-            myY-=step;
-            moved=true;
+            dy=-1;
 
         }
+
 
         if(
             e.key==="ArrowDown" ||
             e.key.toLowerCase()==="s"
         ){
 
-            myY+=step;
-            moved=true;
+            dy=1;
 
         }
 
-        if(moved){
 
-            myX=Math.max(
-                5,
-                Math.min(95,myX)
+        if(
+            e.key==="ArrowLeft" ||
+            e.key.toLowerCase()==="a"
+        ){
+
+            dx=-1;
+
+        }
+
+
+        if(
+            e.key==="ArrowRight" ||
+            e.key.toLowerCase()==="d"
+        ){
+
+            dx=1;
+
+        }
+
+
+        if(dx!==0 || dy!==0){
+
+            e.preventDefault();
+
+            movePlayer(
+                dx,
+                dy
             );
-
-            myY=Math.max(
-                30,
-                Math.min(85,myY)
-            );
-
-            players[playerId].x=myX;
-            players[playerId].y=myY;
-
-            renderPlayer(
-                players[playerId],
-                true
-            );
-
-            sendMove();
 
         }
 
@@ -2511,101 +3354,70 @@ document.addEventListener(
 
 
 /* =====================================================
-   MOBILE MOVEMENT
+   MOVE PLAYER
 ===================================================== */
 
-let touchStart=null;
+function movePlayer(
+    dx,
+    dy
+){
 
-document
-    .getElementById("game")
-    .addEventListener(
-        "touchstart",
-        e=>{
+    myX +=
+        dx * 2.5;
 
-            if(e.touches.length!==1)
-                return;
+    myY +=
+        dy * 2.5;
 
-            touchStart={
-                x:e.touches[0].clientX,
-                y:e.touches[0].clientY
-            };
 
-        },
-        {passive:true}
+    /*
+       Keep player inside playable area
+    */
+
+    myX =
+        Math.max(
+            5,
+            Math.min(
+                95,
+                myX
+            )
+        );
+
+
+    myY =
+        Math.max(
+            28,
+            Math.min(
+                88,
+                myY
+            )
+        );
+
+
+    if(
+        !players[playerId]
+    ){
+
+        players[playerId]={
+            id:playerId,
+            name:playerName,
+            x:myX,
+            y:myY,
+            score:score
+        };
+
+    }
+
+
+    players[playerId].x=myX;
+
+    players[playerId].y=myY;
+
+
+    renderPlayer(
+        players[playerId],
+        true
     );
 
-document
-    .getElementById("game")
-    .addEventListener(
-        "touchend",
-        e=>{
-
-            if(!touchStart)
-                return;
-
-            const dx =
-                e.changedTouches[0].clientX -
-                touchStart.x;
-
-            const dy =
-                e.changedTouches[0].clientY -
-                touchStart.y;
-
-            const threshold=30;
-
-            if(
-                Math.abs(dx)<threshold &&
-                Math.abs(dy)<threshold
-            ){
-
-                touchStart=null;
-
-                return;
-
-            }
-
-            if(
-                Math.abs(dx)>Math.abs(dy)
-            ){
-
-                myX +=
-                    dx>0 ? 3 : -3;
-
-            }else{
-
-                myY +=
-                    dy>0 ? 3 : -3;
-
-            }
-
-            myX=Math.max(
-                5,
-                Math.min(95,myX)
-            );
-
-            myY=Math.max(
-                30,
-                Math.min(85,myY)
-            );
-
-            players[playerId].x=myX;
-            players[playerId].y=myY;
-
-            renderPlayer(
-                players[playerId],
-                true
-            );
-
-            sendMove();
-
-            touchStart=null;
-
-        },
-        {passive:true}
-    );
-
-
-function sendMove(){
 
     const data={
 
@@ -2617,14 +3429,19 @@ function sendMove(){
 
         x:myX,
 
-        y:myY
+        y:myY,
+
+        score:score
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2642,13 +3459,17 @@ function sendMove(){
 function sendChat(){
 
     const input =
-        document.getElementById("chatInput");
+        document.getElementById(
+            "chatInput"
+        );
 
     const message =
         input.value.trim();
 
+
     if(!message)
         return;
+
 
     const data={
 
@@ -2660,15 +3481,19 @@ function sendChat(){
 
     };
 
+
     addChat(
         playerName,
         message
     );
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2676,28 +3501,38 @@ function sendChat(){
 
     }
 
+
     input.value="";
 
-    beep(700,.06);
+    beep(800,.06);
 
 }
 
 
-function addChat(name,message){
+function addChat(
+    name,
+    message
+){
 
     const box =
-        document.getElementById("messages");
+        document.getElementById(
+            "messages"
+        );
 
-    const div =
-        document.createElement("div");
+    const item =
+        document.createElement(
+            "div"
+        );
 
-    div.className="message";
+    item.className="message";
 
-    div.innerHTML=
-        `<b>${escapeHTML(name)}:</b>
-         ${escapeHTML(message)}`;
+    item.innerHTML=
+        "<b>"+
+        escapeHTML(name)+
+        ":</b> "+
+        escapeHTML(message);
 
-    box.appendChild(div);
+    box.appendChild(item);
 
     box.scrollTop=
         box.scrollHeight;
@@ -2711,16 +3546,14 @@ function addChat(name,message){
 
 function releaseLantern(){
 
-    const x =
-        25 +
-        Math.random()*50;
-
     createFlyingLantern(
-        x,
-        82
+        20+
+        Math.random()*60
     );
 
+
     addScore(10);
+
 
     const data={
 
@@ -2732,10 +3565,13 @@ function releaseLantern(){
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2743,34 +3579,49 @@ function releaseLantern(){
 
     }
 
+
     showToast(
-        "🏮 ปล่อยโคมขึ้นสู่ท้องฟ้า +10"
+        "🏮 ปล่อยโคมขึ้นฟ้า +10"
     );
 
-    beep(850,.15);
+    beep(900,.15);
 
 }
 
 
-function createFlyingLantern(x,y){
+/* =====================================================
+   CREATE FLYING LANTERN
+===================================================== */
+
+function createFlyingLantern(
+    x
+){
 
     const lantern =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     lantern.className=
         "flying-lantern";
 
-    lantern.style.left=x+"%";
+    lantern.style.left=
+        x+"%";
 
     lantern.style.bottom=
-        (100-y)+"px";
+        "90px";
 
     document
         .getElementById("game")
         .appendChild(lantern);
 
+
     setTimeout(
-        ()=>lantern.remove(),
+        function(){
+
+            lantern.remove();
+
+        },
         7200
     );
 
@@ -2787,7 +3638,8 @@ function watchMoon(){
 
     document
         .getElementById("moonMode")
-        .classList.add("active");
+        .classList.add("show");
+
 
     const data={
 
@@ -2799,10 +3651,13 @@ function watchMoon(){
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2810,16 +3665,21 @@ function watchMoon(){
 
     }
 
-    beep(600,.2);
+
+    beep(600,.18);
 
 }
 
+
+/* =====================================================
+   CLOSE MOON
+===================================================== */
 
 function closeMoon(){
 
     document
         .getElementById("moonMode")
-        .classList.remove("active");
+        .classList.remove("show");
 
 }
 
@@ -2832,9 +3692,14 @@ function eatMooncake(){
 
     addScore(8);
 
-    showEvent(
-        "mooncake"
+
+    showModal(
+        "🥮",
+        "ขนมไหว้พระจันทร์",
+        playerName+
+        " กินขนมไหว้พระจันทร์แล้ว +8 Moon Points"
     );
+
 
     const data={
 
@@ -2846,10 +3711,13 @@ function eatMooncake(){
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2857,7 +3725,8 @@ function eatMooncake(){
 
     }
 
-    beep(500,.1);
+
+    beep(500,.12);
 
 }
 
@@ -2866,11 +3735,16 @@ function eatMooncake(){
    EMOTE
 ===================================================== */
 
-function sendEmote(icon){
+function sendEmote(
+    emoji
+){
 
     showToast(
-        icon+" ส่งให้ทุกคน!"
+        emoji+
+        " "+
+        playerName
     );
+
 
     const data={
 
@@ -2878,16 +3752,19 @@ function sendEmote(icon){
 
         event:"emote",
 
-        icon:icon,
+        icon:emoji,
 
         name:playerName
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -2895,129 +3772,86 @@ function sendEmote(icon){
 
     }
 
-    beep(900,.08);
+
+    beep(850,.08);
 
 }
 
 
 /* =====================================================
-   EVENTS
+   PHOTO
 ===================================================== */
 
-function showEvent(type){
+function takePhoto(){
 
-    const popup =
-        document.getElementById("eventPopup");
-
-    const icon =
-        document.getElementById("eventIcon");
-
-    const title =
-        document.getElementById("eventTitle");
-
-    const text =
-        document.getElementById("eventText");
-
-
-    if(type==="help"){
-
-        icon.textContent="🌙";
-
-        title.textContent=
-            "วิธีเล่น";
-
-        text.innerHTML=
-            `
-            🎮 ใช้ WASD หรือปุ่มลูกศรเพื่อเดิน<br>
-            🏮 กดปล่อยโคมเพื่อสร้างโคมขึ้นฟ้า<br>
-            🌕 ไปชมจันทร์<br>
-            🥮 กินขนมไหว้พระจันทร์<br>
-            💬 คุยกับเพื่อนผ่านแชต<br>
-            ❤️ ส่งอีโมตให้คนในห้อง<br>
-            📸 ใช้ปุ่มถ่ายรูปเพื่อเข้าสู่โหมดภาพ
-            `;
-
-    }
-
-
-    if(type==="mooncake"){
-
-        icon.textContent="🥮";
-
-        title.textContent=
-            "ขนมไหว้พระจันทร์";
-
-        text.textContent=
-            `${playerName} ได้กินขนมไหว้พระจันทร์ +8 Moon Points`;
-
-    }
-
-
-    if(type==="photo"){
-
-        icon.textContent="📸";
-
-        title.textContent=
-            "Moonlight Photo";
-
-        text.innerHTML=
-            `
-            ซ่อนหน้าต่างนี้แล้วแคปหน้าจอได้เลย<br>
-            ชวนทุกคนมายืนหน้าพระจันทร์แล้วถ่ายรูปหมู่กัน 🌕
-            `;
-
-    }
-
-    popup.classList.add("show");
-
-    setTimeout(
-        ()=>{
-            popup.classList.remove("show");
-        },
-        type==="photo" ? 5000 : 2300
+    showModal(
+        "📸",
+        "Moonlight Photo",
+        "จัดทุกคนมายืนหน้าพระจันทร์ แล้วแคปหน้าจอเก็บไว้เป็นรูปหมู่ได้เลย 🌕"
     );
 
 }
 
 
-function handleEvent(data){
+/* =====================================================
+   EVENT
+===================================================== */
 
-    if(data.event==="lantern"){
+function handleEvent(
+    data
+){
+
+    if(
+        data.event==="lantern"
+    ){
 
         createFlyingLantern(
-            25+Math.random()*50,
-            82
+            20+
+            Math.random()*60
         );
 
         showToast(
-            "🏮 "+data.name+
+            "🏮 "+
+            data.name+
             " ปล่อยโคม!"
         );
 
     }
 
-    if(data.event==="moon"){
+
+    if(
+        data.event==="moon"
+    ){
 
         showToast(
-            "🌕 "+data.name+
+            "🌕 "+
+            data.name+
             " กำลังชมจันทร์"
         );
 
     }
 
-    if(data.event==="mooncake"){
+
+    if(
+        data.event==="mooncake"
+    ){
 
         showToast(
-            "🥮 "+data.name+
-            " กำลังกินขนมไหว้พระจันทร์"
+            "🥮 "+
+            data.name+
+            " กำลังกินขนม"
         );
 
     }
 
-    if(data.event==="emote"){
+
+    if(
+        data.event==="emote"
+    ){
 
         showToast(
-            data.icon+" "+
+            data.icon+
+            " "+
             data.name
         );
 
@@ -3030,18 +3864,27 @@ function handleEvent(data){
    SCORE
 ===================================================== */
 
-function addScore(points){
+function addScore(
+    amount
+){
 
-    score+=points;
+    score += amount;
 
-    document.getElementById("myScore")
+
+    document
+        .getElementById("score")
         .textContent=score;
 
-    if(players[playerId]){
 
-        players[playerId].score=score;
+    if(
+        players[playerId]
+    ){
+
+        players[playerId].score=
+            score;
 
     }
+
 
     const data={
 
@@ -3053,10 +3896,13 @@ function addScore(points){
 
     };
 
-    if(hostConnection){
 
-        if(hostConnection.open)
-            hostConnection.send(data);
+    if(
+        hostConnection &&
+        hostConnection.open
+    ){
+
+        hostConnection.send(data);
 
     }else{
 
@@ -3064,7 +3910,65 @@ function addScore(points){
 
     }
 
+
     updatePlayerList();
+
+}
+
+
+/* =====================================================
+   PLAYER RENDER
+===================================================== */
+
+function renderPlayer(
+    player,
+    me=false
+){
+
+    let element =
+        document.getElementById(
+            "player-"+player.id
+        );
+
+
+    if(!element){
+
+        element =
+            document.createElement(
+                "div"
+            );
+
+        element.className="player";
+
+        element.id=
+            "player-"+player.id;
+
+
+        element.innerHTML=
+
+            '<div class="player-character">'+
+            (me ? "🐰" : "🧑")+
+            '</div>'+
+
+            '<div class="player-name">'+
+            escapeHTML(
+                player.name
+            )+
+            '</div>';
+
+
+        document
+            .getElementById("players")
+            .appendChild(element);
+
+    }
+
+
+    element.style.left=
+        player.x+"%";
+
+    element.style.top=
+        player.y+"%";
 
 }
 
@@ -3082,54 +3986,147 @@ function updatePlayerList(){
 
     list.innerHTML="";
 
-    Object.values(players)
+
+    const all =
+        Object.values(players)
         .sort(
-            (a,b)=>
-                (b.score||0) -
-                (a.score||0)
-        )
-        .forEach((p,index)=>{
+            function(a,b){
+
+                return (
+                    (b.score||0) -
+                    (a.score||0)
+                );
+
+            }
+        );
+
+
+    if(all.length===0){
+
+        list.innerHTML=
+            '<div class="player-row">'+
+            '🌙 คุณอยู่คนเดียว'+
+            '</div>';
+
+        return;
+
+    }
+
+
+    all.forEach(
+        function(player,index){
 
             const row =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            row.className="player-row";
+            row.className=
+                "player-row";
 
-            row.innerHTML=`
 
-                <div class="mini-avatar">
-                    ${index===0 ? "👑" : "🧑"}
-                </div>
+            row.innerHTML=
 
-                <div style="flex:1;">
-                    ${escapeHTML(p.name)}
-                    <br>
-                    <span style="color:#ffd86b;">
-                        🌕 ${p.score||0}
-                    </span>
-                </div>
+                '<div class="mini-avatar">'+
+                (
+                    index===0
+                    ? "👑"
+                    : "🧑"
+                )+
+                '</div>'+
 
-            `;
+                '<div style="flex:1;">'+
+                escapeHTML(
+                    player.name
+                )+
+                '<br>'+
+                '<span style="color:#ffd86b;">'+
+                '🌕 '+
+                (player.score||0)+
+                '</span>'+
+                '</div>';
+
 
             list.appendChild(row);
 
-        });
+        }
+    );
 
 }
 
 
-function updateOnlineCount(){
+/* =====================================================
+   ONLINE COUNT
+===================================================== */
 
-    let count =
+function updateOnline(){
+
+    let count=
         Object.keys(players).length;
 
     if(count<1)
         count=1;
 
-    document.getElementById(
-        "onlineCount"
-    ).textContent =
-        "● "+count+" ออนไลน์";
+
+    document
+        .getElementById("online")
+        .textContent=
+        "● "+
+        count+
+        " ออนไลน์";
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function showModal(
+    icon,
+    title,
+    text
+){
+
+    document
+        .getElementById("modalIcon")
+        .textContent=icon;
+
+    document
+        .getElementById("modalTitle")
+        .textContent=title;
+
+    document
+        .getElementById("modalText")
+        .textContent=text;
+
+    document
+        .getElementById("modal")
+        .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("modal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   HELP
+===================================================== */
+
+function openHelp(){
+
+    showModal(
+        "🌙",
+        "วิธีเล่น",
+        "ใช้ WASD หรือปุ่มลูกศรเพื่อเดิน • กด 🏮 เพื่อปล่อยโคม • กด 🥮 เพื่อกินขนม • กด 🌕 เพื่อชมจันทร์ • ใช้ Chat คุยกับเพื่อน • ส่งรหัสห้องให้เพื่อนเพื่อเล่นด้วยกัน"
+    );
 
 }
 
@@ -3138,77 +4135,138 @@ function updateOnlineCount(){
    TOAST
 ===================================================== */
 
-let toastTimer;
+let toastTimer=null;
 
-function showToast(text){
+function showToast(
+    message
+){
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
-    toast.textContent=text;
 
-    toast.classList.add("show");
+    toast.textContent=
+        message;
 
-    clearTimeout(toastTimer);
 
-    toastTimer=setTimeout(
-        ()=>{
-            toast.classList.remove("show");
-        },
-        2200
+    toast.classList.add(
+        "show"
     );
 
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer=
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2300
+        );
+
 }
 
 
 /* =====================================================
-   HTML ESCAPE
+   STATUS
 ===================================================== */
 
-function escapeHTML(text){
+function setStatus(
+    text
+){
 
-    return String(text)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    document
+        .getElementById(
+            "connectionStatus"
+        )
+        .textContent=text;
 
 }
 
 
 /* =====================================================
-   CLICK SOUND
+   ESCAPE HTML
 ===================================================== */
 
-document.addEventListener(
-    "click",
-    e=>{
+function escapeHTML(
+    value
+){
 
-        if(
-            e.target.tagName==="BUTTON" ||
-            e.target.classList.contains("object")
-        ){
+    return String(value)
 
-            beep(420,.04);
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   ROOM INPUT
+===================================================== */
+
+document
+    .getElementById("roomInput")
+    .addEventListener(
+        "input",
+        function(){
+
+            this.value=
+                this.value
+                .toUpperCase()
+                .replace(
+                    /[^A-Z0-9]/g,
+                    ""
+                )
+                .substring(0,6);
 
         }
-
-    }
-);
+    );
 
 
 /* =====================================================
-   INITIAL NAME
+   ENTER START
 ===================================================== */
 
 document
     .getElementById("nameInput")
     .addEventListener(
         "keydown",
-        e=>{
+        function(e){
 
-            if(e.key==="Enter"){
+            if(
+                e.key==="Enter"
+            ){
 
                 createRoom();
 
@@ -3219,22 +4277,41 @@ document
 
 
 /* =====================================================
-   PERIODIC PLAYER SYNC
+   CLOSE MODAL ON BACKGROUND
 ===================================================== */
 
-setInterval(()=>{
+document
+    .getElementById("modal")
+    .addEventListener(
+        "click",
+        function(e){
 
-    if(
-        !peer ||
-        !roomId ||
-        document.getElementById("startScreen")
-            .style.display!=="none"
-    )
-        return;
+            if(
+                e.target===this
+            ){
 
-    updateOnlineCount();
+                closeModal();
 
-},2000);
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   PREVENT CONTEXT MENU
+===================================================== */
+
+document
+    .getElementById("game")
+    .addEventListener(
+        "contextmenu",
+        function(e){
+
+            e.preventDefault();
+
+        }
+    );
 
 </script>
 
