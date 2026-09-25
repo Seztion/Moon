@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moonlit Jade Rabbits - เทศกาลไหว้พระจันทร์ออนไลน์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; background: #0b0f19; overflow: hidden; }
+        canvas { touch-action: none; background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%); }
+    </style>
+</head>
+<body class="text-white h-screen flex flex-col justify-between select-none">
+
+    <header class="bg-indigo-950/80 backdrop-blur-md border-b border-indigo-800/50 px-4 py-3 flex justify-between items-center z-10 shadow-lg">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl animate-bounce">🌕</span>
+            <div>
+                <h1 class="font-bold text-lg text-amber-300 tracking-wide">มหกรรมไหว้พระจันทร์ออนไลน์</h1>
+                <p class="text-xs text-indigo-300">กระต่ายหยกเก็บขนมมงคลร่วมกัน</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="bg-indigo-900/60 border border-indigo-700/60 px-3 py-1.5 rounded-full text-xs flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="player-count" class="font-medium">กำลังเชื่อมต่อผู้เล่น...</span>
+            </div>
+            <button onclick="toggleInstructions()" class="bg-amber-500 hover:bg-amber-400 text-indigo-950 px-3 py-1.5 rounded-full text-xs font-bold transition shadow">วิธีการเล่น</button>
+        </div>
+    </header>
+
+    <main class="flex-1 relative flex items-center justify-center overflow-hidden">
+        <canvas id="gameCanvas" class="w-full h-full shadow-2xl cursor-crosshair"></canvas>
+        
+        <!-- Floating Scoreboard / HUD -->
+        <div class="absolute top-4 left-4 bg-slate-900/80 backdrop-blur border border-slate-700/60 p-3 rounded-2xl shadow-xl pointer-events-none max-w-xs">
+            <h3 class="text-xs font-bold text-amber-400 mb-1 uppercase tracking-wider">กระดานผู้นำ (Live Score)</h3>
+            <div id="leaderboard" class="space-y-1 text-xs">
+                <div class="text-slate-400 italic">กำลังโหลดรายชื่อ...</div>
+            </div>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div id="instructionsModal" class="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-slate-900 border border-indigo-500/40 max-w-md w-full p-6 rounded-3xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-amber-300 flex items-center space-x-2">
+                        <span>🏮</span><span>กติกาและวิธีเล่น</span>
+                    </h2>
+                    <button onclick="toggleInstructions()" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+                </div>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์! คุณและเพื่อนๆ ทุกคนทั่วโลกจะได้รับบทเป็น **กระต่ายหยก** วิ่งเก็บบนสวรรค์ร่วมกัน:
+                </p>
+                <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside bg-indigo-950/50 p-3 rounded-xl border border-indigo-900">
+                    <li><strong class="text-amber-400">วิธีเคลื่อนที่:</strong> ใช้ปุ่มลูกศร (← ↑ ↓ →) หรือปุ่ม WASD บนคีย์บอร์ด</li>
+                    <li><strong class="text-amber-400">สำหรับมือถือ:</strong> แตะและลากนิ้วบนหน้าจอเกมเพื่อบังคับทิศทางกระต่าย</li>
+                    <li><strong class="text-amber-400">เป้าหมาย:</strong> วิ่งเก็บขนมไหว้พระจันทร์และโคมไฟวิเศษเพื่อสะสมแต้มแชร์กับทุกคนในเวลาจริง</li>
+                </ul>
+                <button onclick="toggleInstructions()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-indigo-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg">
+                    ลุยกันเลย! 🐇
+                </button>
+            </div>
+        </div>
+
+        <!-- Name Input Overlay on First Load -->
+        <div id="nameModal" class="absolute inset-0 bg-indigo-950/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
+            <div class="bg-slate-900 border border-amber-500/30 max-w-sm w-full p-6 rounded-3xl shadow-2xl text-center space-y-5">
+                <div class="text-5xl animate-bounce">🐰</div>
+                <div>
+                    <h2 class="text-xl font-bold text-amber-300">เข้าร่วมเทศกาลไหว้พระจันทร์</h2>
+                    <p class="text-xs text-slate-400 mt-1">กรอกชื่อตัวละครกระต่ายของคุณเพื่อเริ่มเล่นกับเพื่อนๆ</p>
+                </div>
+                <input type="text" id="usernameInput" maxlength="12" placeholder="เช่น กระต่ายน้อยจันทรา" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-center text-white focus:outline-none focus:border-amber-400">
+                <button onclick="joinGame()" class="w-full bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold py-3 rounded-xl text-sm transition shadow-lg tracking-wide">
+                    เข้าสู่เทศกาล 🌕
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-indigo-950/80 text-center py-2 text-xs text-indigo-400 border-t border-indigo-900/50">
+        สุขสันต์วันเทศกาลไหว้พระจันทร์ • สร้างด้วยพลังแห่ง GitHub Pages & Firebase Realtime
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Setup Variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'mid-autumn-rabbit-game-v1';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            // ค่าเริ่มต้นสำรองเพื่อให้รันเทสได้ (คุณสามารถเปลี่ยนเป็น Firebase Project ของคุณเองทีหลังได้เช่นกัน)
+            apiKey: "AIzaSyDummyKeyForGitHubPagesTemplate",
+            authDomain: "projectId.firebaseapp.com",
+            projectId: "mid-autumn-game",
+            storageBucket: "mid-autumn-game.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123:web:abc"
+        };
+
+        let db, auth, currentUser;
+        let myPlayerId = 'player_' + Math.random().toString(36.substring(2, 9));
+        let myName = "กระต่ายหยก";
+        let myX = window.innerWidth / 2;
+        let myY = window.innerHeight / 2;
+        let myScore = 0;
+        let colorTheme = ['#f59e0b', '#ec4899', '#3b82f6', '#10b981', '#8b5cf6'][Math.floor(Math.random() * 5)];
+        
+        let playersData = {};
+        let itemsData = {};
+        let isJoined = false;
+
+        // Initialize Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            async function initAuth() {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    currentUser = auth.currentUser;
+                    if (currentUser) {
+                        myPlayerId = currentUser.uid;
+                    }
+                    startSync();
+                } catch (e) {
+                    console.log("Auth fallback mode active", e);
+                    startSync();
+                }
+            }
+            initAuth();
+        } catch (err) {
+            console.log("Running in offline/local mock mode due to config");
+        }
+
+        window.joinGame = function() {
+            const input = document.getElementById('usernameInput');
+            if (input.value.trim()) {
+                myName = input.value.trim().substring(0, 12);
+            }
+            document.getElementById('nameModal').classList.add('hidden');
+            isJoined = true;
+            
+            // Generate initial items if none exist
+            checkAndSpawnItems();
+        }
+
+        window.toggleInstructions = function() {
+            const modal = document.getElementById('instructionsModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Canvas Setup
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 100;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Keyboard & Touch tracking
+        const keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, s: false, a: false, d: false };
+        window.addEventListener('keydown', (e) => { if (keys.hasOwnProperty(e.key) || keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { if (keys.hasOwnProperty(e.key) || keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = false; });
+
+        let touchTarget = null;
+        canvas.addEventListener('pointerdown', (e) => {
+            touchTarget = { x: e.clientX, y: e.clientY - 50 };
+        });
+        canvas.addEventListener('pointermove', (e) => {
+            if (touchTarget) {
+                touchTarget = { x: e.clientX, y: e.clientY - 50 };
+            }
+        });
+        canvas.addEventListener('pointerup', () => { touchTarget = null; });
+
+        // Firestore Realtime Sync Loop
+        function startSync() {
+            if (!db) return;
+
+            // Sync Players
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'players'), (snapshot) => {
+                playersData = {};
+                let count = 0;
+                let lbHTML = '';
+                let leaderboardArr = [];
+
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    playersData[docSnap.id] = data;
+                    count++;
+                    leaderboardArr.push(data);
+                });
+
+                document.getElementById('player-count').innerText = `${count} ผู้เล่นออนไลน์`;
+
+                // Sort Leaderboard
+                leaderboardArr.sort((a, b) => b.score - a.score);
+                leaderboardArr.slice(0, 5).forEach((p, idx) => {
+                    const badge = idx === 0 ? '👑' : `#${idx+1}`;
+                    lbHTML += `<div class="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+                        <span class="truncate pr-2">${badge} <span style="color:${p.color}">${p.name}</span></span>
+                        <span class="font-bold text-amber-400">${p.score} แต้ม</span>
+                    </div>`;
+                });
+                document.getElementById('leaderboard').innerHTML = lbHTML || '<div class="text-slate-400">ยังไม่มีผู้เล่น</div>';
+            }, (err) => console.log(err));
+
+            // Sync Items (Mooncakes)
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'items'), (snapshot) => {
+                itemsData = {};
+                snapshot.forEach(docSnap => {
+                    itemsData[docSnap.id] = docSnap.data();
+                });
+            }, (err) => console.log(err));
+        }
+
+        async function checkAndSpawnItems() {
+            if (!db) return;
+            try {
+                const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'items'));
+                if (snap.empty) {
+                    // Spawn 5 initial mooncakes
+                    for (let i = 0; i < 5; i++) {
+                        const id = 'mooncake_' + i;
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'items', id), {
+                            x: Math.random() * (window.innerWidth - 100) + 50,
+                            y: Math.random() * (window.innerHeight - 150) + 50,
+                            type: Math.random() > 0.3 ? 'mooncake' : 'lantern'
+                        });
+                    }
+                }
+            } catch (e) { console.log("Spawn error", e); }
+        }
+
+        // Game Loop
+        function update() {
+            if (!isJoined) return;
+
+            const speed = 4.5;
+            if (keys['arrowup'] || keys['w']) myY -= speed;
+            if (keys['arrowdown'] || keys['s']) myY += speed;
+            if (keys['arrowleft'] || keys['a']) myX -= speed;
+            if (keys['arrowright'] || keys['d']) myX += speed;
+
+            if (touchTarget) {
+                const dx = touchTarget.x - myX;
+                const dy = touchTarget.y - myY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist > 2) {
+                    myX += (dx / dist) * speed;
+                    myY += (dy / dist) * speed;
+                }
+            }
+
+            // Boundary checks
+            myX = Math.max(30, Math.min(window.innerWidth - 30, myX));
+            myY = Math.max(30, Math.min(window.innerHeight - 130, myY));
+
+            // Send my position to Firestore (throttled naturally by requestAnimationFrame / interval)
+            if (db && currentUser) {
+                setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', myPlayerId), {
+                    id: myPlayerId,
+                    name: myName,
+                    x: Math.round(myX),
+                    y: Math.round(myY),
+                    score: myScore,
+                    color: colorTheme,
+                    lastActive: Date.now()
+                }, { merge: true }).catch(e => {});
+
+                // Check item collision
+                for (const [id, item] of Object.entries(itemsData)) {
+                    const dist = Math.hypot(myX - item.x, myY - item.y);
+                    if (dist < 35) {
+                        myScore += item.type === 'mooncake' ? 10 : 25;
+                        // Respawn item randomly
+                        setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'items', id), {
+                            x: Math.random() * (window.innerWidth - 100) + 50,
+                            y: Math.random() * (window.innerHeight - 150) + 50,
+                            type: Math.random() > 0.3 ? 'mooncake' : 'lantern'
+                        });
+                    }
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Full Moon background aesthetic
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, (canvas.height / 2) + 30, 180, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.04)';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.08)';
+            ctx.stroke();
+            ctx.restore();
+
+            // Draw Items (Mooncakes & Lanterns)
+            for (const [id, item] of Object.entries(itemsData)) {
+                ctx.save();
+                ctx.font = '28px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(item.type === 'mooncake' ? '🥮' : '🏮', item.x, item.y);
+                ctx.restore();
+            }
+
+            // Draw Other Players & Myself
+            const allPlayers = { ...playersData };
+            if (isJoined) {
+                allPlayers[myPlayerId] = { name: myName, x: myX, y: myY, score: myScore, color: colorTheme };
+            }
+
+            for (const [id, p] of Object.entries(allPlayers)) {
+                ctx.save();
+                // Rabbit / Bunny Avatar
+                ctx.font = '36px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🐇', p.x, p.y);
+
+                // Name Tag & Score Badge
+                ctx.font = 'bold 11px Prompt, sans-serif';
+                ctx.fillStyle = p.color || '#fbbf24';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${p.name} (${p.score})`, p.x, p.y - 26);
+                ctx.restore();
+            }
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>
