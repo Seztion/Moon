@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>พิธีทำขนมไหว้พระจันทร์ & ประดิษฐ์โคมประทีปสวรรค์ 🥮🏮🌕</title>
+    <title>พิธีทำขนมไหว้พระจันทร์ & โคมประทีปสวรรค์ออนไลน์ 🥮🏮🌕</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Prompt, Sarabun, Noto Serif Thai -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -29,8 +30,6 @@
                         midnight: '#03050E',
                         deepblue: '#0B1026',
                         mystic: '#190E38',
-                        vermilion: '#E74C3C',
-                        jade: '#1ABC9C'
                     },
                     fontFamily: {
                         prompt: ['Prompt', 'sans-serif'],
@@ -56,12 +55,10 @@
             overflow-x: hidden;
         }
 
-        /* Celestial Radiant Glow */
         .moon-glow {
             box-shadow: 0 0 120px 45px rgba(255, 215, 0, 0.45), inset 0 0 50px rgba(255, 255, 255, 0.95);
         }
 
-        /* Glassmorphic Base Panels */
         .glass-card {
             background: rgba(11, 16, 38, 0.88);
             backdrop-filter: blur(20px);
@@ -76,7 +73,6 @@
             border: 1px solid rgba(255, 215, 0, 0.28);
         }
 
-        /* Upgraded Workshop Environments */
         .mooncake-kitchen-bg {
             background: 
                 radial-gradient(circle at 50% 30%, rgba(255, 170, 0, 0.22) 0%, rgba(40, 20, 10, 0.75) 50%, rgba(11, 16, 38, 0.95) 90%),
@@ -93,7 +89,6 @@
             box-shadow: inset 0 0 40px rgba(168, 85, 247, 0.2), 0 12px 35px rgba(0, 0, 0, 0.7);
         }
 
-        /* Floating Gentle Movement */
         @keyframes floatGentle {
             0% { transform: translateY(0px) rotate(-1.5deg); }
             50% { transform: translateY(-12px) rotate(1.5deg); }
@@ -103,7 +98,6 @@
             animation: floatGentle 4.2s ease-in-out infinite;
         }
 
-        /* Shimmering Text Effect */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -116,7 +110,6 @@
             animation: shimmer 3.5s linear infinite;
         }
 
-        /* Active Selected Button Styling */
         .option-btn {
             transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -127,20 +120,6 @@
             transform: translateY(-2px) scale(1.02);
         }
 
-        /* Custom Mobile Scrollbars */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(11, 16, 38, 0.6);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FFD700;
-            border-radius: 4px;
-        }
-
-        /* Active Oven Fire Glow Animation */
         @keyframes ovenGlow {
             0%, 100% { box-shadow: inset 0 0 25px #ff3300, 0 0 30px #ff4400; }
             50% { box-shadow: inset 0 0 60px #ff7700, 0 0 50px #ffaa00; }
@@ -152,10 +131,8 @@
 </head>
 <body class="flex flex-col min-h-screen relative select-none">
 
-    <!-- Ambient Stars & Flashing Particles Canvas -->
     <canvas id="starCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-    <!-- Header Navigation Bar -->
     <header class="relative z-10 py-3 px-4 md:px-6 border-b border-gold/20 flex justify-between items-center bg-midnight/85 backdrop-blur-md sticky top-0">
         <div class="flex items-center space-x-2.5">
             <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-gold-dark via-gold to-yellow-200 flex items-center justify-center text-midnight font-bold text-lg shadow-lg">
@@ -163,9 +140,9 @@
             </div>
             <div>
                 <h1 class="text-sm md:text-lg font-bold shimmer-text">
-                    พิธีทำขนมไหว้พระจันทร์ & โคมประทีปสวรรค์
+                    พิธีทำขนมไหว้พระจันทร์ & โคมประทีปออนไลน์
                 </h1>
-                <p class="text-[10px] md:text-xs text-amber-200/70 font-sarabun">Mid-Autumn Celestial Ritual</p>
+                <p class="text-[10px] md:text-xs text-amber-200/70 font-sarabun">Mid-Autumn Celestial Ritual (Online)</p>
             </div>
         </div>
 
@@ -179,7 +156,6 @@
         </div>
     </header>
 
-    <!-- SCREEN 1: COVER SCREEN -->
     <div id="startScreen" class="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 text-center">
         <div class="relative mb-6">
             <div class="w-48 h-48 md:w-60 md:h-60 rounded-full bg-gradient-to-tr from-amber-100 via-yellow-200 to-amber-400 moon-glow flex items-center justify-center relative">
@@ -194,7 +170,7 @@
             พิธีทำขนมไหว้พระจันทร์ & ประดิษฐ์โคมประทีป
         </h1>
         <p class="text-xs md:text-sm text-amber-100/80 font-sarabun max-w-md mb-6 leading-relaxed">
-            รังสรรค์ขนมไหว้พระจันทร์สูตรสวรรค์ 5 ขั้นตอน ประดิดประดอยโคมลอยอธิษฐาน 5 ขั้นตอน พร้อมจุดประทีปส่งคำขอพรขึ้นสู่ฟ้าราตรี
+            รังสรรค์ขนมไหว้พระจันทร์และโคมลอยประทีปอธิษฐาน เพื่อปล่อยขึ้นสู่ฟ้าราตรีร่วมกับผู้เล่นออนไลน์ทั่วโลก!
         </p>
 
         <div class="flex flex-col space-y-3 w-full max-w-xs">
@@ -208,7 +184,7 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: STORY INTRO NOVEL -->
+    <!-- SCREEN 2: STORY INTRO -->
     <div id="storyIntroScreen" class="relative z-20 flex-1 container mx-auto px-4 py-6 max-w-lg flex flex-col items-center justify-center hidden">
         <div class="glass-card w-full rounded-3xl p-5 md:p-6 border border-gold/40 flex flex-col items-center text-center relative">
             <button onclick="skipToSection1()" class="absolute top-4 right-4 text-xs text-amber-200/60 hover:text-gold font-sarabun">
@@ -219,12 +195,8 @@
                 👸🏻✨
             </div>
 
-            <h2 id="introSpeaker" class="text-sm font-bold text-gold mb-1">
-                เทพธิดาฉางเอ๋อร์
-            </h2>
-            <p id="introRole" class="text-[10px] text-amber-200/60 font-sarabun mb-3">
-                กษัตรีย์ผู้คุ้มครองดวงจันทร์
-            </p>
+            <h2 id="introSpeaker" class="text-sm font-bold text-gold mb-1">เทพธิดาฉางเอ๋อร์</h2>
+            <p id="introRole" class="text-[10px] text-amber-200/60 font-sarabun mb-3">กษัตรีย์ผู้คุ้มครองดวงจันทร์</p>
 
             <div class="w-full min-h-[95px] p-4 rounded-2xl bg-slate-950/80 border border-gold/20 mb-5 flex items-center justify-center">
                 <p id="introText" class="text-xs md:text-sm text-amber-100 font-sarabun leading-relaxed">
@@ -238,10 +210,7 @@
         </div>
     </div>
 
-    <!-- SCREEN 3: MOONCAKE WORKSHOP (5 STEPS) -->
     <main id="section1Screen" class="relative z-10 flex-1 container mx-auto px-3 sm:px-4 py-4 max-w-lg md:max-w-4xl flex flex-col items-center justify-center hidden">
-
-        <!-- Mooncake Steps Indicator -->
         <div class="w-full mb-3">
             <div class="flex justify-between items-center max-w-sm mx-auto relative px-2">
                 <div class="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-0.5 bg-slate-800 -z-10"></div>
@@ -259,21 +228,16 @@
         </div>
 
         <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
-            <!-- Mooncake Canvas Workbench -->
             <div class="md:col-span-5 glass-card mooncake-kitchen-bg rounded-2xl p-4 flex flex-col items-center justify-center min-h-[240px] md:min-h-[320px] relative overflow-hidden">
                 <div class="w-40 h-40 md:w-52 md:h-52 rounded-full bg-gradient-to-tr from-amber-100 via-amber-200 to-yellow-300 moon-glow absolute flex items-center justify-center opacity-20 -z-10"></div>
-                
                 <canvas id="mooncakeCanvas" width="230" height="230" class="drop-shadow-2xl z-10 transition-transform duration-300 hover:scale-105"></canvas>
-                
                 <div id="mooncakeStatusTag" class="mt-3 px-3 py-1 rounded-full text-[11px] font-sarabun glass-pill text-amber-200 border border-gold/30 text-center">
                     กำลังนวดจัดเตรียมวัตถุดิบ...
                 </div>
             </div>
 
-            <!-- Mooncake Controls Panel -->
             <div class="md:col-span-7 glass-card rounded-2xl p-4 md:p-5 flex flex-col justify-between min-h-[310px]">
                 <div id="s1ControlsContent" class="flex-1"></div>
-
                 <div class="flex justify-between items-center mt-4 pt-3 border-t border-gold/15">
                     <button id="s1PrevBtn" onclick="prevS1Step()" class="px-4 py-2 rounded-xl bg-slate-900/80 border border-gold/30 hover:border-gold text-gold text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>
                         <i class="fas fa-chevron-left mr-1.5"></i> ย้อนกลับ
@@ -286,37 +250,26 @@
         </div>
     </main>
 
-    <!-- SCREEN 4: MID NARRATIVE TRANSITION -->
     <div id="storyMidScreen" class="relative z-20 flex-1 container mx-auto px-4 py-6 max-w-lg flex flex-col items-center justify-center hidden">
         <div class="glass-card w-full rounded-3xl p-5 md:p-6 border border-gold/40 flex flex-col items-center text-center relative">
-            
             <div class="w-20 h-20 rounded-full bg-slate-900 border-2 border-gold/50 flex items-center justify-center text-4xl mb-3 shadow-lg animate-bounce">
                 🐇🌕
             </div>
-
-            <h2 class="text-sm font-bold text-gold mb-1">
-                กระต่ายหยกยวนเย่ว์
-            </h2>
-            <p class="text-[10px] text-amber-200/60 font-sarabun mb-3">
-                ผู้บดยาสวรรค์ประจำดวงจันทร์
-            </p>
-
+            <h2 class="text-sm font-bold text-gold mb-1">กระต่ายหยกยวนเย่ว์</h2>
+            <p class="text-[10px] text-amber-200/60 font-sarabun mb-3">ผู้บดยาสวรรค์ประจำดวงจันทร์</p>
             <div class="w-full min-h-[95px] p-4 rounded-2xl bg-slate-950/80 border border-gold/20 mb-5 flex items-center justify-center">
                 <p class="text-xs md:text-sm text-amber-100 font-sarabun leading-relaxed">
                     "ขนมไหว้พระจันทร์ชิ้นมงคลของท่านช่างหอมหวลยิ่งนัก! บัดนี้ ย้ายไปยังโรงประดิษฐ์โคมประทีป 5 ขั้นตอน เพื่อจุดไฟส่องทางคำขอพรขึ้นสู่สวรรค์กันเถิด!"
                 </p>
             </div>
-
             <button onclick="goToSection2()" class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-yellow-300 text-midnight font-bold text-xs shadow-md hover:brightness-110 transition-all">
                 เข้าสู่โรงประดิษฐ์โคมลอย ➔
             </button>
         </div>
     </div>
 
-    <!-- SCREEN 5: LANTERN WORKSHOP (5 STEPS) -->
+    <!-- SECTION 2: LANTERN WORKSHOP -->
     <main id="section2Screen" class="relative z-10 flex-1 container mx-auto px-3 sm:px-4 py-4 max-w-lg md:max-w-4xl flex flex-col items-center justify-center hidden">
-
-        <!-- Lantern Steps Indicator -->
         <div class="w-full mb-3">
             <div class="flex justify-between items-center max-w-sm mx-auto relative px-2">
                 <div class="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-0.5 bg-slate-800 -z-10"></div>
@@ -334,21 +287,16 @@
         </div>
 
         <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
-            <!-- Lantern Canvas Workbench -->
             <div class="md:col-span-5 glass-card lantern-garden-bg rounded-2xl p-4 flex flex-col items-center justify-center min-h-[240px] md:min-h-[320px] relative overflow-hidden">
                 <div class="w-40 h-40 md:w-52 md:h-52 rounded-full bg-gradient-to-tr from-amber-100 via-amber-200 to-yellow-300 moon-glow absolute flex items-center justify-center opacity-20 -z-10"></div>
-                
                 <canvas id="lanternCanvas" width="230" height="250" class="drop-shadow-2xl z-10 transition-transform duration-300 hover:scale-105"></canvas>
-                
                 <div id="lanternStatusTag" class="mt-3 px-3 py-1 rounded-full text-[11px] font-sarabun glass-pill text-amber-200 border border-gold/30 text-center">
                     กำลังขึ้นโครงโครงโคมประทีป...
                 </div>
             </div>
 
-            <!-- Lantern Controls Panel -->
             <div class="md:col-span-7 glass-card rounded-2xl p-4 md:p-5 flex flex-col justify-between min-h-[310px]">
                 <div id="s2ControlsContent" class="flex-1"></div>
-
                 <div class="flex justify-between items-center mt-4 pt-3 border-t border-gold/15">
                     <button id="s2PrevBtn" onclick="prevS2Step()" class="px-4 py-2 rounded-xl bg-slate-900/80 border border-gold/30 hover:border-gold text-gold text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>
                         <i class="fas fa-chevron-left mr-1.5"></i> ย้อนกลับ
@@ -361,14 +309,12 @@
         </div>
     </main>
 
-    <!-- SCREEN 6: DEITY WISH CEREMONY -->
     <main id="section3Screen" class="relative z-10 flex-1 container mx-auto px-3 sm:px-4 py-4 max-w-lg md:max-w-2xl flex flex-col items-center justify-center hidden">
         <div class="glass-card w-full rounded-3xl p-5 md:p-6 border border-gold/40 flex flex-col items-center">
-            
             <h2 class="text-sm md:text-base font-bold text-gold mb-1 text-center shimmer-text">
                 ส่วนที่ 3: จารึกคำอ้อนวอนถวายแด่เทพเจ้า
             </h2>
-            <p class="text-[11px] text-amber-200/70 font-sarabun mb-4 text-center">เลือกองค์เทพสวรรค์พร้อมเขียนพรเพื่อติดไปกับโคมประทีป</p>
+            <p class="text-[11px] text-amber-200/70 font-sarabun mb-4 text-center">เลือกองค์เทพสวรรค์พร้อมเขียนพรเพื่อปล่อยโคมร่วมกับผู้เล่นออนไลน์</p>
 
             <p class="text-xs text-amber-200/80 mb-1.5 font-sarabun w-full">1. เลือกองค์เทพถวายอธิษฐาน:</p>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3.5 w-full">
@@ -392,52 +338,39 @@
 
             <p class="text-xs text-amber-200/80 mb-1 font-sarabun w-full">2. ข้อความคำอ้อนวอนสุดเก๋:</p>
             <div class="flex space-x-1.5 overflow-x-auto pb-2 mb-3 w-full">
-                <button onclick="applyWishTemplate(0)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">
-                    💬 ชีวิตไบรท์ปัง
-                </button>
-                <button onclick="applyWishTemplate(1)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">
-                    💬 สมพงษ์ด้ายแดง
-                </button>
-                <button onclick="applyWishTemplate(2)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">
-                    💬 เงินทองไหลมา
-                </button>
-                <button onclick="applyWishTemplate(3)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">
-                    💬 คนรักคนเมตตา
-                </button>
+                <button onclick="applyWishTemplate(0)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">💬 ชีวิตไบรท์ปัง</button>
+                <button onclick="applyWishTemplate(1)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">💬 สมพงษ์ด้ายแดง</button>
+                <button onclick="applyWishTemplate(2)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">💬 เงินทองไหลมา</button>
+                <button onclick="applyWishTemplate(3)" class="text-[10px] font-sarabun px-2.5 py-1 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 text-amber-100 whitespace-nowrap flex-shrink-0">💬 คนรักคนเมตตา</button>
             </div>
 
             <div class="space-y-2 w-full mb-5">
-                <input id="userNameInput" oninput="updateUserName(this.value)" type="text" placeholder="ชื่อ/นามแฝงของคุณ (ตัวอย่าง: น้องดาว)" class="w-full p-2.5 rounded-xl bg-slate-950/90 border border-gold/30 text-amber-100 font-sarabun text-xs focus:outline-none focus:border-gold placeholder-amber-200/30" />
+                <input id="userNameInput" oninput="updateUserName(this.value)" type="text" placeholder="ชื่อ/นามแฝงของคุณ (จำเป็น - เช่น คุณดาว)" class="w-full p-2.5 rounded-xl bg-slate-950/90 border border-gold/30 text-amber-100 font-sarabun text-xs focus:outline-none focus:border-gold placeholder-amber-200/30" />
                 <textarea id="wishInput" oninput="updateWishText(this.value)" rows="3" class="w-full p-2.5 rounded-xl bg-slate-950/90 border border-gold/30 text-amber-100 font-sarabun text-xs focus:outline-none focus:border-gold placeholder-amber-200/30 resize-none" placeholder="พิมพ์คำอ้อนวอนขอพรของคุณ..."></textarea>
             </div>
 
             <button onclick="triggerSkyRelease()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-gold-dark via-gold to-yellow-300 text-midnight font-bold text-xs shadow-xl hover:brightness-110 transition-all flex items-center justify-center space-x-2">
-                <span>ปล่อยโคมประทีปขึ้นสู่ท้องฟ้าราตรี 🏮✨</span>
+                <span>ปล่อยโคมประทีปขึ้นสู่ฟ้าราตรีออนไลน์ 🏮✨</span>
             </button>
-
         </div>
     </main>
 
-    <!-- SCREEN 7: INFINITE SHARED FLOATING SKY & DUAL CARD SHOWCASE -->
     <div id="skyShowcaseScreen" class="fixed inset-0 z-40 bg-midnight hidden">
-        <!-- Interactive Sky Canvas Background -->
         <canvas id="skyLoopCanvas" class="absolute inset-0 z-0 w-full h-full cursor-pointer"></canvas>
 
-        <!-- Sky Floating Wish Inspection Tooltip -->
         <div id="skyTooltip" class="absolute z-20 pointer-events-none opacity-0 transition-opacity duration-300 glass-card p-3 rounded-2xl border border-gold/40 text-center max-w-xs transform -translate-x-1/2 -translate-y-full mb-3">
             <p id="tooltipDeity" class="text-[10px] text-amber-300 font-bold mb-0.5">👸🏻✨ เทพธิดาฉางเอ๋อร์</p>
             <p id="tooltipWish" class="text-xs text-amber-100 font-sarabun italic">"ขอให้พรนี้สัมฤทธิผล"</p>
             <p id="tooltipAuthor" class="text-[10px] text-gold mt-1">— โดย คุณดารา —</p>
         </div>
 
-        <!-- Sky Overlay Top Controls -->
         <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-auto">
             <div class="glass-pill px-3 py-1.5 rounded-full text-[11px] text-amber-200 font-sarabun flex items-center space-x-2 border border-gold/30">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>ฟ้าราตรีอธิษฐานร่วมกัน (แตะที่โคมเพื่ออ่านคำขอพร)</span>
+                <span id="onlineCounterText">โคมไฟจากผู้เล่นออนไลน์: 0 ดวง</span>
             </div>
             <button onclick="openCardModal()" class="py-2 px-3.5 rounded-xl bg-gradient-to-r from-gold-dark to-gold text-midnight font-bold text-xs shadow-lg hover:brightness-110 transition-all flex items-center">
-                <i class="fas fa-id-card mr-1.5"></i> ดูการ์ดมงคลของคุณ
+                <i class="fas fa-id-card mr-1.5"></i> ดูการ์ดมงคล
             </button>
         </div>
     </div>
@@ -445,25 +378,20 @@
     <!-- GRAND DUAL CARD SHOWCASE MODAL -->
     <div id="grandShowcaseModal" class="fixed inset-0 bg-midnight/95 backdrop-blur-xl z-50 flex items-center justify-center p-3 hidden opacity-0 transition-opacity duration-500">
         <div class="glass-card max-w-md w-full rounded-3xl border border-gold/40 p-4 md:p-5 flex flex-col items-center relative overflow-y-auto max-h-[94vh]">
-            
             <button onclick="closeModal()" class="absolute top-3 right-3 text-amber-200/60 hover:text-gold text-xl p-2">
                 <i class="fas fa-times"></i>
             </button>
 
             <div class="text-center mb-2">
                 <span class="text-2xl inline-block animate-bounce">🏮✨🥮</span>
-                <h2 class="text-lg md:text-xl font-bold shimmer-text">
-                    การ์ดเครื่องถวาย & โคมประทีปสวรรค์
-                </h2>
+                <h2 class="text-lg md:text-xl font-bold shimmer-text">การ์ดเครื่องถวาย & โคมประทีปสวรรค์</h2>
                 <p class="text-[11px] text-amber-200/70 font-sarabun">ขอพรสมปรารถนา สดใสเปล่งประกายดั่งแสงจันทร์วันเพ็ญ</p>
             </div>
 
-            <!-- Final Poster Canvas Box -->
             <div class="relative p-2 rounded-2xl border border-gold/30 bg-slate-950/90 shadow-2xl my-2 flex flex-col items-center justify-center">
                 <canvas id="grandCardCanvas" width="360" height="490" class="rounded-xl shadow-md max-w-full h-auto"></canvas>
             </div>
 
-            <!-- Download and Share Actions -->
             <div class="grid grid-cols-2 gap-2.5 w-full mt-2">
                 <button onclick="downloadGrandCardImage()" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-yellow-300 text-midnight font-bold text-xs shadow-md hover:brightness-110 transition-all flex items-center justify-center">
                     <i class="fas fa-download mr-1.5"></i> บันทึกรูปการ์ด (HD PNG)
@@ -475,9 +403,83 @@
             <button onclick="resetGame()" class="w-full mt-2 py-2 text-amber-200/70 hover:text-amber-100 text-[11px] font-sarabun transition-all">
                 🥮 ทำขนมไหว้พระจันทร์ & โคมลอยชิ้นใหม่
             </button>
-
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration setup
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'mid-autumn-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "",
+            authDomain: "demo.firebaseapp.com",
+            projectId: "demo-project",
+            storageBucket: "demo.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:123456"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // RULE 3: Auth before Queries
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+            } catch (err) {
+                console.error("Auth initialization error:", err);
+            }
+        }
+        initAuth();
+
+        // Global Game State and Multi-player Lantern Collection
+        window.onlineLanternsList = [];
+
+        // RULE 1: Strict Paths -> /artifacts/{appId}/public/data/lanterns
+        const publicLanternsRef = collection(db, 'artifacts', appId, 'public', 'data', 'lanterns');
+
+        // Real-time Firestore Listener for Real Online Players
+        onSnapshot(publicLanternsRef, (snapshot) => {
+            const list = [];
+            snapshot.forEach((doc) => {
+                list.push({ id: doc.id, ...doc.data() });
+            });
+            window.onlineLanternsList = list;
+            const counter = document.getElementById('onlineCounterText');
+            if (counter) {
+                counter.innerText = `โคมไฟจากผู้เล่นออนไลน์: ${list.length} ดวง`;
+            }
+        }, (error) => {
+            console.error("Error fetching online lanterns:", error);
+        });
+
+        window.submitLanternToFirebase = async function(lanternPayload) {
+            if (!currentUser) await initAuth();
+            if (!currentUser) return;
+
+            try {
+                await addDoc(publicLanternsRef, {
+                    ...lanternPayload,
+                    userId: currentUser.uid,
+                    createdAt: Date.now()
+                });
+            } catch (e) {
+                console.error("Error pushing lantern to Firestore:", e);
+            }
+        };
+    </script>
 
     <script>
         const INTRO_SLIDES = [
@@ -502,7 +504,6 @@
         ];
 
         const GAME_DATA = {
-            /* Mooncake Workshop 5 Steps Data */
             crusts: [
                 { id: 'traditional', name: 'โบราณทองคำ', color: '#D48E28', desc: 'อบจนเหลืองทอง หอมน้ำเชื่อมดั้งเดิม' },
                 { id: 'snowskin', name: 'หิมะพาสเทล', color: '#F3E8EE', desc: 'แป้งสดเนื้อนุ่ม เย็นสดชื่น ละมุน' },
@@ -531,8 +532,6 @@
                 { id: 'cinnamon', name: 'ผงอบเชยประกายทอง', symbol: '🍂', color: '#D2691E' },
                 { id: 'rose_petals', name: 'กลีบกุหลาบอบแห้ง', symbol: '🌹', color: '#FF69B4' }
             ],
-
-            /* Celestial Lantern Workshop 5 Steps Data */
             lanternShapes: [
                 { id: 'hexagon', name: 'หกเหลี่ยมวังหลวง', desc: 'คลาสสิกสไตล์พระราชวังจีน' },
                 { id: 'lotus', name: 'ดอกบัวคาถา', desc: 'อ่อนหวาน บริสุทธิ์ ศักดิ์สิทธิ์' },
@@ -561,8 +560,6 @@
                 { id: 'firefly', name: 'ลูกปัดหิ่งห้อย', symbol: '🔮', color: '#38BDF8' },
                 { id: 'cherry_charm', name: 'จี้ดอกซากุระ', symbol: '🌸', color: '#F472B6' }
             ],
-
-            /* Deities and Wishes */
             deities: [
                 { id: 'change', name: 'เทพธิดาฉางเอ๋อร์', avatar: '👸🏻✨', domain: 'เสน่ห์ ความงดงาม สดใส', bg: ['#4C1D95', '#1E1B4B'] },
                 { id: 'yuelao', name: 'ผู้เฒ่าจันทรา', avatar: '👴🏻🧵', domain: 'ผูกด้ายแดง สมพงษ์เนื้อคู่', bg: ['#881337', '#4C0519'] },
@@ -577,11 +574,10 @@
             ]
         };
 
-        // State Machine Object
         let state = {
             introSlide: 0,
-            s1Step: 1, // 1: Crust, 2: Filling, 3: Mold, 4: Topping, 5: Bake
-            s2Step: 1, // 1: Shape, 2: Silk Color, 3: Stamp, 4: Tassel, 5: Ignite
+            s1Step: 1,
+            s2Step: 1,
             crust: GAME_DATA.crusts[0],
             filling: GAME_DATA.fillings[0],
             mold: GAME_DATA.molds[0],
@@ -598,11 +594,7 @@
             soundOn: true
         };
 
-        /* ----------------------------------------------------
-           2. WEB AUDIO SYNTHESIZER
-        ---------------------------------------------------- */
         let audioCtx = null;
-
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -613,7 +605,6 @@
             if (!state.soundOn) return;
             initAudio();
             if (audioCtx.state === 'suspended') audioCtx.resume();
-
             const now = audioCtx.currentTime;
 
             if (type === 'click') {
@@ -661,9 +652,6 @@
             document.getElementById('audioIcon').className = state.soundOn ? 'fas fa-music text-gold' : 'fas fa-volume-xmark text-slate-500';
         }
 
-        /* ----------------------------------------------------
-           3. WORKSHOP CANVAS RENDERING ENGINE
-        ---------------------------------------------------- */
         function drawMooncakeCanvas(canvasId, radius = 75) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
@@ -676,11 +664,8 @@
             ctx.clearRect(0, 0, w, h);
 
             let baseColor = state.crust.color;
-            if (state.cookProgress > 0) {
-                baseColor = adjustColorForBaking(baseColor, state.cookProgress);
-            }
+            if (state.cookProgress > 0) baseColor = adjustColorForBaking(baseColor, state.cookProgress);
 
-            // Shadow
             ctx.save();
             ctx.beginPath();
             ctx.ellipse(cx, cy + radius * 0.7, radius * 0.85, radius * 0.25, 0, 0, Math.PI * 2);
@@ -689,7 +674,6 @@
             ctx.fill();
             ctx.restore();
 
-            // Fluted Scalloped Outer Edges
             const numPetals = 16;
             ctx.save();
             ctx.beginPath();
@@ -714,14 +698,12 @@
             ctx.strokeStyle = darkenColor(baseColor, 40);
             ctx.stroke();
 
-            // Inner Ring
             ctx.beginPath();
             ctx.arc(cx, cy, radius * 0.65, 0, Math.PI * 2);
             ctx.strokeStyle = lightenColor(baseColor, 25);
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Mold Symbol Stamp
             if (state.mold) {
                 ctx.fillStyle = darkenColor(baseColor, 35);
                 ctx.font = `bold ${radius * 0.5}px Prompt, sans-serif`;
@@ -730,7 +712,6 @@
                 ctx.fillText(state.mold.symbol, cx, cy + 2);
             }
 
-            // Topping Accents
             if (state.topping) {
                 ctx.fillStyle = state.topping.color;
                 ctx.font = '16px Prompt, sans-serif';
@@ -750,10 +731,8 @@
             const cy = h / 2 - 10;
 
             ctx.clearRect(0, 0, w, h);
-
             const colors = state.lanternColor;
 
-            // Inner Flame Glow
             if (state.lanternLit) {
                 ctx.save();
                 ctx.beginPath();
@@ -768,7 +747,6 @@
             ctx.lineWidth = 2.5;
             ctx.strokeStyle = colors.stroke;
 
-            // Lantern Paper Fill
             const grad = ctx.createLinearGradient(cx - 50, cy - 60, cx + 50, cy + 60);
             grad.addColorStop(0, colors.bgGrad[0]);
             grad.addColorStop(1, colors.bgGrad[1]);
@@ -795,7 +773,6 @@
                 ctx.arc(cx, cy + 5, 48, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
-
                 ctx.beginPath();
                 ctx.ellipse(cx - 20, cy - 55, 12, 28, -Math.PI / 12, 0, Math.PI * 2);
                 ctx.ellipse(cx + 20, cy - 55, 12, 28, Math.PI / 12, 0, Math.PI * 2);
@@ -817,12 +794,10 @@
                 ctx.stroke();
             }
 
-            // Top Cap & Hanging Tassel
             ctx.fillStyle = '#FFD700';
             ctx.fillRect(cx - 20, cy - 65, 40, 10);
             ctx.fillRect(cx - 20, cy + 55, 40, 10);
 
-            // Tassel Ornament
             if (state.lanternTassel) {
                 ctx.fillStyle = state.lanternTassel.color;
                 ctx.font = '22px Prompt, sans-serif';
@@ -830,7 +805,6 @@
                 ctx.fillText(state.lanternTassel.symbol, cx, cy + 85);
             }
 
-            // Center Stamp Symbol
             if (state.lanternStamp) {
                 ctx.fillStyle = '#FFE066';
                 ctx.font = '26px Prompt, sans-serif';
@@ -839,7 +813,6 @@
                 ctx.fillText(state.lanternStamp.symbol, cx, cy);
             }
 
-            // Candle Flame
             if (state.lanternLit) {
                 ctx.beginPath();
                 ctx.arc(cx, cy + 15, 10, 0, Math.PI * 2);
@@ -873,9 +846,6 @@
             return darkenColor(hex, factor * 50);
         }
 
-        /* ----------------------------------------------------
-           4. FLOW CONTROL & SCREEN TRANSITIONS
-        ---------------------------------------------------- */
         function startStoryIntro() {
             playSound('click');
             document.getElementById('startScreen').classList.add('hidden');
@@ -920,9 +890,7 @@
                 "โรงทำขนม: ขั้นที่ 5/5 - พิธีอบขนมมงคล"
             ];
             document.getElementById('s1HeaderTitle').innerText = headers[state.s1Step - 1];
-
-            const progress = ((state.s1Step - 1) / 4) * 100;
-            document.getElementById('mooncakeProgressLine').style.width = `${progress}%`;
+            document.getElementById('mooncakeProgressLine').style.width = `${((state.s1Step - 1) / 4) * 100}%`;
 
             document.querySelectorAll('.s1-dot').forEach((el) => {
                 const s = parseInt(el.getAttribute('data-s1'));
@@ -938,12 +906,7 @@
             });
 
             document.getElementById('s1PrevBtn').disabled = state.s1Step === 1;
-
-            if (state.s1Step === 5) {
-                document.getElementById('s1NextBtn').innerHTML = 'ทำโคมลอยต่อ ➔';
-            } else {
-                document.getElementById('s1NextBtn').innerHTML = 'ถัดไป <i class="fas fa-chevron-right ml-1.5"></i>';
-            }
+            document.getElementById('s1NextBtn').innerHTML = state.s1Step === 5 ? 'ทำโคมลอยต่อ ➔' : 'ถัดไป <i class="fas fa-chevron-right ml-1.5"></i>';
 
             renderS1Controls();
             drawMooncakeCanvas('mooncakeCanvas', 75);
@@ -1015,9 +978,7 @@
                 statusTag.innerText = `ระดับการอบสุก: ${state.cookProgress}%`;
                 container.innerHTML = `
                     <div class="text-center py-2">
-                        <p class="text-xs text-amber-200/80 mb-3 font-sarabun">
-                            กดปุ่มเสกไฟเตาอบเพื่ออบขนมให้สุกหอมเปล่งประกาย:
-                        </p>
+                        <p class="text-xs text-amber-200/80 mb-3 font-sarabun">กดปุ่มเสกไฟเตาอบเพื่ออบขนมให้สุกหอมเปล่งประกาย:</p>
                         <div id="ovenContainer" class="p-4 rounded-2xl bg-slate-900/80 border border-gold/30 flex flex-col items-center justify-center ${state.cookProgress > 0 ? 'baking-active' : ''}">
                             <div class="text-3xl mb-1 animate-bounce">🔥✨</div>
                             <div class="w-full bg-slate-950 rounded-full h-3 my-2 border border-gold/30 p-0.5 overflow-hidden">
@@ -1032,29 +993,10 @@
             }
         }
 
-        function selectCrust(id) {
-            state.crust = GAME_DATA.crusts.find(c => c.id === id);
-            playSound('click');
-            updateS1UI();
-        }
-
-        function selectFilling(id) {
-            state.filling = GAME_DATA.fillings.find(f => f.id === id);
-            playSound('click');
-            updateS1UI();
-        }
-
-        function selectMold(id) {
-            state.mold = GAME_DATA.molds.find(m => m.id === id);
-            playSound('click');
-            updateS1UI();
-        }
-
-        function selectTopping(id) {
-            state.topping = GAME_DATA.toppings.find(t => t.id === id);
-            playSound('click');
-            updateS1UI();
-        }
+        function selectCrust(id) { state.crust = GAME_DATA.crusts.find(c => c.id === id); playSound('click'); updateS1UI(); }
+        function selectFilling(id) { state.filling = GAME_DATA.fillings.find(f => f.id === id); playSound('click'); updateS1UI(); }
+        function selectMold(id) { state.mold = GAME_DATA.molds.find(m => m.id === id); playSound('click'); updateS1UI(); }
+        function selectTopping(id) { state.topping = GAME_DATA.toppings.find(t => t.id === id); playSound('click'); updateS1UI(); }
 
         function startBakingMagic() {
             if (state.cookProgress >= 100) return;
@@ -1082,13 +1024,7 @@
             }
         }
 
-        function prevS1Step() {
-            if (state.s1Step > 1) {
-                state.s1Step--;
-                playSound('click');
-                updateS1UI();
-            }
-        }
+        function prevS1Step() { if (state.s1Step > 1) { state.s1Step--; playSound('click'); updateS1UI(); } }
 
         function goToSection2() {
             playSound('click');
@@ -1107,9 +1043,7 @@
                 "โรงโคมประทีป: ขั้นที่ 5/5 - พิธีจุดดวงไฟประทีป"
             ];
             document.getElementById('s2HeaderTitle').innerText = headers[state.s2Step - 1];
-
-            const progress = ((state.s2Step - 1) / 4) * 100;
-            document.getElementById('lanternProgressLine').style.width = `${progress}%`;
+            document.getElementById('lanternProgressLine').style.width = `${((state.s2Step - 1) / 4) * 100}%`;
 
             document.querySelectorAll('.s2-dot').forEach((el) => {
                 const s = parseInt(el.getAttribute('data-s2'));
@@ -1125,12 +1059,7 @@
             });
 
             document.getElementById('s2PrevBtn').disabled = state.s2Step === 1;
-
-            if (state.s2Step === 5) {
-                document.getElementById('s2NextBtn').innerHTML = 'ขอพรเทพเจ้า ➔';
-            } else {
-                document.getElementById('s2NextBtn').innerHTML = 'ถัดไป <i class="fas fa-chevron-right ml-1.5"></i>';
-            }
+            document.getElementById('s2NextBtn').innerHTML = state.s2Step === 5 ? 'ขอพรเทพเจ้า ➔' : 'ถัดไป <i class="fas fa-chevron-right ml-1.5"></i>';
 
             renderS2Controls();
             drawLanternCanvas('lanternCanvas');
@@ -1205,35 +1134,11 @@
             }
         }
 
-        function selectLanternShape(id) {
-            state.lanternShape = GAME_DATA.lanternShapes.find(s => s.id === id);
-            playSound('click');
-            updateS2UI();
-        }
-
-        function selectLanternColor(id) {
-            state.lanternColor = GAME_DATA.lanternColors.find(c => c.id === id);
-            playSound('click');
-            updateS2UI();
-        }
-
-        function selectLanternStamp(id) {
-            state.lanternStamp = GAME_DATA.lanternStamps.find(st => st.id === id);
-            playSound('click');
-            updateS2UI();
-        }
-
-        function selectLanternTassel(id) {
-            state.lanternTassel = GAME_DATA.lanternTassels.find(ts => ts.id === id);
-            playSound('click');
-            updateS2UI();
-        }
-
-        function toggleLightLantern() {
-            state.lanternLit = true;
-            playSound('light');
-            updateS2UI();
-        }
+        function selectLanternShape(id) { state.lanternShape = GAME_DATA.lanternShapes.find(s => s.id === id); playSound('click'); updateS2UI(); }
+        function selectLanternColor(id) { state.lanternColor = GAME_DATA.lanternColors.find(c => c.id === id); playSound('click'); updateS2UI(); }
+        function selectLanternStamp(id) { state.lanternStamp = GAME_DATA.lanternStamps.find(st => st.id === id); playSound('click'); updateS2UI(); }
+        function selectLanternTassel(id) { state.lanternTassel = GAME_DATA.lanternTassels.find(ts => ts.id === id); playSound('click'); updateS2UI(); }
+        function toggleLightLantern() { state.lanternLit = true; playSound('light'); updateS2UI(); }
 
         function nextS2Step() {
             if (state.s2Step < 5) {
@@ -1247,23 +1152,14 @@
             }
         }
 
-        function prevS2Step() {
-            if (state.s2Step > 1) {
-                state.s2Step--;
-                playSound('click');
-                updateS2UI();
-            }
-        }
+        function prevS2Step() { if (state.s2Step > 1) { state.s2Step--; playSound('click'); updateS2UI(); } }
 
         function selectDeity(id) {
             state.deity = GAME_DATA.deities.find(d => d.id === id);
             playSound('click');
             document.querySelectorAll('.deity-btn').forEach(btn => {
-                if (btn.getAttribute('data-deity') === id) {
-                    btn.classList.add('selected');
-                } else {
-                    btn.classList.remove('selected');
-                }
+                if (btn.getAttribute('data-deity') === id) btn.classList.add('selected');
+                else btn.classList.remove('selected');
             });
         }
 
@@ -1273,19 +1169,42 @@
             playSound('click');
         }
 
-        function updateUserName(val) {
-            state.userName = val;
-        }
+        function updateUserName(val) { state.userName = val; }
+        function updateWishText(val) { state.wishText = val; }
 
-        function updateWishText(val) {
-            state.wishText = val;
-        }
-
-        /* ----------------------------------------------------
-           5. INFINITE FLOATING SKY ENGINE & TOOLTIP
-        ---------------------------------------------------- */
-        let skyLanterns = [];
         let skyAnimationId = null;
+
+        function triggerSkyRelease() {
+            const trimmedName = state.userName.trim();
+            if (!trimmedName) {
+                alert("กรุณากรอกชื่อหรือนามแฝงของคุณเพื่อร่วมปล่อยโคมออนไลน์");
+                return;
+            }
+
+            playSound('bless');
+            if (window.confetti) {
+                confetti({ particleCount: 90, spread: 100, origin: { y: 0.6 } });
+            }
+
+            // Push Real Online Player's Lantern Payload to Firebase Firestore
+            const payload = {
+                author: trimmedName,
+                wish: state.wishText,
+                deity: `${state.deity.avatar} ${state.deity.name}`,
+                color: state.lanternColor.main,
+                stamp: state.lanternStamp.symbol,
+            };
+
+            if (window.submitLanternToFirebase) {
+                window.submitLanternToFirebase(payload);
+            }
+
+            document.getElementById('section3Screen').classList.add('hidden');
+            document.getElementById('skyShowcaseScreen').classList.remove('hidden');
+
+            initSkyLoop();
+            openCardModal();
+        }
 
         function initSkyLoop() {
             const canvas = document.getElementById('skyLoopCanvas');
@@ -1298,52 +1217,31 @@
             resize();
             window.addEventListener('resize', resize);
 
-            // Clean, realistic Thai player names only
-            const sampleNames = ["คุณดาว", "คุณพลอย", "คุณฟ้า", "คุณเมฆ", "คุณจันทร์", "คุณตะวัน", "คุณภัทร"];
-            const sampleWishes = [
-                "ขอให้ปีนี้การงานราบรื่นร่ำรวยเงินทอง ✨",
-                "ขอให้ได้พบรักแท้สมพงษ์ด้ายแดง 💖",
-                "ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง 🌸",
-                "ขอให้สมปรารถนาทุกประการ เฮงๆ ปังๆ 🪙"
-            ];
+            let renderLanterns = [];
 
-            skyLanterns = Array.from({ length: 22 }, () => {
-                const colorObj = GAME_DATA.lanternColors[Math.floor(Math.random() * GAME_DATA.lanternColors.length)];
-                const deityObj = GAME_DATA.deities[Math.floor(Math.random() * GAME_DATA.deities.length)];
-                return {
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: 20 + Math.random() * 22,
-                    speed: 0.4 + Math.random() * 0.7,
-                    wobble: Math.random() * Math.PI * 2,
-                    color: colorObj.main,
-                    stamp: GAME_DATA.lanternStamps[Math.floor(Math.random() * GAME_DATA.lanternStamps.length)].symbol,
-                    deity: `${deityObj.avatar} ${deityObj.name}`,
-                    author: sampleNames[Math.floor(Math.random() * sampleNames.length)],
-                    wish: sampleWishes[Math.floor(Math.random() * sampleWishes.length)],
-                    isUser: false
-                };
-            });
-
-            // Add player's own lantern
-            skyLanterns.push({
-                x: canvas.width / 2,
-                y: canvas.height * 0.75,
-                size: 38,
-                speed: 0.5,
-                wobble: 0,
-                color: state.lanternColor.main,
-                stamp: state.lanternStamp.symbol,
-                deity: `${state.deity.avatar} ${state.deity.name}`,
-                author: state.userName ? `คุณ${state.userName}` : 'คุณ (ผู้สร้าง)',
-                wish: state.wishText,
-                isUser: true
-            });
+            function updateLanterns() {
+                const onlineData = window.onlineLanternsList || [];
+                renderLanterns = onlineData.map((d, index) => {
+                    return {
+                        x: (index * 80 + 50) % (canvas.width || 360),
+                        y: ((index * 120) % (canvas.height || 600)) + 100,
+                        size: 32,
+                        speed: 0.4 + (index % 3) * 0.2,
+                        wobble: index,
+                        color: d.color || '#B91C1C',
+                        stamp: d.stamp || '福',
+                        deity: d.deity || '👸🏻✨ เทพธิดาฉางเอ๋อร์',
+                        author: d.author || 'ผู้เล่นออนไลน์',
+                        wish: d.wish || 'ขอให้สมปรารถนา'
+                    };
+                });
+            }
 
             function renderSky() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                updateLanterns();
 
-                // Giant Moon Backdrop
+                // Moon Backdrop
                 const cx = canvas.width / 2;
                 const cy = 120;
                 ctx.save();
@@ -1355,8 +1253,8 @@
                 ctx.fill();
                 ctx.restore();
 
-                // Draw floating lanterns
-                skyLanterns.forEach(l => {
+                // Draw Real Player Lanterns
+                renderLanterns.forEach(l => {
                     l.y -= l.speed;
                     l.wobble += 0.02;
                     const curX = l.x + Math.sin(l.wobble) * 12;
@@ -1366,30 +1264,20 @@
                         l.x = Math.random() * canvas.width;
                     }
 
-                    // Draw Lantern Body
                     ctx.save();
                     ctx.fillStyle = l.color;
-                    ctx.shadowColor = l.isUser ? '#FFD700' : 'rgba(255, 215, 0, 0.6)';
-                    ctx.shadowBlur = l.isUser ? 25 : 12;
+                    ctx.shadowColor = '#FFD700';
+                    ctx.shadowBlur = 18;
 
                     ctx.beginPath();
                     ctx.roundRect(curX - l.size * 0.6, l.y - l.size * 0.7, l.size * 1.2, l.size * 1.4, 6);
                     ctx.fill();
 
-                    // Stamp
                     ctx.fillStyle = '#FFE066';
                     ctx.font = `${l.size * 0.6}px Prompt, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillText(l.stamp, curX, l.y);
-
-                    // User Indicator Ring
-                    if (l.isUser) {
-                        ctx.strokeStyle = '#FFD700';
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(curX - l.size * 0.7, l.y - l.size * 0.8, l.size * 1.4, l.size * 1.6);
-                    }
-
                     ctx.restore();
                 });
 
@@ -1399,14 +1287,14 @@
             if (skyAnimationId) cancelAnimationFrame(skyAnimationId);
             renderSky();
 
-            // Click listener to inspect wishes
+            // Interactive Click Tooltip for Real Online Lanterns
             canvas.onclick = function(e) {
                 const rect = canvas.getBoundingClientRect();
                 const clickX = e.clientX - rect.left;
                 const clickY = e.clientY - rect.top;
 
                 let found = null;
-                skyLanterns.forEach(l => {
+                renderLanterns.forEach(l => {
                     const curX = l.x + Math.sin(l.wobble) * 12;
                     const dist = Math.hypot(clickX - curX, clickY - l.y);
                     if (dist < l.size * 1.5) found = l;
@@ -1417,7 +1305,7 @@
                     playSound('click');
                     document.getElementById('tooltipDeity').innerText = `ถวายแด่: ${found.deity}`;
                     document.getElementById('tooltipWish').innerText = `"${found.wish}"`;
-                    document.getElementById('tooltipAuthor').innerText = `— โดย ${found.author} —`;
+                    document.getElementById('tooltipAuthor').innerText = `— โดย คุณ${found.author} —`;
                     
                     tooltip.style.left = `${e.clientX}px`;
                     tooltip.style.top = `${e.clientY - 10}px`;
@@ -1426,23 +1314,6 @@
                     tooltip.classList.add('opacity-0');
                 }
             };
-        }
-
-        function triggerSkyRelease() {
-            playSound('bless');
-            if (window.confetti) {
-                confetti({
-                    particleCount: 90,
-                    spread: 100,
-                    origin: { y: 0.6 }
-                });
-            }
-
-            document.getElementById('section3Screen').classList.add('hidden');
-            document.getElementById('skyShowcaseScreen').classList.remove('hidden');
-
-            initSkyLoop();
-            openCardModal();
         }
 
         function openCardModal() {
@@ -1459,23 +1330,18 @@
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
-        /* ----------------------------------------------------
-           6. GRAND DUAL CARD CANVAS COMPOSER
-        ---------------------------------------------------- */
         function renderGrandCard() {
             const canvas = document.getElementById('grandCardCanvas');
             const ctx = canvas.getContext('2d');
             const w = canvas.width;
             const h = canvas.height;
 
-            // Background Linear Gradient
             const grad = ctx.createLinearGradient(0, 0, 0, h);
             grad.addColorStop(0, state.deity.bg[0]);
             grad.addColorStop(1, state.deity.bg[1]);
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, w, h);
 
-            // Gold Border
             ctx.strokeStyle = '#FFD700';
             ctx.lineWidth = 6;
             ctx.strokeRect(10, 10, w - 20, h - 20);
@@ -1484,7 +1350,6 @@
             ctx.lineWidth = 1.5;
             ctx.strokeRect(16, 16, w - 32, h - 32);
 
-            // Full Moon Background Halo
             ctx.save();
             ctx.beginPath();
             ctx.arc(w / 2, 110, 68, 0, Math.PI * 2);
@@ -1493,21 +1358,18 @@
             ctx.fill();
             ctx.restore();
 
-            // Render Mooncake (Left Side)
             const mooncakeTemp = document.createElement('canvas');
             mooncakeTemp.width = 150;
             mooncakeTemp.height = 150;
             drawMooncakeOnContext(mooncakeTemp.getContext('2d'), 75, 75, 52);
             ctx.drawImage(mooncakeTemp, 25, 45);
 
-            // Render Lantern (Right Side)
             const lanternTemp = document.createElement('canvas');
             lanternTemp.width = 150;
             lanternTemp.height = 170;
             drawLanternOnContext(lanternTemp.getContext('2d'), 75, 75);
             ctx.drawImage(lanternTemp, w - 175, 35);
 
-            // Deity Header Text
             ctx.fillStyle = '#FFE066';
             ctx.font = 'bold 15px Prompt, sans-serif';
             ctx.textAlign = 'center';
@@ -1517,13 +1379,11 @@
             ctx.font = '10px Sarabun, sans-serif';
             ctx.fillText(`(${state.deity.domain})`, w / 2, 232);
 
-            // Wish Box Frame
             ctx.fillStyle = 'rgba(11, 16, 38, 0.88)';
             ctx.fillRect(28, 248, w - 56, 140);
             ctx.strokeStyle = 'rgba(255, 215, 0, 0.35)';
             ctx.strokeRect(28, 248, w - 56, 140);
 
-            // Wish Text Wrapping
             ctx.fillStyle = '#FFFFFF';
             ctx.font = '12px Sarabun, sans-serif';
             ctx.textAlign = 'center';
@@ -1553,7 +1413,6 @@
                 ctx.fillText(`— โดย คุณ${state.userName} —`, w / 2, 368);
             }
 
-            // Bottom Footer Text
             ctx.fillStyle = '#FFD700';
             ctx.font = 'bold 11px Prompt, sans-serif';
             ctx.fillText(`🥮 ${state.crust.name} • 🏮 ${state.lanternShape.name}`, w / 2, h - 45);
@@ -1660,7 +1519,6 @@
             area.select();
             document.execCommand('copy');
             document.body.removeChild(area);
-
             alert('คัดลอกข้อความแชร์เรียบร้อยแล้ว!');
         }
 
@@ -1723,6 +1581,37 @@
             initStarsCanvas();
             selectDeity('change');
         };
+
+        // Attach global function references
+        window.startStoryIntro = startStoryIntro;
+        window.nextIntroSlide = nextIntroSlide;
+        window.skipToSection1 = skipToSection1;
+        window.prevS1Step = prevS1Step;
+        window.nextS1Step = nextS1Step;
+        window.selectCrust = selectCrust;
+        window.selectFilling = selectFilling;
+        window.selectMold = selectMold;
+        window.selectTopping = selectTopping;
+        window.startBakingMagic = startBakingMagic;
+        window.goToSection2 = goToSection2;
+        window.prevS2Step = prevS2Step;
+        window.nextS2Step = nextS2Step;
+        window.selectLanternShape = selectLanternShape;
+        window.selectLanternColor = selectLanternColor;
+        window.selectLanternStamp = selectLanternStamp;
+        window.selectLanternTassel = selectLanternTassel;
+        window.toggleLightLantern = toggleLightLantern;
+        window.selectDeity = selectDeity;
+        window.applyWishTemplate = applyWishTemplate;
+        window.updateUserName = updateUserName;
+        window.updateWishText = updateWishText;
+        window.triggerSkyRelease = triggerSkyRelease;
+        window.openCardModal = openCardModal;
+        window.closeModal = closeModal;
+        window.downloadGrandCardImage = downloadGrandCardImage;
+        window.copyShareText = copyShareText;
+        window.resetGame = resetGame;
+        window.toggleAudio = toggleAudio;
     </script>
 </body>
 </html>
