@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moonlit Gathering - เทศกาลชมจันทร์ร่วมกัน</title>
-    <!-- Tailwind CSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Prompt -->
+
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root{
             --night:#020617;
@@ -19,968 +20,5484 @@
             --pink:#f9a8d4;
             --cyan:#67e8f9;
         }
-        *{box-sizing:border-box}
-        body {
+
+        *{
+            box-sizing:border-box;
+        }
+
+        html,
+        body{
+            margin:0;
+            width:100%;
+            height:100%;
+        }
+
+        body{
             font-family:'Prompt',sans-serif;
             background:
-                radial-gradient(circle at 50% 8%, rgba(99,102,241,.22), transparent 24%),
-                radial-gradient(circle at 15% 70%, rgba(124,58,237,.13), transparent 28%),
-                radial-gradient(circle at 88% 62%, rgba(251,191,36,.09), transparent 24%),
+                radial-gradient(
+                    circle at 50% 8%,
+                    rgba(99,102,241,.22),
+                    transparent 24%
+                ),
+                radial-gradient(
+                    circle at 15% 70%,
+                    rgba(124,58,237,.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 62%,
+                    rgba(251,191,36,.09),
+                    transparent 24%
+                ),
                 #020617;
+
             overflow:hidden;
         }
-        canvas { touch-action:none; position:relative; z-index:1; }
-        .custom-scrollbar::-webkit-scrollbar { width:4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background:linear-gradient(#fbbf24,#a78bfa); border-radius:999px; }
-        .glass-panel {
-            background:linear-gradient(145deg,rgba(11,16,43,.88),rgba(16,10,42,.76));
+
+        canvas{
+            touch-action:none;
+            position:relative;
+            z-index:1;
+            display:block;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar{
+            width:4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb{
+            background:linear-gradient(#fbbf24,#a78bfa);
+            border-radius:999px;
+        }
+
+        .glass-panel{
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(11,16,43,.88),
+                    rgba(16,10,42,.76)
+                );
+
             backdrop-filter:blur(22px) saturate(135%);
+
             border:1px solid rgba(167,139,250,.32);
-            box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07);
+
+            box-shadow:
+                0 18px 50px rgba(0,0,0,.55),
+                inset 0 1px 0 rgba(255,255,255,.07);
         }
-        .glow-text { text-shadow:0 0 10px rgba(251,191,36,.8),0 0 28px rgba(251,191,36,.35); }
-        .modal-glow {
-            box-shadow:0 0 0 1px rgba(251,191,36,.12),0 0 55px rgba(124,58,237,.24),0 25px 80px rgba(0,0,0,.65);
+
+        .glow-text{
+            text-shadow:
+                0 0 10px rgba(251,191,36,.8),
+                0 0 28px rgba(251,191,36,.35);
         }
+
+        .modal-glow{
+            box-shadow:
+                0 0 0 1px rgba(251,191,36,.12),
+                0 0 55px rgba(124,58,237,.24),
+                0 25px 80px rgba(0,0,0,.65);
+        }
+
         .moon-decor{
-            position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+            position:absolute;
+            inset:0;
+            pointer-events:none;
+            overflow:hidden;
+            z-index:0;
+
             background:
-                radial-gradient(circle at 50% 16%, rgba(255,244,180,.12) 0 2px, transparent 3px),
-                radial-gradient(circle at 18% 24%, rgba(255,255,255,.75) 0 1px, transparent 2px),
-                radial-gradient(circle at 82% 20%, rgba(255,255,255,.65) 0 1px, transparent 2px);
+                radial-gradient(
+                    circle at 50% 16%,
+                    rgba(255,244,180,.12) 0 2px,
+                    transparent 3px
+                ),
+                radial-gradient(
+                    circle at 18% 24%,
+                    rgba(255,255,255,.75) 0 1px,
+                    transparent 2px
+                ),
+                radial-gradient(
+                    circle at 82% 20%,
+                    rgba(255,255,255,.65) 0 1px,
+                    transparent 2px
+                );
         }
+
         .moon-orb{
-            position:absolute; width:180px; height:180px; right:7%; top:7%;
+            position:absolute;
+            width:180px;
+            height:180px;
+            right:7%;
+            top:7%;
             border-radius:50%;
+
             background:
-                radial-gradient(circle at 34% 28%,rgba(255,255,255,.95) 0 7%,transparent 8%),
-                radial-gradient(circle at 67% 38%,rgba(180,83,9,.12) 0 10%,transparent 11%),
-                radial-gradient(circle at 44% 70%,rgba(180,83,9,.10) 0 13%,transparent 14%),
-                radial-gradient(circle at 50% 50%,#fff7c2 0,#fde68a 56%,#f59e0b 100%);
-            box-shadow:0 0 35px rgba(253,224,71,.55),0 0 100px rgba(253,224,71,.20);
+                radial-gradient(
+                    circle at 34% 28%,
+                    rgba(255,255,255,.95) 0 7%,
+                    transparent 8%
+                ),
+                radial-gradient(
+                    circle at 67% 38%,
+                    rgba(180,83,9,.12) 0 10%,
+                    transparent 11%
+                ),
+                radial-gradient(
+                    circle at 44% 70%,
+                    rgba(180,83,9,.10) 0 13%,
+                    transparent 14%
+                ),
+                radial-gradient(
+                    circle at 50% 50%,
+                    #fff7c2 0,
+                    #fde68a 56%,
+                    #f59e0b 100%
+                );
+
+            box-shadow:
+                0 0 35px rgba(253,224,71,.55),
+                0 0 100px rgba(253,224,71,.20);
+
             opacity:.72;
-            animation:moonFloat 6s ease-in-out infinite;
+
+            animation:
+                moonFloat 6s ease-in-out infinite;
         }
+
         .moon-halo{
-            position:absolute; width:330px;height:330px;right:calc(7% - 75px);top:calc(7% - 75px);
-            border:1px solid rgba(253,224,71,.14);border-radius:50%;
-            box-shadow:0 0 70px rgba(253,224,71,.08) inset;
-            animation:haloPulse 5s ease-in-out infinite;
+            position:absolute;
+            width:330px;
+            height:330px;
+            right:calc(7% - 75px);
+            top:calc(7% - 75px);
+
+            border:1px solid rgba(253,224,71,.14);
+            border-radius:50%;
+
+            box-shadow:
+                0 0 70px rgba(253,224,71,.08) inset;
+
+            animation:
+                haloPulse 5s ease-in-out infinite;
         }
+
         .decor-icon{
-            position:absolute; font-size:clamp(22px,2.5vw,42px); opacity:.28;
-            filter:drop-shadow(0 0 12px rgba(251,191,36,.45));
-            animation:decorFloat 7s ease-in-out infinite;
+            position:absolute;
+            font-size:clamp(22px,2.5vw,42px);
+            opacity:.28;
+
+            filter:
+                drop-shadow(
+                    0 0 12px rgba(251,191,36,.45)
+                );
+
+            animation:
+                decorFloat 7s ease-in-out infinite;
         }
-        .decor-icon:nth-child(3){animation-delay:-2s}
-        .decor-icon:nth-child(4){animation-delay:-4s}
-        .decor-icon:nth-child(5){animation-delay:-1s}
-        .decor-icon:nth-child(6){animation-delay:-5s}
-        .vignette{position:absolute;inset:0;pointer-events:none;z-index:2;
-            background:radial-gradient(circle,transparent 48%,rgba(2,6,23,.22) 75%,rgba(2,6,23,.7) 100%);}
-        @keyframes moonFloat{50%{transform:translateY(-9px) scale(1.015)}}
-        @keyframes haloPulse{50%{transform:scale(1.04);opacity:.7}}
-        @keyframes decorFloat{50%{transform:translateY(-16px) rotate(4deg);opacity:.42}}
-        @media(max-width:700px){.moon-orb{width:110px;height:110px}.moon-halo{width:210px;height:210px;right:calc(7% - 50px);top:calc(7% - 50px)}}
-    
+
+        .decor-icon:nth-child(3){
+            animation-delay:-2s;
+        }
+
+        .decor-icon:nth-child(4){
+            animation-delay:-4s;
+        }
+
+        .decor-icon:nth-child(5){
+            animation-delay:-1s;
+        }
+
+        .decor-icon:nth-child(6){
+            animation-delay:-5s;
+        }
+
+        .vignette{
+            position:absolute;
+            inset:0;
+            pointer-events:none;
+            z-index:2;
+
+            background:
+                radial-gradient(
+                    circle,
+                    transparent 48%,
+                    rgba(2,6,23,.22) 75%,
+                    rgba(2,6,23,.7) 100%
+                );
+        }
+
+        @keyframes moonFloat{
+            50%{
+                transform:
+                    translateY(-9px)
+                    scale(1.015);
+            }
+        }
+
+        @keyframes haloPulse{
+            50%{
+                transform:scale(1.04);
+                opacity:.7;
+            }
+        }
+
+        @keyframes decorFloat{
+            50%{
+                transform:
+                    translateY(-16px)
+                    rotate(4deg);
+
+                opacity:.42;
+            }
+        }
+
+        @media(max-width:700px){
+
+            .moon-orb{
+                width:110px;
+                height:110px;
+            }
+
+            .moon-halo{
+                width:210px;
+                height:210px;
+                right:calc(7% - 50px);
+                top:calc(7% - 50px);
+            }
+        }
+
         .avatar-btn{
             overflow:hidden;
         }
+
         .avatar-btn::before{
             content:"";
-            position:absolute; inset:0;
-            background:radial-gradient(circle at 50% 15%,rgba(253,224,71,.12),transparent 55%);
-            opacity:0; transition:opacity .3s;
-        }
-        .avatar-btn:hover::before{opacity:1}
+            position:absolute;
+            inset:0;
 
+            background:
+                radial-gradient(
+                    circle at 50% 15%,
+                    rgba(253,224,71,.12),
+                    transparent 55%
+                );
+
+            opacity:0;
+            transition:opacity .3s;
+        }
+
+        .avatar-btn:hover::before{
+            opacity:1;
+        }
+
+        .room-title{
+            position:absolute;
+            top:24px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:5;
+
+            pointer-events:none;
+
+            padding:9px 18px;
+
+            border:1px solid rgba(251,191,36,.22);
+            border-radius:999px;
+
+            background:
+                rgba(5,7,25,.55);
+
+            backdrop-filter:blur(12px);
+
+            color:#fde68a;
+
+            font-size:11px;
+            letter-spacing:.18em;
+
+            white-space:nowrap;
+
+            box-shadow:
+                0 10px 35px rgba(0,0,0,.25),
+                0 0 30px rgba(251,191,36,.06);
+        }
+
+        .mode-badge{
+            position:absolute;
+            top:24px;
+            right:24px;
+            z-index:6;
+
+            padding:7px 12px;
+
+            border-radius:999px;
+
+            background:rgba(2,6,23,.68);
+            border:1px solid rgba(103,232,249,.18);
+
+            color:#a5f3fc;
+
+            font-size:9px;
+            letter-spacing:.12em;
+
+            backdrop-filter:blur(12px);
+        }
+
+        .toast{
+            position:absolute;
+            left:50%;
+            bottom:25px;
+            transform:
+                translate(-50%,20px);
+
+            z-index:40;
+
+            opacity:0;
+            pointer-events:none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(30,20,60,.96),
+                    rgba(8,12,35,.96)
+                );
+
+            border:1px solid rgba(251,191,36,.35);
+
+            color:#fde68a;
+
+            padding:11px 18px;
+
+            border-radius:999px;
+
+            font-size:12px;
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,.5),
+                0 0 35px rgba(251,191,36,.08);
+
+            transition:
+                opacity .3s ease,
+                transform .3s ease;
+        }
+
+        .toast.show{
+            opacity:1;
+            transform:
+                translate(-50%,0);
+        }
+
+        .mobile-hint{
+            position:absolute;
+            right:18px;
+            bottom:18px;
+            z-index:7;
+
+            pointer-events:none;
+
+            font-size:9px;
+            color:rgba(255,255,255,.45);
+
+            padding:7px 10px;
+            border-radius:999px;
+
+            background:rgba(2,6,23,.45);
+            border:1px solid rgba(255,255,255,.06);
+
+            backdrop-filter:blur(10px);
+        }
+
+        @media(max-width:800px){
+
+            .room-title{
+                top:15px;
+                font-size:9px;
+                max-width:60vw;
+                overflow:hidden;
+                text-overflow:ellipsis;
+            }
+
+            .mode-badge{
+                display:none;
+            }
+
+            .mobile-hint{
+                display:none;
+            }
+        }
     </style>
 </head>
+
 <body class="text-white h-screen flex flex-col justify-between select-none">
 
-    <!-- Top Navigation Header -->
-    <header class="glass-panel border-b border-indigo-900/50 px-5 py-3.5 flex justify-between items-center z-20">
+    <!-- ================= HEADER ================= -->
+
+    <header
+        class="glass-panel border-b border-indigo-900/50 px-5 py-3.5 flex justify-between items-center z-20">
+
         <div class="flex items-center space-x-3.5">
-            <span class="text-3xl animate-bounce">🌕</span>
+
+            <span class="text-3xl animate-bounce">
+                🌕
+            </span>
+
             <div>
-                <h1 class="font-bold text-sm md:text-base text-amber-300 tracking-wide glow-text">ชมจันทร์ร่วมกัน (Moonlit Gathering)</h1>
-                <p class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-ping"></span>
-                    <span id="current-room-label">กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา • เดินหาเพื่อนและร่วมเทศกาล</span>
+
+                <h1
+                    class="font-bold text-sm md:text-base text-amber-300 tracking-wide glow-text">
+                    ชมจันทร์ร่วมกัน (Moonlit Gathering)
+                </h1>
+
+                <p
+                    class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1.5">
+
+                    <span
+                        class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-ping">
+                    </span>
+
+                    <span id="current-room-label">
+                        กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา • เดินหาเพื่อนและร่วมเทศกาล
+                    </span>
+
                 </p>
+
             </div>
+
         </div>
 
         <div class="flex items-center space-x-3">
-            <!-- Room Switcher Buttons -->
-            <div class="bg-black/35 p-1.5 rounded-2xl border border-violet-400/20 flex space-x-1 shadow-inner backdrop-blur-xl">
-                <button onclick="switchRoom('lobby')" id="btn-room-lobby" class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95">🏮 ลานกิจกรรม</button>
-                <button onclick="switchRoom('pagoda')" id="btn-room-pagoda" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🏛️ หอชมโคมยักษ์</button>
-                <button onclick="switchRoom('minigame')" id="btn-room-minigame" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">🥮 ศึกชิงขนม</button>
+
+            <!-- ROOM SWITCHER -->
+
+            <div
+                class="bg-black/35 p-1.5 rounded-2xl border border-violet-400/20 flex space-x-1 shadow-inner backdrop-blur-xl">
+
+                <button
+                    onclick="switchRoom('lobby')"
+                    id="btn-room-lobby"
+                    class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95">
+
+                    🏮 ลานกิจกรรม
+
+                </button>
+
+                <button
+                    onclick="switchRoom('pagoda')"
+                    id="btn-room-pagoda"
+                    class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
+
+                    🏛️ หอชมโคมยักษ์
+
+                </button>
+
+                <button
+                    onclick="switchRoom('minigame')"
+                    id="btn-room-minigame"
+                    class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
+
+                    🥮 ศึกชิงขนม
+
+                </button>
+
             </div>
 
-            <!-- Online Player Counter -->
-            <div class="hidden sm:flex bg-black/35 border border-violet-400/20 px-3.5 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-lg backdrop-blur-xl">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span id="player-count" class="font-medium text-emerald-300">ผู้เล่นออนไลน์: 0</span>
+            <!-- PLAYER COUNT -->
+
+            <div
+                class="hidden sm:flex bg-black/35 border border-violet-400/20 px-3.5 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-lg backdrop-blur-xl">
+
+                <span
+                    class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse">
+                </span>
+
+                <span
+                    id="player-count"
+                    class="font-medium text-emerald-300">
+
+                    ผู้เล่นออนไลน์: 1
+
+                </span>
+
             </div>
+
         </div>
+
     </header>
 
-    <!-- Main Game Canvas & Overlay Area -->
-    <main class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#020617]">
-        <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
 
-        <!-- HUD Overlays -->
-        <div id="hud-overlay" class="absolute top-4 left-4 z-10 pointer-events-none flex flex-col space-y-3 max-w-xs w-full">
-            <!-- Pagoda Controls (Giant Lantern Room) -->
-            <div id="pagoda-hud" class="glass-panel border-indigo-500/50 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-3">
-                <h3 class="text-xs font-bold text-indigo-200">🏮 ปล่อยโคมอธิษฐานยักษ์ลอยฟ้า</h3>
+    <!-- ================= MAIN ================= -->
+
+    <main
+        class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#020617]">
+
+        <canvas
+            id="gameCanvas"
+            class="w-full h-full cursor-crosshair">
+        </canvas>
+
+
+        <!-- ROOM TITLE -->
+
+        <div
+            id="room-title"
+            class="room-title">
+
+            🏮 MOONLIT GATHERING • ลานกิจกรรม
+
+        </div>
+
+
+        <!-- MODE -->
+
+        <div
+            id="mode-badge"
+            class="mode-badge">
+
+            OFFLINE / DEMO MODE
+
+        </div>
+
+
+        <!-- HUD -->
+
+        <div
+            id="hud-overlay"
+            class="absolute top-4 left-4 z-10 pointer-events-none flex flex-col space-y-3 max-w-xs w-full">
+
+            <!-- PAGODA HUD -->
+
+            <div
+                id="pagoda-hud"
+                class="glass-panel border-indigo-500/50 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-3">
+
+                <h3
+                    class="text-xs font-bold text-indigo-200">
+
+                    🏮 ปล่อยโคมอธิษฐานยักษ์ลอยฟ้า
+
+                </h3>
+
                 <div class="flex space-x-2">
-                    <input type="text" id="wishInput" maxlength="35" placeholder="พิมพ์คำอธิษฐานของคุณ..." class="flex-1 bg-slate-900/90 border border-indigo-500/50 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
-                    <button onclick="releaseLantern()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg active:scale-95">ปล่อย 🌙</button>
+
+                    <input
+                        type="text"
+                        id="wishInput"
+                        maxlength="35"
+                        placeholder="พิมพ์คำอธิษฐานของคุณ..."
+                        class="flex-1 bg-slate-900/90 border border-indigo-500/50 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
+
+                    <button
+                        onclick="releaseLantern()"
+                        class="bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg active:scale-95">
+
+                        ปล่อย 🌙
+
+                    </button>
+
                 </div>
+
             </div>
 
-            <div id="minigame-hud" class="glass-panel border-amber-400/40 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-2 min-w-[250px]">
+
+            <!-- MINIGAME HUD -->
+
+            <div
+                id="minigame-hud"
+                class="glass-panel border-amber-400/40 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-2 min-w-[250px]">
+
                 <div class="flex items-center justify-between gap-4">
+
                     <div class="text-left">
-                        <div class="text-[10px] tracking-[.2em] text-amber-300/70">MOONCAKE RUSH</div>
-                        <h3 class="text-sm font-bold text-amber-100">🥮 ศึกชิงขนมไหว้พระจันทร์</h3>
+
+                        <div
+                            class="text-[10px] tracking-[.2em] text-amber-300/70">
+
+                            MOONCAKE RUSH
+
+                        </div>
+
+                        <h3
+                            class="text-sm font-bold text-amber-100">
+
+                            🥮 ศึกชิงขนมไหว้พระจันทร์
+
+                        </h3>
+
                     </div>
-                    <div class="rounded-2xl px-3 py-2 bg-amber-400/10 border border-amber-300/20">
-                        <div class="text-[9px] text-slate-400">คะแนนฉัน</div>
-                        <div id="my-score" class="text-xl font-black text-amber-300">0</div>
+
+                    <div
+                        class="rounded-2xl px-3 py-2 bg-amber-400/10 border border-amber-300/20">
+
+                        <div
+                            class="text-[9px] text-slate-400">
+
+                            คะแนนฉัน
+
+                        </div>
+
+                        <div
+                            id="my-score"
+                            class="text-xl font-black text-amber-300">
+
+                            0
+
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="text-[10px] text-slate-300/80">เดินเข้าใกล้ 🥮 แล้วกด <b class="text-amber-200">SPACE / คลิก</b> เพื่อแย่งขนมกับเพื่อน!</div>
-                <div id="scoreboard" class="text-left text-[10px] text-slate-300 space-y-1 max-h-24 overflow-y-auto custom-scrollbar"></div>
+
+                <div
+                    class="text-[10px] text-slate-300/80">
+
+                    เดินเข้าใกล้ 🥮 แล้วกด
+                    <b class="text-amber-200">
+                        SPACE / คลิก
+                    </b>
+                    เพื่อแย่งขนมกับเพื่อน!
+
+                </div>
+
+                <div
+                    id="scoreboard"
+                    class="text-left text-[10px] text-slate-300 space-y-1 max-h-24 overflow-y-auto custom-scrollbar">
+
+                </div>
+
             </div>
+
         </div>
 
-        <!-- Collapsible Live Chat Box -->
-        <div class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/70 rounded-3xl flex flex-col overflow-hidden">
-            <div class="bg-indigo-950/90 px-4 py-3 border-b border-indigo-800/50 flex justify-between items-center cursor-pointer hover:bg-indigo-900/60 transition" onclick="toggleChatExpand()">
-                <span class="text-xs font-bold text-amber-300 flex items-center space-x-2">
-                    <span>💬</span><span>แชทสนทนากลุ่ม (Live Chat)</span>
+
+        <!-- ================= CHAT ================= -->
+
+        <div
+            class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/70 rounded-3xl flex flex-col overflow-hidden">
+
+            <div
+                class="bg-indigo-950/90 px-4 py-3 border-b border-indigo-800/50 flex justify-between items-center cursor-pointer hover:bg-indigo-900/60 transition"
+                onclick="toggleChatExpand()">
+
+                <span
+                    class="text-xs font-bold text-amber-300 flex items-center space-x-2">
+
+                    <span>💬</span>
+                    <span>แชทสนทนากลุ่ม</span>
+
                 </span>
-                <span id="chat-toggle-icon" class="text-xs text-indigo-400 font-bold transition transform">▲</span>
+
+                <span
+                    id="chat-toggle-icon"
+                    class="text-xs text-indigo-400 font-bold transition transform">
+
+                    ▲
+
+                </span>
+
             </div>
-            <div id="chat-body" class="flex flex-col h-40 md:h-48 transition-all duration-300">
-                <div id="chat-messages" class="flex-1 p-3.5 overflow-y-auto space-y-2 text-xs custom-scrollbar">
-                    <div class="text-indigo-300/80 italic">✨ ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์ พิมพ์ทักทายเพื่อนๆ ได้เลยครับ...</div>
+
+
+            <div
+                id="chat-body"
+                class="flex flex-col h-40 md:h-48 transition-all duration-300">
+
+                <div
+                    id="chat-messages"
+                    class="flex-1 p-3.5 overflow-y-auto space-y-2 text-xs custom-scrollbar">
+
+                    <div
+                        class="text-indigo-300/80 italic">
+
+                        ✨ ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์
+                        พิมพ์ทักทายเพื่อนๆ ได้เลยครับ...
+
+                    </div>
+
                 </div>
-                <div class="p-2.5 bg-slate-950/95 border-t border-indigo-900/60 flex space-x-2">
-                    <input type="text" id="chatInput" maxlength="90" placeholder="พิมพ์ข้อความสนทนา..." class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner" onkeydown="if(event.key==='Enter') sendChatMessage()">
-                    <button onclick="sendChatMessage()" class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md active:scale-95">ส่ง</button>
+
+                <div
+                    class="p-2.5 bg-slate-950/95 border-t border-indigo-900/60 flex space-x-2">
+
+                    <input
+                        type="text"
+                        id="chatInput"
+                        maxlength="90"
+                        placeholder="พิมพ์ข้อความสนทนา..."
+                        class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner"
+                        onkeydown="if(event.key==='Enter') sendChatMessage()">
+
+                    <button
+                        onclick="sendChatMessage()"
+                        class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md active:scale-95">
+
+                        ส่ง
+
+                    </button>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- CINEMATIC CHARACTER CREATION -->
-        <div id="nameModal" class="absolute inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
-             style="background:
+
+        <!-- MOBILE HINT -->
+
+        <div class="mobile-hint">
+            🖱️ คลิกเพื่อเดิน • WASD / ลูกศร
+        </div>
+
+
+        <!-- TOAST -->
+
+        <div id="toast" class="toast"></div>
+
+
+        <!-- ================= CHARACTER CREATION ================= -->
+
+        <div
+            id="nameModal"
+            class="absolute inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
+            style="
+                background:
                 radial-gradient(circle at 50% 42%, rgba(99,102,241,.20), transparent 30%),
                 radial-gradient(circle at 20% 80%, rgba(236,72,153,.10), transparent 28%),
                 radial-gradient(circle at 82% 18%, rgba(251,191,36,.10), transparent 25%),
-                rgba(2,6,23,.92); backdrop-filter:blur(18px);">
+                rgba(2,6,23,.92);
+                backdrop-filter:blur(18px);
+            ">
 
-            <!-- atmospheric stars -->
             <div class="absolute inset-0 pointer-events-none">
-                <span class="absolute left-[8%] top-[16%] text-xl opacity-70 animate-pulse">✦</span>
-                <span class="absolute left-[18%] top-[70%] text-sm text-amber-200 opacity-60">✧</span>
-                <span class="absolute right-[13%] top-[18%] text-2xl text-amber-200 opacity-70 animate-pulse">✦</span>
-                <span class="absolute right-[20%] bottom-[18%] text-lg opacity-60">✧</span>
-                <span class="absolute left-[31%] top-[11%] text-xs opacity-50">✦</span>
-                <span class="absolute right-[35%] bottom-[12%] text-xs opacity-50">✦</span>
+
+                <span class="absolute left-[8%] top-[16%] text-xl opacity-70 animate-pulse">
+                    ✦
+                </span>
+
+                <span class="absolute left-[18%] top-[70%] text-sm text-amber-200 opacity-60">
+                    ✧
+                </span>
+
+                <span class="absolute right-[13%] top-[18%] text-2xl text-amber-200 opacity-70 animate-pulse">
+                    ✦
+                </span>
+
+                <span class="absolute right-[20%] bottom-[18%] text-lg opacity-60">
+                    ✧
+                </span>
+
+                <span class="absolute left-[31%] top-[11%] text-xs opacity-50">
+                    ✦
+                </span>
+
+                <span class="absolute right-[35%] bottom-[12%] text-xs opacity-50">
+                    ✦
+                </span>
+
             </div>
 
-            <!-- moon behind card -->
-            <div class="absolute top-[5%] right-[7%] w-36 h-36 md:w-52 md:h-52 rounded-full pointer-events-none"
-                 style="background:radial-gradient(circle at 34% 30%,#fffde7 0,#fde68a 58%,#f59e0b 100%);
-                        box-shadow:0 0 45px rgba(253,224,71,.45),0 0 130px rgba(253,224,71,.16);
-                        opacity:.38;"></div>
 
-            <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+            <!-- MOON -->
 
-                <!-- decorative frame -->
-                <div class="absolute -inset-[1px] rounded-[34px] pointer-events-none"
-                     style="background:linear-gradient(135deg,rgba(253,224,71,.65),rgba(167,139,250,.28),rgba(244,114,182,.45),rgba(253,224,71,.55));
-                            filter:blur(.3px);"></div>
+            <div
+                class="absolute top-[5%] right-[7%] w-36 h-36 md:w-52 md:h-52 rounded-full pointer-events-none"
+                style="
+                    background:
+                    radial-gradient(circle at 34% 30%,#fffde7 0,#fde68a 58%,#f59e0b 100%);
+                    box-shadow:
+                    0 0 45px rgba(253,224,71,.45),
+                    0 0 130px rgba(253,224,71,.16);
+                    opacity:.38;
+                ">
+            </div>
 
-                <div class="relative rounded-[32px] overflow-hidden border border-amber-300/20"
-                     style="background:
-                        radial-gradient(circle at 50% 0%,rgba(124,58,237,.22),transparent 35%),
-                        linear-gradient(145deg,rgba(9,12,36,.97),rgba(18,10,43,.97));
-                        box-shadow:0 35px 100px rgba(0,0,0,.75),0 0 80px rgba(124,58,237,.15);">
 
-                    <!-- top ornamental line -->
-                    <div class="h-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent opacity-80"></div>
+            <div
+                class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+
+                <div
+                    class="absolute -inset-[1px] rounded-[34px] pointer-events-none"
+                    style="
+                        background:
+                        linear-gradient(
+                            135deg,
+                            rgba(253,224,71,.65),
+                            rgba(167,139,250,.28),
+                            rgba(244,114,182,.45),
+                            rgba(253,224,71,.55)
+                        );
+                        filter:blur(.3px);
+                    ">
+                </div>
+
+
+                <div
+                    class="relative rounded-[32px] overflow-hidden border border-amber-300/20"
+                    style="
+                        background:
+                        radial-gradient(
+                            circle at 50% 0%,
+                            rgba(124,58,237,.22),
+                            transparent 35%
+                        ),
+                        linear-gradient(
+                            145deg,
+                            rgba(9,12,36,.97),
+                            rgba(18,10,43,.97)
+                        );
+
+                        box-shadow:
+                        0 35px 100px rgba(0,0,0,.75),
+                        0 0 80px rgba(124,58,237,.15);
+                    ">
+
+                    <div
+                        class="h-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent opacity-80">
+                    </div>
+
 
                     <div class="p-6 md:p-10">
 
-                        <!-- title -->
                         <div class="text-center">
+
                             <div class="flex justify-center items-center gap-4 mb-3">
-                                <span class="text-amber-300/60 text-xl">✦</span>
-                                <span class="text-4xl md:text-5xl"
-                                      style="filter:drop-shadow(0 0 16px rgba(253,224,71,.55));">🌕</span>
-                                <span class="text-amber-300/60 text-xl">✦</span>
+
+                                <span class="text-amber-300/60 text-xl">
+                                    ✦
+                                </span>
+
+                                <span
+                                    class="text-4xl md:text-5xl"
+                                    style="
+                                        filter:
+                                        drop-shadow(
+                                            0 0 16px rgba(253,224,71,.55)
+                                        );
+                                    ">
+
+                                    🌕
+                                </span>
+
+                                <span class="text-amber-300/60 text-xl">
+                                    ✦
+                                </span>
+
                             </div>
 
-                            <div class="text-[10px] md:text-xs tracking-[.42em] text-indigo-300/80 uppercase mb-2">
+
+                            <div
+                                class="text-[10px] md:text-xs tracking-[.42em] text-indigo-300/80 uppercase mb-2">
+
                                 MOONLIT GATHERING
+
                             </div>
 
-                            <h2 class="text-2xl md:text-4xl font-bold text-amber-200"
-                                style="text-shadow:0 0 18px rgba(251,191,36,.55),0 0 45px rgba(124,58,237,.25);">
+
+                            <h2
+                                class="text-2xl md:text-4xl font-bold text-amber-200"
+                                style="
+                                    text-shadow:
+                                    0 0 18px rgba(251,191,36,.55),
+                                    0 0 45px rgba(124,58,237,.25);
+                                ">
+
                                 คืนที่พระจันทร์เรียกหา
+
                             </h2>
 
-                            <p class="text-xs md:text-sm text-slate-400 mt-3 leading-relaxed">
+
+                            <p
+                                class="text-xs md:text-sm text-slate-400 mt-3 leading-relaxed">
+
                                 ก่อนที่แสงจันทร์จะดับลง...<br>
-                                จงเลือกตัวตนของคุณ และก้าวเข้าสู่โลกแห่งคำอธิษฐาน
+                                จงเลือกตัวตนของคุณ
+                                และก้าวเข้าสู่โลกแห่งคำอธิษฐาน
+
                             </p>
+
                         </div>
 
-                        <!-- progress / chapter -->
-                        <div class="flex items-center justify-center gap-2 mt-6 mb-7">
-                            <span class="w-10 h-px bg-gradient-to-r from-transparent to-amber-400/60"></span>
-                            <span class="px-3 py-1 rounded-full text-[10px] text-amber-200 border border-amber-300/20 bg-amber-400/5">
-                                ✦ CREATE YOUR CHARACTER ✦
+
+                        <div
+                            class="flex items-center justify-center gap-2 mt-6 mb-7">
+
+                            <span
+                                class="w-10 h-px bg-gradient-to-r from-transparent to-amber-400/60">
                             </span>
-                            <span class="w-10 h-px bg-gradient-to-l from-transparent to-amber-400/60"></span>
+
+                            <span
+                                class="px-3 py-1 rounded-full text-[10px] text-amber-200 border border-amber-300/20 bg-amber-400/5">
+
+                                ✦ CREATE YOUR CHARACTER ✦
+
+                            </span>
+
+                            <span
+                                class="w-10 h-px bg-gradient-to-l from-transparent to-amber-400/60">
+                            </span>
+
                         </div>
 
-                        <!-- avatar section -->
+
+                        <!-- AVATAR -->
+
                         <div class="mb-7">
-                            <div class="flex items-center justify-between mb-3">
-                                <label class="text-xs font-semibold text-indigo-200">
-                                    <span class="text-amber-300">01</span> เลือกผู้เดินทางแห่งจันทรา
+
+                            <div
+                                class="flex items-center justify-between mb-3">
+
+                                <label
+                                    class="text-xs font-semibold text-indigo-200">
+
+                                    <span class="text-amber-300">
+                                        01
+                                    </span>
+
+                                    เลือกผู้เดินทางแห่งจันทรา
+
                                 </label>
-                                <span class="text-[10px] text-slate-500">SELECT AVATAR</span>
+
+                                <span class="text-[10px] text-slate-500">
+                                    SELECT AVATAR
+                                </span>
+
                             </div>
 
-                            <div class="grid grid-cols-4 gap-3 md:gap-4" id="avatarSelector">
 
-                                <button type="button" onclick="selectAvatar('🐇')"
+                            <div
+                                class="grid grid-cols-4 gap-3 md:gap-4"
+                                id="avatarSelector">
+
+
+                                <button
+                                    type="button"
+                                    onclick="selectAvatar('🐇')"
                                     class="avatar-btn group relative h-20 md:h-24 rounded-2xl border-2 border-amber-300/80 bg-gradient-to-b from-amber-400/15 to-violet-500/10 transition-all duration-300 hover:-translate-y-1"
-                                    style="box-shadow:0 0 25px rgba(251,191,36,.14);">
-                                    <span class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">🐇</span>
-                                    <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-amber-200/80">LUNAR RABBIT</span>
+                                    style="
+                                        box-shadow:
+                                        0 0 25px rgba(251,191,36,.14);
+                                    ">
+
+                                    <span
+                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
+                                        🐇
+                                    </span>
+
+                                    <span
+                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-amber-200/80">
+
+                                        LUNAR RABBIT
+
+                                    </span>
+
                                 </button>
 
-                                <button type="button" onclick="selectAvatar('🐰')"
+
+                                <button
+                                    type="button"
+                                    onclick="selectAvatar('🐰')"
                                     class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-                                    <span class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">🐰</span>
-                                    <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">MOON BUNNY</span>
+
+                                    <span
+                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
+                                        🐰
+                                    </span>
+
+                                    <span
+                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+
+                                        MOON BUNNY
+
+                                    </span>
+
                                 </button>
 
-                                <button type="button" onclick="selectAvatar('🪷')"
+
+                                <button
+                                    type="button"
+                                    onclick="selectAvatar('🪷')"
                                     class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-                                    <span class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">🪷</span>
-                                    <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">MOON LOTUS</span>
+
+                                    <span
+                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
+                                        🪷
+                                    </span>
+
+                                    <span
+                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+
+                                        MOON LOTUS
+
+                                    </span>
+
                                 </button>
 
-                                <button type="button" onclick="selectAvatar('✨')"
+
+                                <button
+                                    type="button"
+                                    onclick="selectAvatar('✨')"
                                     class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-                                    <span class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">✨</span>
-                                    <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">STAR SPIRIT</span>
+
+                                    <span
+                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
+                                        ✨
+                                    </span>
+
+                                    <span
+                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+
+                                        STAR SPIRIT
+
+                                    </span>
+
                                 </button>
 
                             </div>
+
                         </div>
 
-                        <!-- name -->
+
+                        <!-- NAME -->
+
                         <div class="mb-7">
-                            <div class="flex items-center justify-between mb-3">
-                                <label class="text-xs font-semibold text-indigo-200">
-                                    <span class="text-amber-300">02</span> ตั้งชื่อผู้เดินทาง
+
+                            <div
+                                class="flex items-center justify-between mb-3">
+
+                                <label
+                                    class="text-xs font-semibold text-indigo-200">
+
+                                    <span class="text-amber-300">
+                                        02
+                                    </span>
+
+                                    ตั้งชื่อผู้เดินทาง
+
                                 </label>
-                                <span class="text-[10px] text-slate-500">YOUR NAME</span>
+
+                                <span class="text-[10px] text-slate-500">
+                                    YOUR NAME
+                                </span>
+
                             </div>
+
 
                             <div class="relative group">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-lg text-amber-300/70">✦</span>
-                                <input type="text" id="usernameInput" maxlength="12"
+
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-lg text-amber-300/70">
+
+                                    ✦
+
+                                </span>
+
+
+                                <input
+                                    type="text"
+                                    id="usernameInput"
+                                    maxlength="12"
                                     placeholder="ชื่อของคุณ..."
                                     class="w-full bg-black/30 border border-violet-400/25 rounded-2xl pl-11 pr-16 py-4 text-sm md:text-base text-center text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-300/70 transition-all"
-                                    style="box-shadow:inset 0 0 25px rgba(0,0,0,.25),0 0 0 rgba(251,191,36,0);"
-                                    onfocus="this.style.boxShadow='inset 0 0 25px rgba(0,0,0,.25),0 0 25px rgba(251,191,36,.08)'"
-                                    onblur="this.style.boxShadow='inset 0 0 25px rgba(0,0,0,.25)'"
                                     onkeydown="if(event.key==='Enter') joinGame()">
-                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-slate-600">12 ตัว</span>
+
+
+                                <span
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-slate-600">
+
+                                    12 ตัว
+
+                                </span>
+
                             </div>
+
                         </div>
 
-                        <!-- enter button -->
-                        <button onclick="joinGame()"
+
+                        <!-- ENTER -->
+
+                        <button
+                            onclick="joinGame()"
                             class="group relative w-full overflow-hidden rounded-2xl py-4 md:py-5 text-sm md:text-base font-bold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
-                            style="background:linear-gradient(110deg,#f59e0b,#fde68a 45%,#fbbf24 70%,#f59e0b);
-                                   box-shadow:0 12px 35px rgba(251,191,36,.22);">
-                            <span class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                                  style="background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);"></span>
-                            <span class="relative flex items-center justify-center gap-3">
-                                <span>เข้าสู่โลกใต้แสงจันทร์</span>
-                                <span class="text-xl">→</span>
+                            style="
+                                background:
+                                linear-gradient(
+                                    110deg,
+                                    #f59e0b,
+                                    #fde68a 45%,
+                                    #fbbf24 70%,
+                                    #f59e0b
+                                );
+
+                                box-shadow:
+                                0 12px 35px rgba(251,191,36,.22);
+                            ">
+
+                            <span
+                                class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                                style="
+                                    background:
+                                    linear-gradient(
+                                        90deg,
+                                        transparent,
+                                        rgba(255,255,255,.5),
+                                        transparent
+                                    );
+                                ">
                             </span>
+
+
+                            <span
+                                class="relative flex items-center justify-center gap-3">
+
+                                <span>
+                                    เข้าสู่โลกใต้แสงจันทร์
+                                </span>
+
+                                <span class="text-xl">
+                                    →
+                                </span>
+
+                            </span>
+
                         </button>
 
+
                         <div class="text-center mt-4">
-                            <span class="text-[10px] text-slate-600">PRESS ENTER TO BEGIN YOUR JOURNEY</span>
+
+                            <span
+                                class="text-[10px] text-slate-600">
+
+                                PRESS ENTER TO BEGIN YOUR JOURNEY
+
+                            </span>
+
                         </div>
 
                     </div>
 
-                    <!-- bottom ornament -->
-                    <div class="h-8 border-t border-white/5 flex items-center justify-center">
-                        <span class="text-[10px] tracking-[.35em] text-amber-300/25">✦ ❖ ✦</span>
+
+                    <div
+                        class="h-8 border-t border-white/5 flex items-center justify-center">
+
+                        <span
+                            class="text-[10px] tracking-[.35em] text-amber-300/25">
+
+                            ✦ ❖ ✦
+
+                        </span>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
     </main>
 
-    <!-- Firebase SDK & Professional Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'moonlit-gathering-app-v1';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyDummyKeyForGitHubPagesTemplate",
-            authDomain: "projectId.firebaseapp.com",
-            projectId: "moonlit-gathering",
-            storageBucket: "moonlit-gathering.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123:web:abc"
-        };
+<script type="module">
 
-        let db, auth, currentUser;
-        let myPlayerId = 'agent_' + Math.random().toString(36).substring(2, 9);
-        let myName = "CodeAgent7";
-        let myAvatar = "🐇";
-        let myRoom = "lobby";
-        let myX = window.innerWidth / 2;
-        let myY = window.innerHeight / 2;
-        let isJoined = false;
+/* =========================================================
+   FIREBASE
+   ========================================================= */
 
-        let playersData = {};
-        let lanternsData = {};
-        let moonCakesData = {};
-        let moonScoresData = {};
-        let myBubbleText = '';
-        let myBubbleUntil = 0;
-        let lastPlayerSync = 0;
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
-        // Starfield & Shooting Stars System
-        const stars = Array.from({ length: 80 }, () => ({
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            size: Math.random() * 2.2 + 0.4,
-            opacity: Math.random() * 0.8 + 0.2,
-            twinkleSpeed: Math.random() * 0.025 + 0.005
-        }));
+import {
+    getAuth,
+    signInAnonymously,
+    signInWithCustomToken
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        let shootingStars = [];
-        function triggerShootingStar() {
-            shootingStars.push({
-                x: Math.random() * window.innerWidth,
-                y: 0,
-                length: Math.random() * 80 + 40,
-                speed: Math.random() * 12 + 8,
-                opacity: 1
-            });
-            setTimeout(triggerShootingStar, Math.random() * 6000 + 4000);
-        }
-        setTimeout(triggerShootingStar, 2000);
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    collection,
+    runTransaction
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        window.selectAvatar = function(av) {
-            myAvatar = av;
-            document.querySelectorAll('.avatar-btn').forEach(btn => {
-                btn.classList.remove('border-amber-400', 'bg-indigo-950/90', 'border-2');
-                btn.classList.add('border-indigo-800/80', 'bg-indigo-950/50', 'border');
-                if(btn.innerText.includes(av)) {
-                    btn.classList.add('border-amber-400', 'bg-indigo-950/90', 'border-2');
-                    btn.classList.remove('border-indigo-800/80', 'bg-indigo-950/50', 'border');
-                }
-            });
-        };
 
-        // Initialize Firebase & Realtime Active Sync with Cleanup on Disconnect
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-            
-            async function initAuth() {
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    currentUser = auth.currentUser;
-                    if (currentUser) myPlayerId = currentUser.uid;
-                    startSync();
-                } catch (e) {
-                    startSync();
-                }
+/* =========================================================
+   BASIC STATE
+   ========================================================= */
+
+const appId =
+    typeof __app_id !== 'undefined'
+        ? __app_id
+        : 'moonlit-gathering-app-v1';
+
+
+let firebaseConfig = null;
+
+if (typeof __firebase_config !== 'undefined') {
+
+    try {
+
+        firebaseConfig =
+            typeof __firebase_config === 'string'
+                ? JSON.parse(__firebase_config)
+                : __firebase_config;
+
+    } catch(e) {
+
+        firebaseConfig = null;
+
+    }
+
+}
+
+
+/*
+    IMPORTANT
+
+    ถ้าไม่มี Firebase Config จริง
+    เว็บจะทำงานใน Offline / Demo Mode
+    แทนที่จะพัง
+*/
+
+const hasRealFirebase =
+    firebaseConfig &&
+    firebaseConfig.apiKey &&
+    firebaseConfig.projectId &&
+    !String(firebaseConfig.apiKey).includes('Dummy') &&
+    !String(firebaseConfig.projectId).includes('moonlit-gathering');
+
+
+let db = null;
+let auth = null;
+let currentUser = null;
+
+let firebaseReady = false;
+
+
+/* =========================================================
+   PLAYER STATE
+   ========================================================= */
+
+let myPlayerId =
+    'player_' +
+    Math.random()
+        .toString(36)
+        .substring(2,10);
+
+let myName = "นักเดินทาง";
+let myAvatar = "🐇";
+
+let myRoom = "lobby";
+
+let myX = window.innerWidth / 2;
+let myY = window.innerHeight / 2;
+
+let isJoined = false;
+
+
+/* =========================================================
+   GAME DATA
+   ========================================================= */
+
+let playersData = {};
+let lanternsData = {};
+let moonCakesData = {};
+let moonScoresData = {};
+
+let chatMessages = [];
+
+let myBubbleText = "";
+let myBubbleUntil = 0;
+
+let lastPlayerSync = 0;
+
+let lastCakeReset = 0;
+
+
+/* =========================================================
+   DEMO PLAYERS
+   ========================================================= */
+
+const demoPlayers = {
+
+    luna_bot: {
+        name:"Luna",
+        avatar:"🐰",
+        room:"lobby",
+        x:260,
+        y:330,
+        bubbleText:"คืนนี้พระจันทร์สวยมาก 🌕",
+        bubbleUntil:Date.now()+999999
+    },
+
+    mei_bot: {
+        name:"Mei",
+        avatar:"🪷",
+        room:"lobby",
+        x:window.innerWidth-280,
+        y:390,
+        bubbleText:"ไปดูโคมยักษ์กันไหม?",
+        bubbleUntil:Date.now()+999999
+    },
+
+    star_bot: {
+        name:"Star",
+        avatar:"✨",
+        room:"minigame",
+        x:window.innerWidth/2+180,
+        y:window.innerHeight*.72,
+        bubbleText:"ขนมของฉัน! 🥮",
+        bubbleUntil:Date.now()+999999
+    }
+
+};
+
+
+/* =========================================================
+   STARS
+   ========================================================= */
+
+const stars =
+    Array.from(
+        {length:100},
+        () => ({
+            x:Math.random()*window.innerWidth,
+            y:Math.random()*window.innerHeight,
+            size:Math.random()*2.2+.4,
+            opacity:Math.random()*.8+.2,
+            twinkleSpeed:Math.random()*.025+.005
+        })
+    );
+
+
+let shootingStars = [];
+
+
+function triggerShootingStar(){
+
+    shootingStars.push({
+
+        x:Math.random()*window.innerWidth,
+
+        y:Math.random()*window.innerHeight*.35,
+
+        length:Math.random()*80+40,
+
+        speed:Math.random()*12+8,
+
+        opacity:1
+
+    });
+
+    setTimeout(
+        triggerShootingStar,
+        Math.random()*6000+4000
+    );
+
+}
+
+
+setTimeout(triggerShootingStar,2000);
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(
+            () => toast.classList.remove("show"),
+            2600
+        );
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+window.selectAvatar = function(av){
+
+    myAvatar = av;
+
+    document
+        .querySelectorAll(".avatar-btn")
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "border-amber-400",
+                "bg-indigo-950/90",
+                "border-2"
+            );
+
+            btn.classList.add(
+                "border-indigo-800/80",
+                "bg-indigo-950/50",
+                "border"
+            );
+
+            if(btn.innerText.includes(av)){
+
+                btn.classList.add(
+                    "border-amber-400",
+                    "bg-indigo-950/90",
+                    "border-2"
+                );
+
+                btn.classList.remove(
+                    "border-indigo-800/80",
+                    "bg-indigo-950/50",
+                    "border"
+                );
+
             }
-            initAuth();
-        } catch (err) {
-            console.log("Offline mode active");
-        }
 
-        window.joinGame = function() {
-            const input = document.getElementById('usernameInput');
-            if (input.value.trim()) {
-                myName = input.value.trim().substring(0, 12);
-            }
-            document.getElementById('nameModal').classList.add('hidden');
-            isJoined = true;
-        }
-
-        // Cleanup player doc when closing tab/browser
-        window.addEventListener('beforeunload', () => {
-            if (db && currentUser && isJoined) {
-                deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', myPlayerId)).catch(() => {});
-            }
         });
 
-        window.switchRoom = function(roomName) {
-            myRoom = roomName;
-            ['lobby', 'pagoda', 'minigame'].forEach(r => {
-                const btn = document.getElementById(`btn-room-${r}`);
-                if (r === roomName) {
-                    btn.className = "px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95";
-                } else {
-                    btn.className = "px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
+};
+
+
+/* =========================================================
+   INITIALIZE FIREBASE
+   ========================================================= */
+
+async function initializeFirebase(){
+
+    if(!hasRealFirebase){
+
+        console.log(
+            "Moonlit Gathering: Offline / Demo Mode"
+        );
+
+        firebaseReady = false;
+
+        updateModeBadge();
+
+        return;
+
+    }
+
+
+    try{
+
+        const app =
+            initializeApp(firebaseConfig);
+
+        db =
+            getFirestore(app);
+
+        auth =
+            getAuth(app);
+
+
+        if(
+            typeof __initial_auth_token !== 'undefined' &&
+            __initial_auth_token
+        ){
+
+            await signInWithCustomToken(
+                auth,
+                __initial_auth_token
+            );
+
+        }else{
+
+            await signInAnonymously(auth);
+
+        }
+
+
+        currentUser = auth.currentUser;
+
+
+        if(currentUser){
+
+            myPlayerId =
+                currentUser.uid;
+
+        }
+
+
+        firebaseReady = true;
+
+        updateModeBadge();
+
+        startSync();
+
+        console.log(
+            "Firebase multiplayer connected."
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Firebase unavailable. Using Offline Mode.",
+            error
+        );
+
+        firebaseReady = false;
+
+        db = null;
+
+        auth = null;
+
+        updateModeBadge();
+
+    }
+
+}
+
+
+function updateModeBadge(){
+
+    const badge =
+        document.getElementById("mode-badge");
+
+    if(!badge) return;
+
+
+    if(firebaseReady){
+
+        badge.textContent =
+            "● LIVE MULTIPLAYER";
+
+        badge.style.color =
+            "#86efac";
+
+        badge.style.borderColor =
+            "rgba(134,239,172,.25)";
+
+    }else{
+
+        badge.textContent =
+            "OFFLINE / DEMO MODE";
+
+        badge.style.color =
+            "#a5f3fc";
+
+        badge.style.borderColor =
+            "rgba(103,232,249,.18)";
+
+    }
+
+}
+
+
+/* =========================================================
+   JOIN GAME
+   ========================================================= */
+
+window.joinGame = function(){
+
+    const input =
+        document.getElementById(
+            "usernameInput"
+        );
+
+
+    const typedName =
+        input.value.trim();
+
+
+    if(typedName){
+
+        myName =
+            typedName
+                .substring(0,12);
+
+    }else{
+
+        myName = "นักเดินทาง";
+
+    }
+
+
+    isJoined = true;
+
+
+    document
+        .getElementById("nameModal")
+        .classList.add("hidden");
+
+
+    myX =
+        window.innerWidth/2;
+
+    myY =
+        window.innerHeight*.55;
+
+
+    createLocalMoonCakes();
+
+    renderScoreboard();
+
+    updatePlayerCount();
+
+    showToast(
+        `ยินดีต้อนรับ ${myName} 🌕✨`
+    );
+
+
+    addLocalChat(
+        "ระบบ",
+        `🌕 ${myName} เข้าสู่เทศกาลแล้ว!`
+    );
+
+
+    syncMyPlayer();
+
+};
+
+
+/* =========================================================
+   ROOM SWITCH
+   ========================================================= */
+
+window.switchRoom = function(roomName){
+
+    myRoom = roomName;
+
+
+    [
+        "lobby",
+        "pagoda",
+        "minigame"
+    ].forEach(r => {
+
+        const btn =
+            document.getElementById(
+                `btn-room-${r}`
+            );
+
+        if(r === roomName){
+
+            btn.className =
+                "px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95";
+
+        }else{
+
+            btn.className =
+                "px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
+
+        }
+
+    });
+
+
+    const labels = {
+
+        lobby:
+            "กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา",
+
+        pagoda:
+            "กำลังอยู่ใน: หอชมโคมยักษ์ • ปล่อยคำอธิษฐาน",
+
+        minigame:
+            "กำลังอยู่ใน: ลานจันทร์ชิงขนม • แย่งกันกินขนมไหว้พระจันทร์"
+
+    };
+
+
+    document
+        .getElementById("current-room-label")
+        .innerText =
+        labels[roomName];
+
+
+    document
+        .getElementById("room-title")
+        .textContent =
+        roomName === "lobby"
+            ? "🏮 MOONLIT GATHERING • ลานกิจกรรม"
+            : roomName === "pagoda"
+                ? "🏮 GIANT LANTERN • หอชมโคมยักษ์"
+                : "🥮 MOONCAKE RUSH • ศึกชิงขนม";
+
+
+    document
+        .getElementById("pagoda-hud")
+        .classList.toggle(
+            "hidden",
+            roomName !== "pagoda"
+        );
+
+
+    document
+        .getElementById("minigame-hud")
+        .classList.toggle(
+            "hidden",
+            roomName !== "minigame"
+        );
+
+
+    myX =
+        window.innerWidth/2;
+
+    myY =
+        window.innerHeight*.55;
+
+
+    if(roomName === "minigame"){
+
+        createLocalMoonCakes();
+
+        showToast(
+            "🥮 เข้าสู่สนามศึกชิงขนม!"
+        );
+
+    }
+
+    else if(roomName === "pagoda"){
+
+        showToast(
+            "🏮 เขียนคำอธิษฐานแล้วปล่อยโคมได้เลย"
+        );
+
+    }
+
+    else{
+
+        showToast(
+            "🏮 ยินดีต้อนรับสู่ลานกิจกรรม"
+        );
+
+    }
+
+
+    syncMyPlayer();
+
+};
+
+
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+window.toggleChatExpand = function(){
+
+    const body =
+        document.getElementById(
+            "chat-body"
+        );
+
+    const icon =
+        document.getElementById(
+            "chat-toggle-icon"
+        );
+
+
+    body.classList.toggle("hidden");
+
+
+    icon.style.transform =
+        body.classList.contains("hidden")
+            ? "rotate(180deg)"
+            : "rotate(0deg)";
+
+};
+
+
+window.sendChatMessage = async function(){
+
+    const input =
+        document.getElementById(
+            "chatInput"
+        );
+
+
+    const txt =
+        input.value.trim();
+
+
+    if(!txt) return;
+
+
+    input.value = "";
+
+
+    const clean =
+        txt.substring(0,90);
+
+
+    const now =
+        Date.now();
+
+
+    myBubbleText =
+        clean.substring(0,58);
+
+    myBubbleUntil =
+        now + 5200;
+
+
+    if(firebaseReady && db){
+
+        try{
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "chats",
+                    "chat_" +
+                    now +
+                    "_" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2,5)
+                ),
+
+                {
+                    name:myName,
+                    text:clean,
+                    timestamp:now,
+                    room:myRoom
                 }
-            });
 
-            const labels = {
-                'lobby': 'กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา',
-                'pagoda': 'กำลังอยู่ใน: หอชมโคมยักษ์ • ปล่อยคำอธิษฐาน',
-                'minigame': 'กำลังอยู่ใน: ลานจันทร์ชิงขนม • แย่งกันกินขนมไหว้พระจันทร์'
-            };
-            document.getElementById('current-room-label').innerText = labels[roomName];
-            document.getElementById('pagoda-hud').classList.toggle('hidden', roomName !== 'pagoda');
-            document.getElementById('minigame-hud').classList.toggle('hidden', roomName !== 'minigame');
+            );
 
-            myX = window.innerWidth / 2;
-            myY = window.innerHeight / 2 + 30;
+            await setDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "players",
+                    myPlayerId
+                ),
+
+                {
+                    bubbleText:
+                        myBubbleText,
+
+                    bubbleUntil:
+                        myBubbleUntil
+                },
+
+                {
+                    merge:true
+                }
+
+            );
+
+        }catch(error){
+
+            addLocalChat(
+                myName,
+                clean
+            );
+
         }
 
-        window.toggleChatExpand = function() {
-            const body = document.getElementById('chat-body');
-            const icon = document.getElementById('chat-toggle-icon');
-            body.classList.toggle('hidden');
-            icon.style.transform = body.classList.contains('hidden') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
+    }else{
 
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        addLocalChat(
+            myName,
+            clean
+        );
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 70;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+    }
 
-        const keys = { w: false, s: false, a: false, d: false, arrowup:false, arrowdown:false, arrowleft:false, arrowright:false };
-        window.addEventListener('keydown', (e) => { 
-            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
-            const k = e.key.toLowerCase();
-            if (keys.hasOwnProperty(k)) keys[k] = true; 
-        });
-        window.addEventListener('keyup', (e) => { 
-            const k = e.key.toLowerCase();
-            if (keys.hasOwnProperty(k)) keys[k] = false; 
-        });
+};
 
-        let touchTarget = null;
-        canvas.addEventListener('pointerdown', (e) => {
-            touchTarget = { x: e.clientX, y: e.clientY - 60 };
-            if (isJoined && myRoom === 'minigame') grabNearestMoonCake(e.clientX, e.clientY - 70);
-        });
-        canvas.addEventListener('pointermove', (e) => { if (touchTarget) touchTarget = { x: e.clientX, y: e.clientY - 60 }; });
-        canvas.addEventListener('pointerup', () => { touchTarget = null; });
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && isJoined && myRoom === 'minigame') { e.preventDefault(); grabNearestMoonCake(myX, myY); }
-        });
 
-        function startSync() {
-            if (!db) return;
-            // Sync Players with Inactivity Pruning (> 10 seconds timeout)
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'players'), (snapshot) => {
-                playersData = {};
-                let count = 0;
-                const now = Date.now();
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    // If player hasn't updated in 10 seconds, skip counting them
-                    if (now - (data.lastActive || 0) < 10000) {
-                        playersData[docSnap.id] = data;
+function addLocalChat(name,text){
+
+    chatMessages.push({
+
+        name:name,
+        text:text,
+        timestamp:Date.now()
+
+    });
+
+
+    if(chatMessages.length > 30){
+
+        chatMessages =
+            chatMessages.slice(-30);
+
+    }
+
+
+    renderLocalChat();
+
+}
+
+
+function renderLocalChat(){
+
+    const box =
+        document.getElementById(
+            "chat-messages"
+        );
+
+
+    box.innerHTML =
+        chatMessages
+            .slice(-30)
+            .map(msg => `
+
+                <div class="leading-relaxed">
+
+                    <span class="font-bold text-amber-400">
+
+                        ${escapeHtml(msg.name)}:
+
+                    </span>
+
+                    <span class="text-slate-200">
+
+                        ${escapeHtml(msg.text)}
+
+                    </span>
+
+                </div>
+
+            `)
+            .join("");
+
+
+    box.scrollTop =
+        box.scrollHeight;
+
+}
+
+
+/* =========================================================
+   FIREBASE SYNC
+   ========================================================= */
+
+function startSync(){
+
+    if(!db) return;
+
+
+    onSnapshot(
+
+        collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "players"
+        ),
+
+        snapshot => {
+
+            playersData = {};
+
+            let count = 0;
+
+            const now =
+                Date.now();
+
+
+            snapshot.forEach(
+                docSnap => {
+
+                    const data =
+                        docSnap.data();
+
+
+                    if(
+                        now -
+                        (data.lastActive || 0)
+                        <
+                        10000
+                    ){
+
+                        playersData[
+                            docSnap.id
+                        ] = data;
+
                         count++;
-                    } else if (docSnap.id !== myPlayerId) {
-                        // Clean up dead player docs
-                        deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', docSnap.id)).catch(() => {});
+
                     }
-                });
-                document.getElementById('player-count').innerText = `ผู้เล่นออนไลน์: ${count}`;
-            });
 
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'lanterns'), (snapshot) => {
-                lanternsData = {};
-                snapshot.forEach(docSnap => { lanternsData[docSnap.id] = docSnap.data(); });
-            });
-
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'moonCakes'), async (snapshot) => {
-                moonCakesData = {};
-                snapshot.forEach(docSnap => { moonCakesData[docSnap.id] = docSnap.data(); });
-                if (snapshot.empty) await ensureMoonCakes();
-            });
-
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'moonScores'), (snapshot) => {
-                moonScoresData = {};
-                snapshot.forEach(docSnap => { moonScoresData[docSnap.id] = docSnap.data(); });
-                renderScoreboard();
-            });
-
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'chats'), (snapshot) => {
-                let chatArr = [];
-                snapshot.forEach(docSnap => { chatArr.push(docSnap.data()); });
-                chatArr.sort((a, b) => a.timestamp - b.timestamp);
-                let chatHTML = '';
-                chatArr.slice(-30).forEach(msg => {
-                    chatHTML += `<div class="leading-relaxed"><span class="font-bold text-amber-400">${msg.name}:</span> <span class="text-slate-200">${msg.text}</span></div>`;
-                });
-                const chatBox = document.getElementById('chat-messages');
-                chatBox.innerHTML = chatHTML || '<div class="text-indigo-300/80 italic">ยังไม่มีข้อความ...</div>';
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-        }
-
-        window.releaseLantern = async function() {
-            const input = document.getElementById('wishInput');
-            const txt = input.value.trim();
-            if (!txt) return;
-            input.value = '';
-            if (db) {
-                try {
-                    const lId = 'lantern_' + Date.now() + '_' + Math.random().toString(36).substring(2,5);
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'lanterns', lId), {
-                        name: myName, wish: txt,
-                        x: Math.random() * (window.innerWidth - 100) + 50,
-                        y: window.innerHeight - 120,
-                        speed: Math.random() * 0.7 + 0.4
-                    });
-                } catch(e) {}
-            }
-        }
-
-        window.sendChatMessage = async function() {
-            const input = document.getElementById('chatInput');
-            const txt = input.value.trim();
-            if (!txt) return;
-            input.value = '';
-            if (db) {
-                try {
-                    const now = Date.now();
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'chats', 'chat_' + now + '_' + Math.random().toString(36).substring(2,5)), {
-                        name: myName, text: txt.substring(0, 100), timestamp: now, room: myRoom
-                    });
-                    myBubbleText = txt.substring(0, 58);
-                    myBubbleUntil = now + 5200;
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', myPlayerId), {
-                        bubbleText: myBubbleText, bubbleUntil: myBubbleUntil
-                    }, { merge: true });
-                } catch(e) {}
-            }
-        }
-
-        async function ensureMoonCakes() {
-            if (!db) return;
-            const positions = [
-                [.18,.73],[.28,.67],[.39,.76],[.50,.66],[.61,.76],[.72,.68],[.82,.75],
-                [.23,.84],[.35,.83],[.50,.84],[.65,.84],[.77,.83]
-            ];
-            for (let i=0;i<positions.length;i++) {
-                const id = 'cake_' + i;
-                if (!moonCakesData[id]) {
-                    await setDoc(doc(db,'artifacts',appId,'public','data','moonCakes',id), {
-                        x: positions[i][0], y: positions[i][1], eatenBy:'', eatenAt:0
-                    }, {merge:true});
                 }
-            }
+            );
+
+
+            document
+                .getElementById(
+                    "player-count"
+                )
+                .innerText =
+                `ผู้เล่นออนไลน์: ${count}`;
+
+
+        },
+
+        error => {
+
+            console.warn(
+                "Player sync failed",
+                error
+            );
+
         }
 
-        function renderScoreboard() {
-            const board = document.getElementById('scoreboard');
-            if (!board) return;
-            const rows = Object.entries(moonScoresData)
-                .sort((a,b)=>(b[1].score||0)-(a[1].score||0))
-                .slice(0,7);
-            board.innerHTML = rows.length ? rows.map(([id,s],i)=>{
-                const me = id === myPlayerId ? ' <span class=\"text-amber-300\">(คุณ)</span>' : '';
-                return `<div class=\"flex justify-between items-center px-2 py-1 rounded-lg ${id===myPlayerId?'bg-amber-400/10 border border-amber-300/10':''}\"><span>${i+1}. ${escapeHtml(s.name||'ผู้เล่น')}${me}</span><b class=\"text-amber-300\">${s.score||0} 🥮</b></div>`;
-            }).join('') : '<div class=\"text-slate-500 italic\">ยังไม่มีคะแนน ลุยเลย!</div>';
-            const mine = moonScoresData[myPlayerId]?.score || 0;
-            document.getElementById('my-score').textContent = mine;
-        }
+    );
 
-        function escapeHtml(value) {
-            return String(value).replace(/[&<>'"`]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
-        }
 
-        async function grabNearestMoonCake(px, py) {
-            if (!db || myRoom !== 'minigame') return;
-            let target = null, best = 92;
-            for (const [id,cake] of Object.entries(moonCakesData)) {
-                const eaten = cake.eatenAt && Date.now() - cake.eatenAt < 1400;
-                if (eaten) continue;
-                const x = cake.x * canvas.width, y = cake.y * canvas.height;
-                const d = Math.hypot(x-px,y-py);
-                if (d < best) { best=d; target=id; }
-            }
-            if (!target) return;
-            const ref = doc(db,'artifacts',appId,'public','data','moonCakes',target);
-            const now = Date.now();
-            try {
-                let won = false;
-                await runTransaction(db, async tx => {
-                    const snap = await tx.get(ref);
-                    if (!snap.exists()) return;
-                    const cake = snap.data();
-                    if (cake.eatenAt && now - cake.eatenAt < 1400) return;
-                    tx.set(ref,{eatenBy:myPlayerId,eatenAt:now},{merge:true});
-                    won = true;
-                });
-                if (!won) return;
-                const scoreRef = doc(db,'artifacts',appId,'public','data','moonScores',myPlayerId);
-                await runTransaction(db, async tx => {
-                    const snap = await tx.get(scoreRef);
-                    const old = snap.exists() ? snap.data() : {};
-                    tx.set(scoreRef,{name:myName,avatar:myAvatar,score:(old.score||0)+1,updatedAt:now},{merge:true});
-                });
-                const shout = ['ได้แล้ว! 🥮✨','ขนมชิ้นนี้ของฉัน! 😂🥮','แย่งทันแล้ว! 🌕','อร่อยที่สุดในคืนนี้! 🥮💜'][Math.floor(Math.random()*4)];
-                myBubbleText = shout; myBubbleUntil = now + 3200;
-                await setDoc(doc(db,'artifacts',appId,'public','data','players',myPlayerId),{bubbleText:shout,bubbleUntil:myBubbleUntil},{merge:true});
-                setTimeout(async()=>{
-                    try { await setDoc(ref,{eatenBy:'',eatenAt:0},{merge:true}); } catch(e) {}
-                },1450);
-            } catch(e) {}
-        }
+    onSnapshot(
 
-        function update() {
-            if (!isJoined) return;
-            const spd = 5.2;
-            if (keys['w'] || keys['arrowup']) myY -= spd;
-            if (keys['s'] || keys['arrowdown']) myY += spd;
-            if (keys['a'] || keys['arrowleft']) myX -= spd;
-            if (keys['d'] || keys['arrowright']) myX += spd;
+        collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "lanterns"
+        ),
 
-            if (touchTarget) {
-                const dx = touchTarget.x - myX;
-                const dy = touchTarget.y - myY;
-                const dist = Math.hypot(dx, dy);
-                if (dist > 3) {
-                    myX += (dx / dist) * spd;
-                    myY += (dy / dist) * spd;
+        snapshot => {
+
+            lanternsData = {};
+
+            snapshot.forEach(
+                docSnap => {
+
+                    lanternsData[
+                        docSnap.id
+                    ] =
+                    docSnap.data();
+
                 }
-            }
+            );
 
-            myX = Math.max(35, Math.min(window.innerWidth - 35, myX));
-            myY = Math.max(50, Math.min(window.innerHeight - 90, myY));
-
-            if (db && currentUser && Date.now() - lastPlayerSync > 120) {
-                lastPlayerSync = Date.now();
-                setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'players', myPlayerId), {
-                    name: myName, avatar: myAvatar, room: myRoom,
-                    x: Math.round(myX), y: Math.round(myY), lastActive: Date.now()
-                }, { merge: true }).catch(() => {});
-            }
         }
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    );
 
-            // 0. ATMOSPHERIC NIGHT SKY
-            const sky = ctx.createLinearGradient(0,0,0,canvas.height);
-            sky.addColorStop(0,'#080b2d');
-            sky.addColorStop(.45,'#11133f');
-            sky.addColorStop(1,'#020617');
-            ctx.fillStyle = sky;
-            ctx.fillRect(0,0,canvas.width,canvas.height);
 
-            // Soft aurora ribbons
-            ctx.save();
-            for(let i=0;i<3;i++){
-                const y = canvas.height*(.18+i*.13);
-                const g = ctx.createRadialGradient(canvas.width*(.18+i*.33),y,10,canvas.width*(.18+i*.33),y,canvas.width*.38);
-                g.addColorStop(0, i===1 ? 'rgba(251,191,36,.055)' : 'rgba(124,58,237,.06)');
-                g.addColorStop(1,'rgba(0,0,0,0)');
-                ctx.fillStyle=g;
-                ctx.fillRect(0,0,canvas.width,canvas.height);
+    onSnapshot(
+
+        collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "moonCakes"
+        ),
+
+        snapshot => {
+
+            moonCakesData = {};
+
+            snapshot.forEach(
+                docSnap => {
+
+                    moonCakesData[
+                        docSnap.id
+                    ] =
+                    docSnap.data();
+
+                }
+            );
+
+
+            if(snapshot.empty){
+
+                ensureMoonCakes();
+
             }
-            ctx.restore();
 
-            // 1. STARFIELD & TWINKLE
-            ctx.save();
-            stars.forEach(s => {
-                s.opacity += s.twinkleSpeed;
-                if (s.opacity > 1 || s.opacity < 0.2) s.twinkleSpeed = -s.twinkleSpeed;
-                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
+        }
 
-            // SHOOTING STARS
-            shootingStars.forEach((st, idx) => {
-                st.x += st.speed;
-                st.y += st.speed * 0.6;
-                st.opacity -= 0.015;
-                if (st.opacity <= 0) {
-                    shootingStars.splice(idx, 1);
+    );
+
+
+    onSnapshot(
+
+        collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "moonScores"
+        ),
+
+        snapshot => {
+
+            moonScoresData = {};
+
+            snapshot.forEach(
+                docSnap => {
+
+                    moonScoresData[
+                        docSnap.id
+                    ] =
+                    docSnap.data();
+
+                }
+            );
+
+
+            renderScoreboard();
+
+        }
+
+    );
+
+
+    onSnapshot(
+
+        collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "chats"
+        ),
+
+        snapshot => {
+
+            let arr = [];
+
+            snapshot.forEach(
+                docSnap => {
+
+                    arr.push(
+                        docSnap.data()
+                    );
+
+                }
+            );
+
+
+            arr.sort(
+                (a,b) =>
+                    (a.timestamp || 0) -
+                    (b.timestamp || 0)
+            );
+
+
+            const recent =
+                arr.slice(-30);
+
+
+            const box =
+                document.getElementById(
+                    "chat-messages"
+                );
+
+
+            box.innerHTML =
+                recent
+                    .map(msg => `
+
+                        <div class="leading-relaxed">
+
+                            <span class="font-bold text-amber-400">
+
+                                ${escapeHtml(msg.name || "ผู้เล่น")}:
+
+                            </span>
+
+                            <span class="text-slate-200">
+
+                                ${escapeHtml(msg.text || "")}
+
+                            </span>
+
+                        </div>
+
+                    `)
+                    .join("");
+
+
+            box.scrollTop =
+                box.scrollHeight;
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   SYNC PLAYER
+   ========================================================= */
+
+async function syncMyPlayer(){
+
+    if(!firebaseReady || !db || !isJoined)
+        return;
+
+
+    try{
+
+        await setDoc(
+
+            doc(
+                db,
+                "artifacts",
+                appId,
+                "public",
+                "data",
+                "players",
+                myPlayerId
+            ),
+
+            {
+
+                name:myName,
+
+                avatar:myAvatar,
+
+                room:myRoom,
+
+                x:Math.round(myX),
+
+                y:Math.round(myY),
+
+                lastActive:Date.now(),
+
+                bubbleText:
+                    myBubbleText,
+
+                bubbleUntil:
+                    myBubbleUntil
+
+            },
+
+            {
+                merge:true
+            }
+
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Player sync error",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LANTERN
+   ========================================================= */
+
+window.releaseLantern = async function(){
+
+    const input =
+        document.getElementById(
+            "wishInput"
+        );
+
+
+    const txt =
+        input.value.trim();
+
+
+    if(!txt){
+
+        showToast(
+            "✦ พิมพ์คำอธิษฐานก่อนนะ"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    input.value = "";
+
+
+    const lantern = {
+
+        name:myName,
+
+        wish:txt.substring(0,35),
+
+        x:
+            Math.random() *
+            (canvas.width-100)
+            + 50,
+
+        y:
+            canvas.height-100,
+
+        speed:
+            Math.random()*.7+.4
+
+    };
+
+
+    if(firebaseReady && db){
+
+        try{
+
+            const id =
+                "lantern_" +
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .substring(2,5);
+
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "lanterns",
+                    id
+                ),
+
+                lantern
+
+            );
+
+        }catch(error){
+
+            addLocalLantern(
+                lantern
+            );
+
+        }
+
+    }else{
+
+        addLocalLantern(
+            lantern
+        );
+
+    }
+
+
+    myBubbleText =
+        "คำอธิษฐานของฉัน ✨";
+
+    myBubbleUntil =
+        Date.now()+3500;
+
+
+    showToast(
+        "🏮 ปล่อยโคมอธิษฐานขึ้นสู่ฟ้าแล้ว!"
+    );
+
+};
+
+
+function addLocalLantern(lantern){
+
+    const id =
+        "local_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .substring(2,6);
+
+
+    lanternsData[id] =
+        lantern;
+
+}
+
+
+/* =========================================================
+   MOONCAKES
+   ========================================================= */
+
+function createLocalMoonCakes(){
+
+    if(Object.keys(moonCakesData).length > 0)
+        return;
+
+
+    const positions = [
+
+        [.18,.73],
+        [.28,.67],
+        [.39,.76],
+        [.50,.66],
+        [.61,.76],
+        [.72,.68],
+        [.82,.75],
+
+        [.23,.84],
+        [.35,.83],
+        [.50,.84],
+        [.65,.84],
+        [.77,.83]
+
+    ];
+
+
+    positions.forEach(
+        (pos,i) => {
+
+            moonCakesData[
+                "cake_"+i
+            ] = {
+
+                x:pos[0],
+
+                y:pos[1],
+
+                eatenBy:"",
+
+                eatenAt:0
+
+            };
+
+        }
+    );
+
+}
+
+
+async function ensureMoonCakes(){
+
+    if(!db) return;
+
+
+    const positions = [
+
+        [.18,.73],
+        [.28,.67],
+        [.39,.76],
+        [.50,.66],
+        [.61,.76],
+        [.72,.68],
+        [.82,.75],
+
+        [.23,.84],
+        [.35,.83],
+        [.50,.84],
+        [.65,.84],
+        [.77,.83]
+
+    ];
+
+
+    for(
+        let i=0;
+        i<positions.length;
+        i++
+    ){
+
+        const id =
+            "cake_"+i;
+
+
+        if(!moonCakesData[id]){
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "moonCakes",
+                    id
+                ),
+
+                {
+
+                    x:positions[i][0],
+
+                    y:positions[i][1],
+
+                    eatenBy:"",
+
+                    eatenAt:0
+
+                },
+
+                {
+                    merge:true
+                }
+
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SCOREBOARD
+   ========================================================= */
+
+function renderScoreboard(){
+
+    const board =
+        document.getElementById(
+            "scoreboard"
+        );
+
+
+    if(!board) return;
+
+
+    const localScores =
+        {...moonScoresData};
+
+
+    if(
+        !firebaseReady &&
+        isJoined
+    ){
+
+        if(!localScores[myPlayerId]){
+
+            localScores[myPlayerId] = {
+
+                name:myName,
+
+                avatar:myAvatar,
+
+                score:0
+
+            };
+
+        }
+
+    }
+
+
+    const rows =
+        Object.entries(localScores)
+            .sort(
+                (a,b) =>
+                    (b[1].score || 0) -
+                    (a[1].score || 0)
+            )
+            .slice(0,7);
+
+
+    board.innerHTML =
+        rows.length
+            ? rows.map(
+                ([id,s],i) => {
+
+                    const me =
+                        id === myPlayerId
+                            ? ' <span class="text-amber-300">(คุณ)</span>'
+                            : '';
+
+
+                    return `
+
+                        <div
+                            class="
+                            flex
+                            justify-between
+                            items-center
+                            px-2
+                            py-1
+                            rounded-lg
+                            ${id===myPlayerId
+                                ? "bg-amber-400/10 border border-amber-300/10"
+                                : ""
+                            }
+                            ">
+
+                            <span>
+
+                                ${i+1}.
+                                ${escapeHtml(s.name || "ผู้เล่น")}
+                                ${me}
+
+                            </span>
+
+                            <b class="text-amber-300">
+
+                                ${s.score || 0} 🥮
+
+                            </b>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("")
+
+            :
+
+            '<div class="text-slate-500 italic">ยังไม่มีคะแนน ลุยเลย!</div>';
+
+
+    const mine =
+        localScores[myPlayerId]?.score || 0;
+
+
+    document
+        .getElementById("my-score")
+        .textContent =
+        mine;
+
+}
+
+
+/* =========================================================
+   SCORE UPDATE
+   ========================================================= */
+
+async function addScore(){
+
+    const now =
+        Date.now();
+
+
+    if(firebaseReady && db){
+
+        try{
+
+            const scoreRef =
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "moonScores",
+                    myPlayerId
+                );
+
+
+            await runTransaction(
+                db,
+                async tx => {
+
+                    const snap =
+                        await tx.get(
+                            scoreRef
+                        );
+
+
+                    const old =
+                        snap.exists()
+                            ? snap.data()
+                            : {};
+
+
+                    tx.set(
+
+                        scoreRef,
+
+                        {
+
+                            name:myName,
+
+                            avatar:myAvatar,
+
+                            score:
+                                (old.score || 0)+1,
+
+                            updatedAt:now
+
+                        },
+
+                        {
+                            merge:true
+                        }
+
+                    );
+
+                }
+            );
+
+        }catch(error){
+
+            addLocalScore();
+
+        }
+
+    }else{
+
+        addLocalScore();
+
+    }
+
+
+    renderScoreboard();
+
+}
+
+
+function addLocalScore(){
+
+    if(!moonScoresData[myPlayerId]){
+
+        moonScoresData[myPlayerId] = {
+
+            name:myName,
+
+            avatar:myAvatar,
+
+            score:0
+
+        };
+
+    }
+
+
+    moonScoresData[myPlayerId].score =
+        (moonScoresData[myPlayerId].score || 0)+1;
+
+}
+
+
+/* =========================================================
+   GRAB MOONCAKE
+   ========================================================= */
+
+async function grabNearestMoonCake(px,py){
+
+    if(
+        !isJoined ||
+        myRoom !== "minigame"
+    )
+        return;
+
+
+    createLocalMoonCakes();
+
+
+    let target = null;
+
+    let best = 95;
+
+
+    for(
+        const [id,cake]
+        of Object.entries(moonCakesData)
+    ){
+
+        const eaten =
+            cake.eatenAt &&
+            Date.now()-cake.eatenAt < 1400;
+
+
+        if(eaten)
+            continue;
+
+
+        const x =
+            cake.x * canvas.width;
+
+
+        const y =
+            cake.y * canvas.height;
+
+
+        const d =
+            Math.hypot(
+                x-px,
+                y-py
+            );
+
+
+        if(d < best){
+
+            best = d;
+
+            target = id;
+
+        }
+
+    }
+
+
+    if(!target){
+
+        showToast(
+            "🥮 เดินเข้าไปใกล้ขนมกว่านี้!"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        firebaseReady &&
+        db
+    ){
+
+        await grabFirebaseCake(
+            target
+        );
+
+    }else{
+
+        grabLocalCake(
+            target
+        );
+
+    }
+
+}
+
+
+async function grabFirebaseCake(target){
+
+    const ref =
+        doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "moonCakes",
+            target
+        );
+
+
+    const now =
+        Date.now();
+
+
+    try{
+
+        let won = false;
+
+
+        await runTransaction(
+            db,
+            async tx => {
+
+                const snap =
+                    await tx.get(ref);
+
+
+                if(!snap.exists())
                     return;
-                }
-                ctx.strokeStyle = `rgba(254, 240, 138, ${st.opacity})`;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(st.x, st.y);
-                ctx.lineTo(st.x - st.length, st.y - st.length * 0.6);
-                ctx.stroke();
-            });
-            ctx.restore();
 
-            // 1.5. GIANT MOON + CLOUDS
-            ctx.save();
-            const mx = canvas.width * .82;
-            const my = Math.min(155, canvas.height*.22);
-            const mr = Math.min(92, canvas.width*.075);
-            const mg = ctx.createRadialGradient(mx-mr*.28,my-mr*.3,mr*.08,mx,my,mr);
-            mg.addColorStop(0,'#fffde7');
-            mg.addColorStop(.62,'#fde68a');
-            mg.addColorStop(1,'#f59e0b');
-            ctx.shadowColor='rgba(253,224,71,.48)';
-            ctx.shadowBlur=55;
-            ctx.fillStyle=mg;
-            ctx.beginPath(); ctx.arc(mx,my,mr,0,Math.PI*2); ctx.fill();
-            ctx.shadowBlur=0;
-            // Moon craters
-            ctx.fillStyle='rgba(180,83,9,.10)';
-            [[-.25,-.18,.12],[.22,-.28,.08],[.28,.20,.13],[-.12,.30,.09]].forEach(([dx,dy,rr])=>{
-                ctx.beginPath(); ctx.arc(mx+dx*mr*2,my+dy*mr*2,rr*mr,0,Math.PI*2); ctx.fill();
-            });
-            // drifting clouds
-            const cloudY = canvas.height*.28;
-            for(let i=0;i<4;i++){
-                const cx = ((Date.now()/90 + i*260) % (canvas.width+360))-180;
-                ctx.fillStyle='rgba(148,163,184,.055)';
-                ctx.beginPath();
-                ctx.ellipse(cx,cloudY+i*34,120,18,0,0,Math.PI*2);
-                ctx.ellipse(cx+70,cloudY-5+i*34,75,16,0,0,Math.PI*2);
-                ctx.fill();
+
+                const cake =
+                    snap.data();
+
+
+                if(
+                    cake.eatenAt &&
+                    now-cake.eatenAt < 1400
+                )
+                    return;
+
+
+                tx.set(
+                    ref,
+                    {
+                        eatenBy:myPlayerId,
+                        eatenAt:now
+                    },
+                    {
+                        merge:true
+                    }
+                );
+
+
+                won = true;
+
             }
-            ctx.restore();
-
-            // 2. LAYERED MOUNTAIN SILHOUETTES
-            ctx.save();
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height);
-            ctx.lineTo(0, canvas.height - 160);
-            ctx.quadraticCurveTo(canvas.width * 0.35, canvas.height - 250, canvas.width * 0.65, canvas.height - 170);
-            ctx.quadraticCurveTo(canvas.width * 0.88, canvas.height - 270, canvas.width, canvas.height - 140);
-            ctx.lineTo(canvas.width, canvas.height);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.fillStyle = 'rgba(7, 11, 24, 0.95)';
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height);
-            ctx.lineTo(0, canvas.height - 90);
-            ctx.quadraticCurveTo(canvas.width * 0.25, canvas.height - 140, canvas.width * 0.52, canvas.height - 100);
-            ctx.quadraticCurveTo(canvas.width * 0.8, canvas.height - 160, canvas.width, canvas.height - 75);
-            ctx.lineTo(canvas.width, canvas.height);
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
-
-            // 3. ROOM SPECIFIC BACKGROUNDS
-            if (myRoom === 'lobby') {
-                // Lobby Activity Park Theme: Stalls & Festival Banners
-                ctx.save();
-                ctx.textAlign='center';
-                // Lantern strings
-                ctx.strokeStyle='rgba(251,191,36,.22)'; ctx.lineWidth=2;
-                ctx.beginPath(); ctx.moveTo(0,80); ctx.quadraticCurveTo(canvas.width*.5,150,canvas.width,70); ctx.stroke();
-                for(let i=0;i<9;i++){
-                    const x=canvas.width*(i/8);
-                    const y=95+Math.sin(i*.9)*25;
-                    ctx.font='32px sans-serif'; ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=16;
-                    ctx.fillText(i%2?'🏮':'✨',x,y);
-                }
-                ctx.shadowBlur=0;
-
-                // Festival stage
-                const sx=canvas.width/2-250, sy=canvas.height-205, sw=500, sh=130;
-                const panel=ctx.createLinearGradient(sx,sy,sx,sy+sh);
-                panel.addColorStop(0,'rgba(76,29,149,.48)'); panel.addColorStop(1,'rgba(15,23,42,.92)');
-                ctx.fillStyle=panel; ctx.fillRect(sx,sy,sw,sh);
-                ctx.strokeStyle='rgba(251,191,36,.35)'; ctx.lineWidth=2; ctx.strokeRect(sx,sy,sw,sh);
-                ctx.font='48px sans-serif'; ctx.fillText('🌕',canvas.width/2,sy+62);
-                ctx.font='bold 15px Prompt,sans-serif'; ctx.fillStyle='#fde68a';
-                ctx.fillText('ลานกิจกรรมสวนจันทรา',canvas.width/2,sy+94);
-                ctx.font='11px Prompt,sans-serif'; ctx.fillStyle='rgba(255,255,255,.7)';
-                ctx.fillText('เดินเล่น • พบเพื่อน • ชมโคม • ฉลองใต้แสงจันทร์',canvas.width/2,sy+114);
-
-                // Side stalls
-                ctx.font='54px sans-serif'; ctx.fillText('🏮',canvas.width*.16,canvas.height-92);
-                ctx.fillText('🥮',canvas.width*.28,canvas.height-88);
-                ctx.fillText('🪷',canvas.width*.72,canvas.height-88);
-                ctx.fillText('🏮',canvas.width*.84,canvas.height-92);
-                ctx.restore();
-
-            } else if (myRoom === 'pagoda') {
-                // Giant Lantern Room (Pagoda with Massive Glowing Lantern)
-                ctx.save();
-                ctx.textAlign='center';
-                // Pagoda silhouette
-                ctx.fillStyle='rgba(8,12,30,.82)';
-                ctx.beginPath();
-                ctx.moveTo(canvas.width/2-105,canvas.height-70);
-                ctx.lineTo(canvas.width/2-72,220); ctx.lineTo(canvas.width/2+72,220);
-                ctx.lineTo(canvas.width/2+105,canvas.height-70); ctx.closePath(); ctx.fill();
-                for(let i=0;i<4;i++){
-                    const yy=240+i*52, ww=88+i*22;
-                    ctx.strokeStyle='rgba(251,191,36,.28)'; ctx.lineWidth=3;
-                    ctx.beginPath(); ctx.moveTo(canvas.width/2-ww,yy); ctx.lineTo(canvas.width/2+ww,yy); ctx.stroke();
-                }
-                ctx.font='190px sans-serif'; ctx.shadowColor='rgba(251,191,36,.95)'; ctx.shadowBlur=90;
-                ctx.fillText('🏮',canvas.width/2,205); ctx.shadowBlur=0;
-                ctx.font='bold 14px Prompt,sans-serif'; ctx.fillStyle='#fde047';
-                ctx.fillText('🏛️ หอชมโคมยักษ์อธิษฐาน',canvas.width/2,235);
-                ctx.font='11px Prompt,sans-serif'; ctx.fillStyle='rgba(255,255,255,.68)';
-                ctx.fillText('เขียนคำอธิษฐาน แล้วปล่อยแสงแห่งความหวังขึ้นสู่ท้องฟ้า',canvas.width/2,254);
-                ctx.restore();
-
-                for (const [id, l] of Object.entries(lanternsData)) {
-                    l.y -= l.speed;
-                    ctx.save();
-                    ctx.font = '42px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.shadowColor='rgba(251,191,36,.85)'; ctx.shadowBlur=24;
-                    ctx.fillText('🏮', l.x, l.y); ctx.shadowBlur=0;
-                    ctx.font = '11px Prompt, sans-serif';
-                    ctx.fillStyle = '#fde047';
-                    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-                    ctx.shadowBlur = 6;
-                    ctx.fillText(`${l.name}: "${l.wish}"`, l.x, l.y - 14);
-                    ctx.restore();
-                }
-
-            } else if (myRoom === 'minigame') {
-                // Multiplayer Mooncake Rush courtyard
-                ctx.save();
-                const groundY = canvas.height * .70;
-                // Moon garden courtyard floor
-                const floor = ctx.createLinearGradient(0,groundY,0,canvas.height);
-                floor.addColorStop(0,'rgba(75,45,91,.42)'); floor.addColorStop(1,'rgba(20,12,38,.96)');
-                ctx.fillStyle=floor; ctx.fillRect(0,groundY,canvas.width,canvas.height-groundY);
-                ctx.strokeStyle='rgba(253,224,71,.13)'; ctx.lineWidth=2;
-                for(let i=0;i<14;i++){
-                    const x=(i/13)*canvas.width;
-                    ctx.beginPath(); ctx.moveTo(x,groundY); ctx.lineTo(x+(i%2?18:-18),canvas.height); ctx.stroke();
-                }
-                // giant festival arch
-                ctx.strokeStyle='rgba(251,191,36,.35)'; ctx.lineWidth=9;
-                ctx.beginPath(); ctx.arc(canvas.width/2,groundY+18,Math.min(canvas.width*.28,260),Math.PI,0); ctx.stroke();
-                ctx.strokeStyle='rgba(167,139,250,.28)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(canvas.width/2,groundY+18,Math.min(canvas.width*.30,280),Math.PI,0); ctx.stroke();
-                ctx.font='42px sans-serif'; ctx.textAlign='center'; ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=20;
-                ctx.fillText('🏮',canvas.width*.28,groundY-40); ctx.fillText('🌕',canvas.width*.5,groundY-70); ctx.fillText('🏮',canvas.width*.72,groundY-40); ctx.shadowBlur=0;
-                // central table
-                const tx=canvas.width*.5, ty=groundY+78;
-                ctx.fillStyle='rgba(35,20,38,.95)'; ctx.beginPath(); ctx.ellipse(tx,ty,190,42,0,0,Math.PI*2); ctx.fill();
-                ctx.strokeStyle='rgba(251,191,36,.45)'; ctx.lineWidth=2; ctx.stroke();
-                ctx.font='28px sans-serif';
-                for(let i=0;i<7;i++){ const a=-1.1+i*.36; ctx.fillText('🥮',tx+Math.cos(a)*130,ty+Math.sin(a)*25-10); }
-                // lantern strings + banners
-                ctx.strokeStyle='rgba(251,191,36,.18)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,125); ctx.quadraticCurveTo(canvas.width*.5,190,canvas.width,120); ctx.stroke();
-                for(let i=0;i<11;i++){ const x=canvas.width*(i/10); const y=145+Math.sin(i*.75)*22; ctx.font='30px sans-serif'; ctx.fillText(i%3===0?'🏮':'✨',x,y); }
-                // title plate in world
-                const plateW=Math.min(590,canvas.width*.62);
-                ctx.fillStyle='rgba(9,7,26,.76)'; ctx.strokeStyle='rgba(251,191,36,.32)'; ctx.lineWidth=2;
-                ctx.beginPath(); ctx.roundRect(canvas.width/2-plateW/2,groundY-155,plateW,58,20); ctx.fill(); ctx.stroke();
-                ctx.fillStyle='#fde68a'; ctx.font='bold 18px Prompt,sans-serif'; ctx.fillText('🥮 แย่งกันกินขนมไหว้พระจันทร์ 🥮',canvas.width/2,groundY-125);
-                ctx.fillStyle='rgba(255,255,255,.72)'; ctx.font='11px Prompt,sans-serif'; ctx.fillText('เข้าใกล้ขนมแล้วกด SPACE หรือคลิก • ใครไวกว่าได้กินก่อน!',canvas.width/2,groundY-104);
-                // Mooncakes
-                for (const [id,cake] of Object.entries(moonCakesData)) {
-                    const eaten=cake.eatenAt && Date.now()-cake.eatenAt<1400;
-                    if(eaten) continue;
-                    const x=cake.x*canvas.width, y=cake.y*canvas.height;
-                    ctx.save(); ctx.textAlign='center'; ctx.shadowColor='rgba(251,191,36,.75)'; ctx.shadowBlur=18;
-                    ctx.font='34px sans-serif'; ctx.fillText('🥮',x,y); ctx.shadowBlur=0;
-                    ctx.font='9px Prompt,sans-serif'; ctx.fillStyle='rgba(255,237,213,.8)'; ctx.fillText('กดเพื่อแย่ง!',x,y+25); ctx.restore();
-                }
-                ctx.restore();
-
-            // 4. RENDER ALL PLAYERS (Rabbit Avatars)
-            const allPlayers = { ...playersData };
-            if (isJoined) allPlayers[myPlayerId] = { name: myName, avatar: myAvatar, room: myRoom, x: myX, y: myY, bubbleText: myBubbleText, bubbleUntil: myBubbleUntil };
+        );
 
 
-            for (const [id, p] of Object.entries(allPlayers)) {
-                if (p.room !== myRoom) continue;
-                ctx.save();
-                
-                const floatOffset = Math.sin(Date.now() / 250 + p.x) * 3;
+        if(!won){
 
-                ctx.font = '38px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(p.avatar || '🐇', p.x, p.y + floatOffset);
+            showToast(
+                "😂 มีคนแย่งไปก่อนแล้ว!"
+            );
 
-                ctx.font = 'bold 11px Prompt, sans-serif';
-                ctx.fillStyle = '#fde047';
-                ctx.textAlign = 'center';
-                ctx.shadowColor = 'rgba(0,0,0,0.9)';
-                ctx.shadowBlur = 8;
-                ctx.fillText(p.name, p.x, p.y + floatOffset - 30);
-                ctx.shadowBlur = 0;
-                if (p.bubbleText && Date.now() < (p.bubbleUntil || 0)) {
-                    const txt = String(p.bubbleText).substring(0,58);
-                    ctx.font = '12px Prompt, sans-serif';
-                    const bw = Math.min(210, ctx.measureText(txt).width + 28);
-                    const bx = p.x - bw/2;
-                    const by = p.y + floatOffset - 78;
-                    ctx.fillStyle='rgba(7,10,28,.94)';
-                    ctx.strokeStyle='rgba(251,191,36,.6)'; ctx.lineWidth=1.5;
-                    ctx.beginPath(); ctx.roundRect(bx,by,bw,31,12); ctx.fill(); ctx.stroke();
-                    ctx.beginPath(); ctx.moveTo(p.x-7,by+31); ctx.lineTo(p.x,by+39); ctx.lineTo(p.x+7,by+31); ctx.closePath(); ctx.fill();
-                    ctx.fillStyle='#fff7ed'; ctx.shadowColor='rgba(0,0,0,.8)'; ctx.shadowBlur=5;
-                    ctx.fillText(txt,p.x,by+20);
-                }
-                if (myRoom === 'minigame') {
-                    const score = moonScoresData[id]?.score || 0;
-                    ctx.font='bold 9px Prompt,sans-serif'; ctx.fillStyle='rgba(253,230,138,.9)'; ctx.shadowBlur=4;
-                    ctx.fillText('🥮 '+score,p.x,p.y+floatOffset+28);
-                }
-                ctx.restore();
-            }
+            return;
+
         }
 
-        function loop() {
-            update();
-            draw();
-            requestAnimationFrame(loop);
+
+        await addScore();
+
+
+        celebrateCake();
+
+
+        setTimeout(
+            async () => {
+
+                try{
+
+                    await setDoc(
+                        ref,
+                        {
+                            eatenBy:"",
+                            eatenAt:0
+                        },
+                        {
+                            merge:true
+                        }
+                    );
+
+                }catch(e){}
+
+            },
+            1450
+        );
+
+    }catch(error){
+
+        console.warn(
+            error
+        );
+
+    }
+
+}
+
+
+function grabLocalCake(target){
+
+    const cake =
+        moonCakesData[target];
+
+
+    if(!cake)
+        return;
+
+
+    const now =
+        Date.now();
+
+
+    if(
+        cake.eatenAt &&
+        now-cake.eatenAt < 1400
+    ){
+
+        showToast(
+            "😂 มีคนแย่งไปก่อนแล้ว!"
+        );
+
+        return;
+
+    }
+
+
+    cake.eatenBy =
+        myPlayerId;
+
+    cake.eatenAt =
+        now;
+
+
+    addLocalScore();
+
+
+    celebrateCake();
+
+
+    setTimeout(
+        () => {
+
+            cake.eatenBy = "";
+
+            cake.eatenAt = 0;
+
+        },
+        1450
+    );
+
+}
+
+
+function celebrateCake(){
+
+    const shout = [
+
+        "ได้แล้ว! 🥮✨",
+
+        "ขนมชิ้นนี้ของฉัน! 😂🥮",
+
+        "แย่งทันแล้ว! 🌕",
+
+        "อร่อยที่สุดในคืนนี้! 🥮💜",
+
+        "ฮ่าๆ ฉันไวกว่า! 🐇",
+
+        "Mooncake ได้มาแล้ว! ✨"
+
+    ][
+        Math.floor(
+            Math.random()*6
+        )
+    ];
+
+
+    myBubbleText =
+        shout;
+
+    myBubbleUntil =
+        Date.now()+3200;
+
+
+    showToast(
+        shout
+    );
+
+
+    if(firebaseReady && db){
+
+        setDoc(
+
+            doc(
+                db,
+                "artifacts",
+                appId,
+                "public",
+                "data",
+                "players",
+                myPlayerId
+            ),
+
+            {
+
+                bubbleText:shout,
+
+                bubbleUntil:
+                    myBubbleUntil
+
+            },
+
+            {
+                merge:true
+            }
+
+        ).catch(()=>{});
+
+    }
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+const keys = {
+
+    w:false,
+    s:false,
+    a:false,
+    d:false,
+
+    arrowup:false,
+    arrowdown:false,
+    arrowleft:false,
+    arrowright:false
+
+};
+
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        if(
+            [
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                " "
+            ].includes(e.key)
+        ){
+
+            e.preventDefault();
+
         }
-        loop();
-    </script>
+
+
+        const k =
+            e.key.toLowerCase();
+
+
+        if(
+            Object.prototype.hasOwnProperty.call(
+                keys,
+                k
+            )
+        ){
+
+            keys[k] = true;
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "keyup",
+    e => {
+
+        const k =
+            e.key.toLowerCase();
+
+
+        if(
+            Object.prototype.hasOwnProperty.call(
+                keys,
+                k
+            )
+        ){
+
+            keys[k] = false;
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        if(
+            e.code === "Space" &&
+            isJoined &&
+            myRoom === "minigame"
+        ){
+
+            e.preventDefault();
+
+            grabNearestMoonCake(
+                myX,
+                myY
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   POINTER MOVEMENT
+   ========================================================= */
+
+let touchTarget = null;
+
+
+canvas.addEventListener(
+    "pointerdown",
+    e => {
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        const x =
+            e.clientX -
+            rect.left;
+
+
+        const y =
+            e.clientY -
+            rect.top;
+
+
+        touchTarget = {
+            x:x,
+            y:y
+        };
+
+
+        if(
+            isJoined &&
+            myRoom === "minigame"
+        ){
+
+            grabNearestMoonCake(
+                x,
+                y
+            );
+
+        }
+
+    }
+);
+
+
+canvas.addEventListener(
+    "pointermove",
+    e => {
+
+        if(!touchTarget)
+            return;
+
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        touchTarget = {
+
+            x:
+                e.clientX -
+                rect.left,
+
+            y:
+                e.clientY -
+                rect.top
+
+        };
+
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerup",
+    () => {
+
+        touchTarget = null;
+
+    }
+);
+
+
+canvas.addEventListener(
+    "pointercancel",
+    () => {
+
+        touchTarget = null;
+
+    }
+);
+
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
+const canvas =
+    document.getElementById(
+        "gameCanvas"
+    );
+
+
+const ctx =
+    canvas.getContext("2d");
+
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    canvas.width =
+        Math.floor(
+            rect.width*dpr
+        );
+
+
+    canvas.height =
+        Math.floor(
+            rect.height*dpr
+        );
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+
+    myX =
+        Math.min(
+            myX,
+            rect.width-35
+        );
+
+
+    myY =
+        Math.min(
+            myY,
+            rect.height-90
+        );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+
+function getCanvasSize(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    return {
+        width:rect.width,
+        height:rect.height
+    };
+
+}
+
+
+/* =========================================================
+   UPDATE
+   ========================================================= */
+
+function update(){
+
+    if(!isJoined)
+        return;
+
+
+    const size =
+        getCanvasSize();
+
+
+    const spd =
+        5.2;
+
+
+    if(
+        keys.w ||
+        keys.arrowup
+    )
+        myY -= spd;
+
+
+    if(
+        keys.s ||
+        keys.arrowdown
+    )
+        myY += spd;
+
+
+    if(
+        keys.a ||
+        keys.arrowleft
+    )
+        myX -= spd;
+
+
+    if(
+        keys.d ||
+        keys.arrowright
+    )
+        myX += spd;
+
+
+    if(touchTarget){
+
+        const dx =
+            touchTarget.x -
+            myX;
+
+
+        const dy =
+            touchTarget.y -
+            myY;
+
+
+        const dist =
+            Math.hypot(
+                dx,
+                dy
+            );
+
+
+        if(dist > 5){
+
+            myX +=
+                (dx/dist)*spd;
+
+            myY +=
+                (dy/dist)*spd;
+
+        }
+
+    }
+
+
+    myX =
+        Math.max(
+            35,
+            Math.min(
+                size.width-35,
+                myX
+            )
+        );
+
+
+    myY =
+        Math.max(
+            70,
+            Math.min(
+                size.height-80,
+                myY
+            )
+        );
+
+
+    if(
+        firebaseReady &&
+        db &&
+        currentUser &&
+        Date.now()-lastPlayerSync > 120
+    ){
+
+        lastPlayerSync =
+            Date.now();
+
+
+        syncMyPlayer();
+
+    }
+
+
+    updateLocalLanterns();
+
+}
+
+
+/* =========================================================
+   LOCAL LANTERNS
+   ========================================================= */
+
+function updateLocalLanterns(){
+
+    Object.entries(
+        lanternsData
+    ).forEach(
+        ([id,l]) => {
+
+            if(
+                !firebaseReady &&
+                id.startsWith("local_")
+            ){
+
+                l.y -=
+                    l.speed;
+
+                if(l.y < 70){
+
+                    delete lanternsData[id];
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DRAW
+   ========================================================= */
+
+function draw(){
+
+    const size =
+        getCanvasSize();
+
+
+    const W =
+        size.width;
+
+
+    const H =
+        size.height;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* =====================================================
+       SKY
+       ===================================================== */
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+
+    sky.addColorStop(
+        0,
+        "#080b2d"
+    );
+
+    sky.addColorStop(
+        .45,
+        "#11133f"
+    );
+
+    sky.addColorStop(
+        1,
+        "#020617"
+    );
+
+
+    ctx.fillStyle =
+        sky;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* =====================================================
+       AURORA
+       ===================================================== */
+
+    ctx.save();
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        const y =
+            H*(.18+i*.13);
+
+
+        const gx =
+            W*(.18+i*.33);
+
+
+        const g =
+            ctx.createRadialGradient(
+                gx,
+                y,
+                10,
+                gx,
+                y,
+                W*.38
+            );
+
+
+        g.addColorStop(
+            0,
+            i===1
+                ? "rgba(251,191,36,.055)"
+                : "rgba(124,58,237,.06)"
+        );
+
+
+        g.addColorStop(
+            1,
+            "rgba(0,0,0,0)"
+        );
+
+
+        ctx.fillStyle =
+            g;
+
+
+        ctx.fillRect(
+            0,
+            0,
+            W,
+            H
+        );
+
+    }
+
+
+    ctx.restore();
+
+
+    /* =====================================================
+       STARS
+       ===================================================== */
+
+    ctx.save();
+
+
+    stars.forEach(
+        s => {
+
+            s.opacity +=
+                s.twinkleSpeed;
+
+
+            if(
+                s.opacity > 1 ||
+                s.opacity < .2
+            ){
+
+                s.twinkleSpeed =
+                    -s.twinkleSpeed;
+
+            }
+
+
+            ctx.fillStyle =
+                `rgba(255,255,255,${s.opacity})`;
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                s.x,
+                s.y,
+                s.size,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    /* =====================================================
+       SHOOTING STARS
+       ===================================================== */
+
+    shootingStars.forEach(
+        (st,idx) => {
+
+            st.x +=
+                st.speed;
+
+            st.y +=
+                st.speed*.6;
+
+            st.opacity -=
+                .015;
+
+
+            if(st.opacity <= 0){
+
+                shootingStars.splice(
+                    idx,
+                    1
+                );
+
+                return;
+
+            }
+
+
+            ctx.strokeStyle =
+                `rgba(254,240,138,${st.opacity})`;
+
+
+            ctx.lineWidth =
+                2;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                st.x,
+                st.y
+            );
+
+
+            ctx.lineTo(
+                st.x-st.length,
+                st.y-st.length*.6
+            );
+
+
+            ctx.stroke();
+
+        }
+    );
+
+
+    ctx.restore();
+
+
+    /* =====================================================
+       GIANT MOON
+       ===================================================== */
+
+    ctx.save();
+
+
+    const mx =
+        W*.82;
+
+
+    const my =
+        Math.min(
+            155,
+            H*.22
+        );
+
+
+    const mr =
+        Math.min(
+            92,
+            W*.075
+        );
+
+
+    const mg =
+        ctx.createRadialGradient(
+            mx-mr*.28,
+            my-mr*.3,
+            mr*.08,
+            mx,
+            my,
+            mr
+        );
+
+
+    mg.addColorStop(
+        0,
+        "#fffde7"
+    );
+
+
+    mg.addColorStop(
+        .62,
+        "#fde68a"
+    );
+
+
+    mg.addColorStop(
+        1,
+        "#f59e0b"
+    );
+
+
+    ctx.shadowColor =
+        "rgba(253,224,71,.48)";
+
+
+    ctx.shadowBlur =
+        55;
+
+
+    ctx.fillStyle =
+        mg;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        mx,
+        my,
+        mr,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    /* MOON CRATERS */
+
+    ctx.fillStyle =
+        "rgba(180,83,9,.10)";
+
+
+    [
+        [-.25,-.18,.12],
+        [.22,-.28,.08],
+        [.28,.20,.13],
+        [-.12,.30,.09]
+    ].forEach(
+        ([dx,dy,rr]) => {
+
+            ctx.beginPath();
+
+            ctx.arc(
+                mx+dx*mr*2,
+                my+dy*mr*2,
+                rr*mr,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    /* CLOUDS */
+
+    const cloudY =
+        H*.28;
+
+
+    for(
+        let i=0;
+        i<4;
+        i++
+    ){
+
+        const cx =
+            (
+                Date.now()/90 +
+                i*260
+            )
+            %
+            (W+360)
+            -180;
+
+
+        ctx.fillStyle =
+            "rgba(148,163,184,.055)";
+
+
+        ctx.beginPath();
+
+
+        ctx.ellipse(
+            cx,
+            cloudY+i*34,
+            120,
+            18,
+            0,
+            0,
+            Math.PI*2
+        );
+
+
+        ctx.ellipse(
+            cx+70,
+            cloudY-5+i*34,
+            75,
+            16,
+            0,
+            0,
+            Math.PI*2
+        );
+
+
+        ctx.fill();
+
+    }
+
+
+    ctx.restore();
+
+
+    /* =====================================================
+       MOUNTAINS
+       ===================================================== */
+
+    ctx.save();
+
+
+    ctx.fillStyle =
+        "rgba(15,23,42,.7)";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        H
+    );
+
+
+    ctx.lineTo(
+        0,
+        H-160
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.35,
+        H-250,
+        W*.65,
+        H-170
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.88,
+        H-270,
+        W,
+        H-140
+    );
+
+
+    ctx.lineTo(
+        W,
+        H
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "rgba(7,11,24,.95)";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        H
+    );
+
+
+    ctx.lineTo(
+        0,
+        H-90
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.25,
+        H-140,
+        W*.52,
+        H-100
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.8,
+        H-160,
+        W,
+        H-75
+    );
+
+
+    ctx.lineTo(
+        W,
+        H
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+
+    /* =====================================================
+       ROOM BACKGROUND
+       ===================================================== */
+
+    if(myRoom === "lobby"){
+
+        drawLobby(W,H);
+
+    }
+
+    else if(myRoom === "pagoda"){
+
+        drawPagoda(W,H);
+
+    }
+
+    else if(myRoom === "minigame"){
+
+        drawMinigame(W,H);
+
+    }
+
+
+    /* =====================================================
+       RENDER PLAYERS
+       ===================================================== */
+
+    const allPlayers = {
+        ...demoPlayers,
+        ...playersData
+    };
+
+
+    if(isJoined){
+
+        allPlayers[myPlayerId] = {
+
+            name:myName,
+
+            avatar:myAvatar,
+
+            room:myRoom,
+
+            x:myX,
+
+            y:myY,
+
+            bubbleText:
+                myBubbleText,
+
+            bubbleUntil:
+                myBubbleUntil
+
+        };
+
+    }
+
+
+    let visiblePlayers = 0;
+
+
+    for(
+        const [id,p]
+        of Object.entries(allPlayers)
+    ){
+
+        if(
+            !p ||
+            p.room !== myRoom
+        )
+            continue;
+
+
+        visiblePlayers++;
+
+
+        ctx.save();
+
+
+        const floatOffset =
+            Math.sin(
+                Date.now()/250 +
+                (p.x || 0)
+            )*3;
+
+
+        /* PLAYER GLOW */
+
+        const glow =
+            ctx.createRadialGradient(
+                p.x,
+                p.y,
+                2,
+                p.x,
+                p.y,
+                34
+            );
+
+
+        glow.addColorStop(
+            0,
+            "rgba(251,191,36,.16)"
+        );
+
+
+        glow.addColorStop(
+            1,
+            "rgba(251,191,36,0)"
+        );
+
+
+        ctx.fillStyle =
+            glow;
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            34,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /* AVATAR */
+
+        ctx.font =
+            "38px sans-serif";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.textBaseline =
+            "middle";
+
+
+        ctx.fillText(
+            p.avatar || "🐇",
+            p.x,
+            p.y+floatOffset
+        );
+
+
+        /* NAME */
+
+        ctx.font =
+            "bold 11px Prompt,sans-serif";
+
+
+        ctx.fillStyle =
+            "#fde047";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.shadowColor =
+            "rgba(0,0,0,.9)";
+
+
+        ctx.shadowBlur =
+            8;
+
+
+        ctx.fillText(
+            p.name || "ผู้เล่น",
+            p.x,
+            p.y+floatOffset-30
+        );
+
+
+        ctx.shadowBlur =
+            0;
+
+
+        /* CHAT BUBBLE */
+
+        if(
+            p.bubbleText &&
+            Date.now() <
+            (p.bubbleUntil || 0)
+        ){
+
+            const txt =
+                String(
+                    p.bubbleText
+                ).substring(
+                    0,
+                    58
+                );
+
+
+            ctx.font =
+                "12px Prompt,sans-serif";
+
+
+            const bw =
+                Math.min(
+                    230,
+                    ctx.measureText(txt).width+28
+                );
+
+
+            const bx =
+                p.x-bw/2;
+
+
+            const by =
+                p.y+floatOffset-78;
+
+
+            ctx.fillStyle =
+                "rgba(7,10,28,.94)";
+
+
+            ctx.strokeStyle =
+                "rgba(251,191,36,.6)";
+
+
+            ctx.lineWidth =
+                1.5;
+
+
+            ctx.beginPath();
+
+
+            ctx.roundRect(
+                bx,
+                by,
+                bw,
+                31,
+                12
+            );
+
+
+            ctx.fill();
+
+            ctx.stroke();
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                p.x-7,
+                by+31
+            );
+
+
+            ctx.lineTo(
+                p.x,
+                by+39
+            );
+
+
+            ctx.lineTo(
+                p.x+7,
+                by+31
+            );
+
+
+            ctx.closePath();
+
+
+            ctx.fill();
+
+
+            ctx.fillStyle =
+                "#fff7ed";
+
+
+            ctx.shadowColor =
+                "rgba(0,0,0,.8)";
+
+
+            ctx.shadowBlur =
+                5;
+
+
+            ctx.fillText(
+                txt,
+                p.x,
+                by+20
+            );
+
+        }
+
+
+        /* SCORE */
+
+        if(myRoom === "minigame"){
+
+            const score =
+                moonScoresData[id]?.score || 0;
+
+
+            ctx.font =
+                "bold 9px Prompt,sans-serif";
+
+
+            ctx.fillStyle =
+                "rgba(253,230,138,.9)";
+
+
+            ctx.shadowBlur =
+                4;
+
+
+            ctx.fillText(
+                "🥮 "+score,
+                p.x,
+                p.y+floatOffset+28
+            );
+
+        }
+
+
+        ctx.restore();
+
+    }
+
+
+    /* =====================================================
+       UPDATE PLAYER COUNT
+       ===================================================== */
+
+    if(!firebaseReady){
+
+        document
+            .getElementById(
+                "player-count"
+            )
+            .innerText =
+            `ผู้เล่นออนไลน์: ${visiblePlayers}`;
+
+    }
+
+
+}
+
+
+/* =========================================================
+   LOBBY DRAW
+   ========================================================= */
+
+function drawLobby(W,H){
+
+    ctx.save();
+
+
+    ctx.textAlign =
+        "center";
+
+
+    /* FESTIVAL STRING */
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.22)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        80
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.5,
+        150,
+        W,
+        70
+    );
+
+
+    ctx.stroke();
+
+
+    for(
+        let i=0;
+        i<9;
+        i++
+    ){
+
+        const x =
+            W*(i/8);
+
+
+        const y =
+            95 +
+            Math.sin(i*.9)*25;
+
+
+        ctx.font =
+            "32px sans-serif";
+
+
+        ctx.shadowColor =
+            "rgba(251,191,36,.55)";
+
+
+        ctx.shadowBlur =
+            16;
+
+
+        ctx.fillText(
+            i%2
+                ? "🏮"
+                : "✨",
+            x,
+            y
+        );
+
+    }
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    /* CENTER STAGE */
+
+    const sx =
+        W/2-250;
+
+
+    const sy =
+        H-205;
+
+
+    const sw =
+        500;
+
+
+    const sh =
+        130;
+
+
+    const panel =
+        ctx.createLinearGradient(
+            sx,
+            sy,
+            sx,
+            sy+sh
+        );
+
+
+    panel.addColorStop(
+        0,
+        "rgba(76,29,149,.48)"
+    );
+
+
+    panel.addColorStop(
+        1,
+        "rgba(15,23,42,.92)"
+    );
+
+
+    ctx.fillStyle =
+        panel;
+
+
+    ctx.fillRect(
+        sx,
+        sy,
+        sw,
+        sh
+    );
+
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.35)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.strokeRect(
+        sx,
+        sy,
+        sw,
+        sh
+    );
+
+
+    ctx.font =
+        "48px sans-serif";
+
+
+    ctx.fillText(
+        "🌕",
+        W/2,
+        sy+62
+    );
+
+
+    ctx.font =
+        "bold 15px Prompt,sans-serif";
+
+
+    ctx.fillStyle =
+        "#fde68a";
+
+
+    ctx.fillText(
+        "ลานกิจกรรมสวนจันทรา",
+        W/2,
+        sy+94
+    );
+
+
+    ctx.font =
+        "11px Prompt,sans-serif";
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.7)";
+
+
+    ctx.fillText(
+        "เดินเล่น • พบเพื่อน • ชมโคม • ฉลองใต้แสงจันทร์",
+        W/2,
+        sy+114
+    );
+
+
+    /* SIDE STALLS */
+
+    ctx.font =
+        "54px sans-serif";
+
+
+    ctx.fillText(
+        "🏮",
+        W*.16,
+        H-92
+    );
+
+
+    ctx.fillText(
+        "🥮",
+        W*.28,
+        H-88
+    );
+
+
+    ctx.fillText(
+        "🪷",
+        W*.72,
+        H-88
+    );
+
+
+    ctx.fillText(
+        "🏮",
+        W*.84,
+        H-92
+    );
+
+
+    /* SMALL DECOR */
+
+    ctx.font =
+        "30px sans-serif";
+
+
+    ctx.fillText(
+        "✨",
+        W*.08,
+        H*.53
+    );
+
+
+    ctx.fillText(
+        "🌸",
+        W*.91,
+        H*.55
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   PAGODA DRAW
+   ========================================================= */
+
+function drawPagoda(W,H){
+
+    ctx.save();
+
+
+    ctx.textAlign =
+        "center";
+
+
+    /* PAGODA */
+
+    ctx.fillStyle =
+        "rgba(8,12,30,.82)";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        W/2-105,
+        H-70
+    );
+
+
+    ctx.lineTo(
+        W/2-72,
+        220
+    );
+
+
+    ctx.lineTo(
+        W/2+72,
+        220
+    );
+
+
+    ctx.lineTo(
+        W/2+105,
+        H-70
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    /* PAGODA LEVELS */
+
+    for(
+        let i=0;
+        i<4;
+        i++
+    ){
+
+        const yy =
+            240+i*52;
+
+
+        const ww =
+            88+i*22;
+
+
+        ctx.strokeStyle =
+            "rgba(251,191,36,.28)";
+
+
+        ctx.lineWidth =
+            3;
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            W/2-ww,
+            yy
+        );
+
+
+        ctx.lineTo(
+            W/2+ww,
+            yy
+        );
+
+
+        ctx.stroke();
+
+    }
+
+
+    /* GIANT LANTERN */
+
+    ctx.font =
+        "190px sans-serif";
+
+
+    ctx.shadowColor =
+        "rgba(251,191,36,.95)";
+
+
+    ctx.shadowBlur =
+        90;
+
+
+    ctx.fillText(
+        "🏮",
+        W/2,
+        205
+    );
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    ctx.font =
+        "bold 14px Prompt,sans-serif";
+
+
+    ctx.fillStyle =
+        "#fde047";
+
+
+    ctx.fillText(
+        "🏛️ หอชมโคมยักษ์อธิษฐาน",
+        W/2,
+        235
+    );
+
+
+    ctx.font =
+        "11px Prompt,sans-serif";
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.68)";
+
+
+    ctx.fillText(
+        "เขียนคำอธิษฐาน แล้วปล่อยแสงแห่งความหวังขึ้นสู่ท้องฟ้า",
+        W/2,
+        254
+    );
+
+
+    ctx.restore();
+
+
+    /* FLOATING LANTERNS */
+
+    for(
+        const [id,l]
+        of Object.entries(lanternsData)
+    ){
+
+        ctx.save();
+
+
+        ctx.font =
+            "42px sans-serif";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.shadowColor =
+            "rgba(251,191,36,.85)";
+
+
+        ctx.shadowBlur =
+            24;
+
+
+        ctx.fillText(
+            "🏮",
+            l.x,
+            l.y
+        );
+
+
+        ctx.shadowBlur =
+            0;
+
+
+        ctx.font =
+            "11px Prompt,sans-serif";
+
+
+        ctx.fillStyle =
+            "#fde047";
+
+
+        ctx.shadowColor =
+            "rgba(0,0,0,.9)";
+
+
+        ctx.shadowBlur =
+            6;
+
+
+        ctx.fillText(
+            `${l.name}: "${l.wish}"`,
+            l.x,
+            l.y-14
+        );
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================================================
+   MINIGAME DRAW
+   ========================================================= */
+
+function drawMinigame(W,H){
+
+    ctx.save();
+
+
+    const groundY =
+        H*.70;
+
+
+    /* FLOOR */
+
+    const floor =
+        ctx.createLinearGradient(
+            0,
+            groundY,
+            0,
+            H
+        );
+
+
+    floor.addColorStop(
+        0,
+        "rgba(75,45,91,.42)"
+    );
+
+
+    floor.addColorStop(
+        1,
+        "rgba(20,12,38,.96)"
+    );
+
+
+    ctx.fillStyle =
+        floor;
+
+
+    ctx.fillRect(
+        0,
+        groundY,
+        W,
+        H-groundY
+    );
+
+
+    /* FLOOR LINES */
+
+    ctx.strokeStyle =
+        "rgba(253,224,71,.13)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    for(
+        let i=0;
+        i<14;
+        i++
+    ){
+
+        const x =
+            (i/13)*W;
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            x,
+            groundY
+        );
+
+
+        ctx.lineTo(
+            x+(i%2?18:-18),
+            H
+        );
+
+
+        ctx.stroke();
+
+    }
+
+
+    /* FESTIVAL ARCH */
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.35)";
+
+
+    ctx.lineWidth =
+        9;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        W/2,
+        groundY+18,
+        Math.min(W*.28,260),
+        Math.PI,
+        0
+    );
+
+
+    ctx.stroke();
+
+
+    ctx.strokeStyle =
+        "rgba(167,139,250,.28)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        W/2,
+        groundY+18,
+        Math.min(W*.30,280),
+        Math.PI,
+        0
+    );
+
+
+    ctx.stroke();
+
+
+    /* CENTER DECOR */
+
+    ctx.font =
+        "42px sans-serif";
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.shadowColor =
+        "rgba(251,191,36,.55)";
+
+
+    ctx.shadowBlur =
+        20;
+
+
+    ctx.fillText(
+        "🏮",
+        W*.28,
+        groundY-40
+    );
+
+
+    ctx.fillText(
+        "🌕",
+        W*.5,
+        groundY-70
+    );
+
+
+    ctx.fillText(
+        "🏮",
+        W*.72,
+        groundY-40
+    );
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    /* TABLE */
+
+    const tx =
+        W*.5;
+
+
+    const ty =
+        groundY+78;
+
+
+    ctx.fillStyle =
+        "rgba(35,20,38,.95)";
+
+
+    ctx.beginPath();
+
+
+    ctx.ellipse(
+        tx,
+        ty,
+        190,
+        42,
+        0,
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.fill();
+
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.45)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.stroke();
+
+
+    ctx.font =
+        "28px sans-serif";
+
+
+    for(
+        let i=0;
+        i<7;
+        i++
+    ){
+
+        const a =
+            -1.1+i*.36;
+
+
+        ctx.fillText(
+            "🥮",
+            tx+
+                Math.cos(a)*130,
+            ty+
+                Math.sin(a)*25-10
+        );
+
+    }
+
+
+    /* LANTERN STRING */
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.18)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        125
+    );
+
+
+    ctx.quadraticCurveTo(
+        W*.5,
+        190,
+        W,
+        120
+    );
+
+
+    ctx.stroke();
+
+
+    for(
+        let i=0;
+        i<11;
+        i++
+    ){
+
+        const x =
+            W*(i/10);
+
+
+        const y =
+            145+
+            Math.sin(i*.75)*22;
+
+
+        ctx.font =
+            "30px sans-serif";
+
+
+        ctx.fillText(
+            i%3===0
+                ? "🏮"
+                : "✨",
+            x,
+            y
+        );
+
+    }
+
+
+    /* TITLE PLATE */
+
+    const plateW =
+        Math.min(
+            590,
+            W*.62
+        );
+
+
+    ctx.fillStyle =
+        "rgba(9,7,26,.76)";
+
+
+    ctx.strokeStyle =
+        "rgba(251,191,36,.32)";
+
+
+    ctx.lineWidth =
+        2;
+
+
+    ctx.beginPath();
+
+
+    ctx.roundRect(
+        W/2-plateW/2,
+        groundY-155,
+        plateW,
+        58,
+        20
+    );
+
+
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    ctx.fillStyle =
+        "#fde68a";
+
+
+    ctx.font =
+        "bold 18px Prompt,sans-serif";
+
+
+    ctx.fillText(
+        "🥮 แย่งกันกินขนมไหว้พระจันทร์ 🥮",
+        W/2,
+        groundY-125
+    );
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.72)";
+
+
+    ctx.font =
+        "11px Prompt,sans-serif";
+
+
+    ctx.fillText(
+        "เข้าใกล้ขนมแล้วกด SPACE หรือคลิก • ใครไวกว่าได้กินก่อน!",
+        W/2,
+        groundY-104
+    );
+
+
+    /* MOONCAKES */
+
+    for(
+        const [id,cake]
+        of Object.entries(moonCakesData)
+    ){
+
+        const eaten =
+            cake.eatenAt &&
+            Date.now()-cake.eatenAt < 1400;
+
+
+        if(eaten)
+            continue;
+
+
+        const x =
+            cake.x*W;
+
+
+        const y =
+            cake.y*H;
+
+
+        ctx.save();
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.shadowColor =
+            "rgba(251,191,36,.75)";
+
+
+        ctx.shadowBlur =
+            18;
+
+
+        ctx.font =
+            "34px sans-serif";
+
+
+        ctx.fillText(
+            "🥮",
+            x,
+            y
+        );
+
+
+        ctx.shadowBlur =
+            0;
+
+
+        ctx.font =
+            "9px Prompt,sans-serif";
+
+
+        ctx.fillStyle =
+            "rgba(255,237,213,.8)";
+
+
+        ctx.fillText(
+            "กดเพื่อแย่ง!",
+            x,
+            y+25
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   PLAYER COUNT
+   ========================================================= */
+
+function updatePlayerCount(){
+
+    const count =
+        Object.keys(
+            {
+                ...demoPlayers,
+                ...playersData
+            }
+        ).length;
+
+
+    document
+        .getElementById(
+            "player-count"
+        )
+        .innerText =
+        `ผู้เล่นออนไลน์: ${count}`;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(
+            /[&<>'"`]/g,
+            c => ({
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#39;",
+                "`":"&#96;"
+
+            }[c])
+        );
+
+}
+
+
+/* =========================================================
+   BEFORE UNLOAD
+   ========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if(
+            firebaseReady &&
+            db &&
+            currentUser &&
+            isJoined
+        ){
+
+            deleteDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "players",
+                    myPlayerId
+                )
+
+            ).catch(()=>{});
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOCAL DEMO CHAT
+   ========================================================= */
+
+setTimeout(
+    () => {
+
+        if(!firebaseReady){
+
+            addLocalChat(
+                "Luna",
+                "คืนนี้พระจันทร์สวยจังเลย 🌕"
+            );
+
+        }
+
+    },
+    1800
+);
+
+
+setTimeout(
+    () => {
+
+        if(!firebaseReady){
+
+            addLocalChat(
+                "Mei",
+                "ไปดูโคมยักษ์กันไหม? 🏮"
+            );
+
+        }
+
+    },
+    4200
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initializeFirebase();
+
+createLocalMoonCakes();
+
+renderScoreboard();
+
+updatePlayerCount();
+
+
+/* =========================================================
+   GAME LOOP
+   ========================================================= */
+
+function loop(){
+
+    update();
+
+    draw();
+
+    requestAnimationFrame(
+        loop
+    );
+
+}
+
+
+loop();
+
+
+</script>
+
 </body>
 </html>
