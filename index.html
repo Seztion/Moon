@@ -1,1208 +1,769 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moonlit Gathering - เทศกาลชมจันทร์ร่วมกัน</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root{
-            --night:#020617;
-            --deep:#080b22;
-            --indigo:#312e81;
-            --violet:#7c3aed;
-            --moon:#fde68a;
-            --gold:#fbbf24;
-            --pink:#f9a8d4;
-            --cyan:#67e8f9;
-        }
-
-        *{
-            box-sizing:border-box;
-        }
-
-        html,
-        body{
-            margin:0;
-            width:100%;
-            height:100%;
-        }
-
-        body{
-            font-family:'Prompt',sans-serif;
-            background:
-                radial-gradient(
-                    circle at 50% 8%,
-                    rgba(99,102,241,.22),
-                    transparent 24%
-                ),
-                radial-gradient(
-                    circle at 15% 70%,
-                    rgba(124,58,237,.13),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 88% 62%,
-                    rgba(251,191,36,.09),
-                    transparent 24%
-                ),
-                #020617;
-
-            overflow:hidden;
-        }
-
-        canvas{
-            touch-action:none;
-            position:relative;
-            z-index:1;
-            display:block;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar{
-            width:4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb{
-            background:linear-gradient(#fbbf24,#a78bfa);
-            border-radius:999px;
-        }
-
-        .glass-panel{
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(11,16,43,.88),
-                    rgba(16,10,42,.76)
-                );
-
-            backdrop-filter:blur(22px) saturate(135%);
-
-            border:1px solid rgba(167,139,250,.32);
-
-            box-shadow:
-                0 18px 50px rgba(0,0,0,.55),
-                inset 0 1px 0 rgba(255,255,255,.07);
-        }
-
-        .glow-text{
-            text-shadow:
-                0 0 10px rgba(251,191,36,.8),
-                0 0 28px rgba(251,191,36,.35);
-        }
-
-        .modal-glow{
-            box-shadow:
-                0 0 0 1px rgba(251,191,36,.12),
-                0 0 55px rgba(124,58,237,.24),
-                0 25px 80px rgba(0,0,0,.65);
-        }
-
-        .moon-decor{
-            position:absolute;
-            inset:0;
-            pointer-events:none;
-            overflow:hidden;
-            z-index:0;
-
-            background:
-                radial-gradient(
-                    circle at 50% 16%,
-                    rgba(255,244,180,.12) 0 2px,
-                    transparent 3px
-                ),
-                radial-gradient(
-                    circle at 18% 24%,
-                    rgba(255,255,255,.75) 0 1px,
-                    transparent 2px
-                ),
-                radial-gradient(
-                    circle at 82% 20%,
-                    rgba(255,255,255,.65) 0 1px,
-                    transparent 2px
-                );
-        }
-
-        .moon-orb{
-            position:absolute;
-            width:180px;
-            height:180px;
-            right:7%;
-            top:7%;
-            border-radius:50%;
-
-            background:
-                radial-gradient(
-                    circle at 34% 28%,
-                    rgba(255,255,255,.95) 0 7%,
-                    transparent 8%
-                ),
-                radial-gradient(
-                    circle at 67% 38%,
-                    rgba(180,83,9,.12) 0 10%,
-                    transparent 11%
-                ),
-                radial-gradient(
-                    circle at 44% 70%,
-                    rgba(180,83,9,.10) 0 13%,
-                    transparent 14%
-                ),
-                radial-gradient(
-                    circle at 50% 50%,
-                    #fff7c2 0,
-                    #fde68a 56%,
-                    #f59e0b 100%
-                );
-
-            box-shadow:
-                0 0 35px rgba(253,224,71,.55),
-                0 0 100px rgba(253,224,71,.20);
-
-            opacity:.72;
-
-            animation:
-                moonFloat 6s ease-in-out infinite;
-        }
-
-        .moon-halo{
-            position:absolute;
-            width:330px;
-            height:330px;
-            right:calc(7% - 75px);
-            top:calc(7% - 75px);
-
-            border:1px solid rgba(253,224,71,.14);
-            border-radius:50%;
-
-            box-shadow:
-                0 0 70px rgba(253,224,71,.08) inset;
-
-            animation:
-                haloPulse 5s ease-in-out infinite;
-        }
-
-        .decor-icon{
-            position:absolute;
-            font-size:clamp(22px,2.5vw,42px);
-            opacity:.28;
-
-            filter:
-                drop-shadow(
-                    0 0 12px rgba(251,191,36,.45)
-                );
-
-            animation:
-                decorFloat 7s ease-in-out infinite;
-        }
-
-        .decor-icon:nth-child(3){
-            animation-delay:-2s;
-        }
-
-        .decor-icon:nth-child(4){
-            animation-delay:-4s;
-        }
-
-        .decor-icon:nth-child(5){
-            animation-delay:-1s;
-        }
-
-        .decor-icon:nth-child(6){
-            animation-delay:-5s;
-        }
-
-        .vignette{
-            position:absolute;
-            inset:0;
-            pointer-events:none;
-            z-index:2;
-
-            background:
-                radial-gradient(
-                    circle,
-                    transparent 48%,
-                    rgba(2,6,23,.22) 75%,
-                    rgba(2,6,23,.7) 100%
-                );
-        }
-
-        @keyframes moonFloat{
-            50%{
-                transform:
-                    translateY(-9px)
-                    scale(1.015);
-            }
-        }
-
-        @keyframes haloPulse{
-            50%{
-                transform:scale(1.04);
-                opacity:.7;
-            }
-        }
-
-        @keyframes decorFloat{
-            50%{
-                transform:
-                    translateY(-16px)
-                    rotate(4deg);
-
-                opacity:.42;
-            }
-        }
-
-        @media(max-width:700px){
-
-            .moon-orb{
-                width:110px;
-                height:110px;
-            }
-
-            .moon-halo{
-                width:210px;
-                height:210px;
-                right:calc(7% - 50px);
-                top:calc(7% - 50px);
-            }
-        }
-
-        .avatar-btn{
-            overflow:hidden;
-        }
-
-        .avatar-btn::before{
-            content:"";
-            position:absolute;
-            inset:0;
-
-            background:
-                radial-gradient(
-                    circle at 50% 15%,
-                    rgba(253,224,71,.12),
-                    transparent 55%
-                );
-
-            opacity:0;
-            transition:opacity .3s;
-        }
-
-        .avatar-btn:hover::before{
-            opacity:1;
-        }
-
-        .room-title{
-            position:absolute;
-            top:24px;
-            left:50%;
-            transform:translateX(-50%);
-            z-index:5;
-
-            pointer-events:none;
-
-            padding:9px 18px;
-
-            border:1px solid rgba(251,191,36,.22);
-            border-radius:999px;
-
-            background:
-                rgba(5,7,25,.55);
-
-            backdrop-filter:blur(12px);
-
-            color:#fde68a;
-
-            font-size:11px;
-            letter-spacing:.18em;
-
-            white-space:nowrap;
-
-            box-shadow:
-                0 10px 35px rgba(0,0,0,.25),
-                0 0 30px rgba(251,191,36,.06);
-        }
-
-        .mode-badge{
-            position:absolute;
-            top:24px;
-            right:24px;
-            z-index:6;
-
-            padding:7px 12px;
-
-            border-radius:999px;
-
-            background:rgba(2,6,23,.68);
-            border:1px solid rgba(103,232,249,.18);
-
-            color:#a5f3fc;
-
-            font-size:9px;
-            letter-spacing:.12em;
-
-            backdrop-filter:blur(12px);
-        }
-
-        .toast{
-            position:absolute;
-            left:50%;
-            bottom:25px;
-            transform:
-                translate(-50%,20px);
-
-            z-index:40;
-
-            opacity:0;
-            pointer-events:none;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(30,20,60,.96),
-                    rgba(8,12,35,.96)
-                );
-
-            border:1px solid rgba(251,191,36,.35);
-
-            color:#fde68a;
-
-            padding:11px 18px;
-
-            border-radius:999px;
-
-            font-size:12px;
-
-            box-shadow:
-                0 15px 50px rgba(0,0,0,.5),
-                0 0 35px rgba(251,191,36,.08);
-
-            transition:
-                opacity .3s ease,
-                transform .3s ease;
-        }
-
-        .toast.show{
-            opacity:1;
-            transform:
-                translate(-50%,0);
-        }
-
-        .mobile-hint{
-            position:absolute;
-            right:18px;
-            bottom:18px;
-            z-index:7;
-
-            pointer-events:none;
-
-            font-size:9px;
-            color:rgba(255,255,255,.45);
-
-            padding:7px 10px;
-            border-radius:999px;
-
-            background:rgba(2,6,23,.45);
-            border:1px solid rgba(255,255,255,.06);
-
-            backdrop-filter:blur(10px);
-        }
-
-        @media(max-width:800px){
-
-            .room-title{
-                top:15px;
-                font-size:9px;
-                max-width:60vw;
-                overflow:hidden;
-                text-overflow:ellipsis;
-            }
-
-            .mode-badge{
-                display:none;
-            }
-
-            .mobile-hint{
-                display:none;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Moonlit Gathering - เทศกาลชมจันทร์ร่วมกัน</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --night:#020617;
+    --deep:#080b22;
+    --indigo:#312e81;
+    --violet:#7c3aed;
+    --moon:#fde68a;
+    --gold:#fbbf24;
+    --pink:#f9a8d4;
+    --cyan:#67e8f9;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+}
+
+body{
+    font-family:'Prompt',sans-serif;
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(99,102,241,.22),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 15% 70%,
+            rgba(124,58,237,.13),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 88% 62%,
+            rgba(251,191,36,.09),
+            transparent 24%
+        ),
+        #020617;
+    overflow:hidden;
+}
+
+canvas{
+    touch-action:none;
+    position:relative;
+    z-index:1;
+    display:block;
+}
+
+.custom-scrollbar::-webkit-scrollbar{
+    width:4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb{
+    background:linear-gradient(#fbbf24,#a78bfa);
+    border-radius:999px;
+}
+
+.glass-panel{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(11,16,43,.88),
+            rgba(16,10,42,.76)
+        );
+
+    backdrop-filter:blur(22px) saturate(135%);
+
+    border:1px solid rgba(167,139,250,.32);
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+.glow-text{
+    text-shadow:
+        0 0 10px rgba(251,191,36,.8),
+        0 0 28px rgba(251,191,36,.35);
+}
+
+.room-title{
+    position:absolute;
+    top:24px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:5;
+    pointer-events:none;
+
+    padding:9px 18px;
+
+    border:1px solid rgba(251,191,36,.22);
+    border-radius:999px;
+
+    background:rgba(5,7,25,.55);
+
+    backdrop-filter:blur(12px);
+
+    color:#fde68a;
+
+    font-size:11px;
+    letter-spacing:.18em;
+
+    white-space:nowrap;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.25),
+        0 0 30px rgba(251,191,36,.06);
+}
+
+.mode-badge{
+    position:absolute;
+    top:24px;
+    right:24px;
+    z-index:6;
+
+    padding:7px 12px;
+
+    border-radius:999px;
+
+    background:rgba(2,6,23,.68);
+    border:1px solid rgba(103,232,249,.18);
+
+    color:#a5f3fc;
+
+    font-size:9px;
+    letter-spacing:.12em;
+
+    backdrop-filter:blur(12px);
+}
+
+.toast{
+    position:absolute;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,20px);
+
+    z-index:100;
+
+    opacity:0;
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30,20,60,.96),
+            rgba(8,12,35,.96)
+        );
+
+    border:1px solid rgba(251,191,36,.35);
+
+    color:#fde68a;
+
+    padding:11px 18px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.5),
+        0 0 35px rgba(251,191,36,.08);
+
+    transition:
+        opacity .3s ease,
+        transform .3s ease;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+.mobile-hint{
+    position:absolute;
+    right:18px;
+    bottom:18px;
+    z-index:7;
+
+    pointer-events:none;
+
+    font-size:9px;
+    color:rgba(255,255,255,.45);
+
+    padding:7px 10px;
+    border-radius:999px;
+
+    background:rgba(2,6,23,.45);
+    border:1px solid rgba(255,255,255,.06);
+
+    backdrop-filter:blur(10px);
+}
+
+.avatar-btn{
+    overflow:hidden;
+}
+
+@media(max-width:800px){
+
+    .room-title{
+        top:15px;
+        font-size:9px;
+        max-width:60vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .mode-badge{
+        display:none;
+    }
+
+    .mobile-hint{
+        display:none;
+    }
+}
+
+@keyframes pulseGlow{
+    50%{
+        opacity:.55;
+        transform:scale(1.04);
+    }
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+.cake-pulse{
+    animation:pulseGlow 1.8s ease-in-out infinite;
+}
+
+</style>
 </head>
 
 <body class="text-white h-screen flex flex-col justify-between select-none">
 
-    <!-- ================= HEADER ================= -->
+<!-- =====================================================
+HEADER
+===================================================== -->
 
-    <header
-        class="glass-panel border-b border-indigo-900/50 px-5 py-3.5 flex justify-between items-center z-20">
+<header class="glass-panel border-b border-indigo-900/50 px-5 py-3.5 flex justify-between items-center z-20">
 
-        <div class="flex items-center space-x-3.5">
+    <div class="flex items-center space-x-3.5">
 
-            <span class="text-3xl animate-bounce">
-                🌕
+        <span class="text-3xl animate-bounce">
+            🌕
+        </span>
+
+        <div>
+
+            <h1 class="font-bold text-sm md:text-base text-amber-300 tracking-wide glow-text">
+                ชมจันทร์ร่วมกัน (Moonlit Gathering)
+            </h1>
+
+            <p class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1.5">
+
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+
+                <span id="current-room-label">
+                    กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา
+                </span>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="flex items-center space-x-3">
+
+        <div class="bg-black/35 p-1.5 rounded-2xl border border-violet-400/20 flex space-x-1 shadow-inner backdrop-blur-xl">
+
+            <button
+                onclick="switchRoom('lobby')"
+                id="btn-room-lobby"
+                class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95">
+                🏮 ลานกิจกรรม
+            </button>
+
+            <button
+                onclick="switchRoom('pagoda')"
+                id="btn-room-pagoda"
+                class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
+                🏛️ หอชมโคมยักษ์
+            </button>
+
+            <button
+                onclick="switchRoom('minigame')"
+                id="btn-room-minigame"
+                class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
+                🥮 ศึกชิงขนม
+            </button>
+
+        </div>
+
+        <div class="hidden sm:flex bg-black/35 border border-violet-400/20 px-3.5 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-lg backdrop-blur-xl">
+
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+
+            <span id="player-count" class="font-medium text-emerald-300">
+                ผู้เล่นออนไลน์: 1
             </span>
 
-            <div>
+        </div>
 
-                <h1
-                    class="font-bold text-sm md:text-base text-amber-300 tracking-wide glow-text">
-                    ชมจันทร์ร่วมกัน (Moonlit Gathering)
-                </h1>
+    </div>
 
-                <p
-                    class="text-[10px] md:text-xs text-indigo-300 flex items-center space-x-1.5">
+</header>
 
-                    <span
-                        class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block animate-ping">
-                    </span>
 
-                    <span id="current-room-label">
-                        กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา • เดินหาเพื่อนและร่วมเทศกาล
-                    </span>
+<!-- =====================================================
+MAIN
+===================================================== -->
 
-                </p>
+<main class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#020617]">
+
+    <canvas
+        id="gameCanvas"
+        class="w-full h-full cursor-crosshair">
+    </canvas>
+
+    <div id="room-title" class="room-title">
+        🏮 MOONLIT GATHERING • ลานกิจกรรม
+    </div>
+
+    <div id="mode-badge" class="mode-badge">
+        OFFLINE / DEMO MODE
+    </div>
+
+
+    <!-- =================================================
+    HUD
+    ================================================= -->
+
+    <div id="hud-overlay"
+         class="absolute top-4 left-4 z-10 pointer-events-none flex flex-col space-y-3 max-w-xs w-full">
+
+        <!-- PAGODA -->
+
+        <div
+            id="pagoda-hud"
+            class="glass-panel border-indigo-500/50 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-3">
+
+            <h3 class="text-xs font-bold text-indigo-200">
+                🏮 ปล่อยโคมอธิษฐานยักษ์ลอยฟ้า
+            </h3>
+
+            <div class="flex space-x-2">
+
+                <input
+                    type="text"
+                    id="wishInput"
+                    maxlength="35"
+                    placeholder="พิมพ์คำอธิษฐานของคุณ..."
+                    class="flex-1 bg-slate-900/90 border border-indigo-500/50 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
+
+                <button
+                    onclick="releaseLantern()"
+                    class="bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg active:scale-95">
+                    ปล่อย 🌙
+                </button>
 
             </div>
 
         </div>
 
-        <div class="flex items-center space-x-3">
 
-            <!-- ROOM SWITCHER -->
-
-            <div
-                class="bg-black/35 p-1.5 rounded-2xl border border-violet-400/20 flex space-x-1 shadow-inner backdrop-blur-xl">
-
-                <button
-                    onclick="switchRoom('lobby')"
-                    id="btn-room-lobby"
-                    class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95">
-
-                    🏮 ลานกิจกรรม
-
-                </button>
-
-                <button
-                    onclick="switchRoom('pagoda')"
-                    id="btn-room-pagoda"
-                    class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
-
-                    🏛️ หอชมโคมยักษ์
-
-                </button>
-
-                <button
-                    onclick="switchRoom('minigame')"
-                    id="btn-room-minigame"
-                    class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">
-
-                    🥮 ศึกชิงขนม
-
-                </button>
-
-            </div>
-
-            <!-- PLAYER COUNT -->
-
-            <div
-                class="hidden sm:flex bg-black/35 border border-violet-400/20 px-3.5 py-1.5 rounded-2xl text-xs items-center space-x-2 shadow-lg backdrop-blur-xl">
-
-                <span
-                    class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse">
-                </span>
-
-                <span
-                    id="player-count"
-                    class="font-medium text-emerald-300">
-
-                    ผู้เล่นออนไลน์: 1
-
-                </span>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main
-        class="flex-1 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-950 to-[#020617]">
-
-        <canvas
-            id="gameCanvas"
-            class="w-full h-full cursor-crosshair">
-        </canvas>
-
-
-        <!-- ROOM TITLE -->
+        <!-- MINIGAME -->
 
         <div
-            id="room-title"
-            class="room-title">
+            id="minigame-hud"
+            class="glass-panel border-amber-400/40 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-2 min-w-[250px]">
 
-            🏮 MOONLIT GATHERING • ลานกิจกรรม
+            <div class="flex items-center justify-between gap-4">
 
-        </div>
+                <div class="text-left">
 
+                    <div class="text-[10px] tracking-[.2em] text-amber-300/70">
+                        MOONCAKE RUSH
+                    </div>
 
-        <!-- MODE -->
-
-        <div
-            id="mode-badge"
-            class="mode-badge">
-
-            OFFLINE / DEMO MODE
-
-        </div>
-
-
-        <!-- HUD -->
-
-        <div
-            id="hud-overlay"
-            class="absolute top-4 left-4 z-10 pointer-events-none flex flex-col space-y-3 max-w-xs w-full">
-
-            <!-- PAGODA HUD -->
-
-            <div
-                id="pagoda-hud"
-                class="glass-panel border-indigo-500/50 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-3">
-
-                <h3
-                    class="text-xs font-bold text-indigo-200">
-
-                    🏮 ปล่อยโคมอธิษฐานยักษ์ลอยฟ้า
-
-                </h3>
-
-                <div class="flex space-x-2">
-
-                    <input
-                        type="text"
-                        id="wishInput"
-                        maxlength="35"
-                        placeholder="พิมพ์คำอธิษฐานของคุณ..."
-                        class="flex-1 bg-slate-900/90 border border-indigo-500/50 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner">
-
-                    <button
-                        onclick="releaseLantern()"
-                        class="bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg active:scale-95">
-
-                        ปล่อย 🌙
-
-                    </button>
+                    <h3 class="text-sm font-bold text-amber-100">
+                        🥮 ศึกชิงขนมไหว้พระจันทร์
+                    </h3>
 
                 </div>
 
-            </div>
+                <div class="rounded-2xl px-3 py-2 bg-amber-400/10 border border-amber-300/20">
 
-
-            <!-- MINIGAME HUD -->
-
-            <div
-                id="minigame-hud"
-                class="glass-panel border-amber-400/40 p-4 rounded-3xl hidden pointer-events-auto text-center space-y-2 min-w-[250px]">
-
-                <div class="flex items-center justify-between gap-4">
-
-                    <div class="text-left">
-
-                        <div
-                            class="text-[10px] tracking-[.2em] text-amber-300/70">
-
-                            MOONCAKE RUSH
-
-                        </div>
-
-                        <h3
-                            class="text-sm font-bold text-amber-100">
-
-                            🥮 ศึกชิงขนมไหว้พระจันทร์
-
-                        </h3>
-
+                    <div class="text-[9px] text-slate-400">
+                        คะแนนฉัน
                     </div>
 
-                    <div
-                        class="rounded-2xl px-3 py-2 bg-amber-400/10 border border-amber-300/20">
-
-                        <div
-                            class="text-[9px] text-slate-400">
-
-                            คะแนนฉัน
-
-                        </div>
-
-                        <div
-                            id="my-score"
-                            class="text-xl font-black text-amber-300">
-
-                            0
-
-                        </div>
-
+                    <div id="my-score" class="text-xl font-black text-amber-300">
+                        0
                     </div>
 
                 </div>
 
-                <div
-                    class="text-[10px] text-slate-300/80">
+            </div>
 
-                    เดินเข้าใกล้ 🥮 แล้วกด
-                    <b class="text-amber-200">
-                        SPACE / คลิก
-                    </b>
-                    เพื่อแย่งขนมกับเพื่อน!
+            <div class="text-[10px] text-slate-300/80">
+                เดินเข้าใกล้ 🥮 แล้วกด
+                <b class="text-amber-200">
+                    SPACE / คลิก
+                </b>
+                เพื่อแย่งขนม!
+            </div>
 
-                </div>
-
-                <div
-                    id="scoreboard"
-                    class="text-left text-[10px] text-slate-300 space-y-1 max-h-24 overflow-y-auto custom-scrollbar">
-
-                </div>
-
+            <div
+                id="scoreboard"
+                class="text-left text-[10px] text-slate-300 space-y-1 max-h-24 overflow-y-auto custom-scrollbar">
             </div>
 
         </div>
 
+    </div>
 
-        <!-- ================= CHAT ================= -->
+
+    <!-- =================================================
+    CHAT
+    ================================================= -->
+
+    <div class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/70 rounded-3xl flex flex-col overflow-hidden">
 
         <div
-            class="absolute bottom-4 left-4 right-4 md:right-auto md:w-80 z-10 glass-panel border-indigo-800/70 rounded-3xl flex flex-col overflow-hidden">
+            class="bg-indigo-950/90 px-4 py-3 border-b border-indigo-800/50 flex justify-between items-center cursor-pointer hover:bg-indigo-900/60 transition"
+            onclick="toggleChatExpand()">
+
+            <span class="text-xs font-bold text-amber-300 flex items-center space-x-2">
+                <span>💬</span>
+                <span>แชทสนทนากลุ่ม</span>
+            </span>
+
+            <span id="chat-toggle-icon" class="text-xs text-indigo-400 font-bold transition">
+                ▲
+            </span>
+
+        </div>
+
+        <div id="chat-body" class="flex flex-col h-40 md:h-48">
 
             <div
-                class="bg-indigo-950/90 px-4 py-3 border-b border-indigo-800/50 flex justify-between items-center cursor-pointer hover:bg-indigo-900/60 transition"
-                onclick="toggleChatExpand()">
+                id="chat-messages"
+                class="flex-1 p-3.5 overflow-y-auto space-y-2 text-xs custom-scrollbar">
 
-                <span
-                    class="text-xs font-bold text-amber-300 flex items-center space-x-2">
-
-                    <span>💬</span>
-                    <span>แชทสนทนากลุ่ม</span>
-
-                </span>
-
-                <span
-                    id="chat-toggle-icon"
-                    class="text-xs text-indigo-400 font-bold transition transform">
-
-                    ▲
-
-                </span>
+                <div class="text-indigo-300/80 italic">
+                    ✨ ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์
+                    พิมพ์ทักทายเพื่อน ๆ ได้เลยครับ...
+                </div>
 
             </div>
 
+            <div class="p-2.5 bg-slate-950/95 border-t border-indigo-900/60 flex space-x-2">
 
-            <div
-                id="chat-body"
-                class="flex flex-col h-40 md:h-48 transition-all duration-300">
+                <input
+                    type="text"
+                    id="chatInput"
+                    maxlength="90"
+                    placeholder="พิมพ์ข้อความสนทนา..."
+                    class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner"
+                    onkeydown="if(event.key==='Enter') sendChatMessage()">
 
-                <div
-                    id="chat-messages"
-                    class="flex-1 p-3.5 overflow-y-auto space-y-2 text-xs custom-scrollbar">
-
-                    <div
-                        class="text-indigo-300/80 italic">
-
-                        ✨ ยินดีต้อนรับสู่เทศกาลไหว้พระจันทร์
-                        พิมพ์ทักทายเพื่อนๆ ได้เลยครับ...
-
-                    </div>
-
-                </div>
-
-                <div
-                    class="p-2.5 bg-slate-950/95 border-t border-indigo-900/60 flex space-x-2">
-
-                    <input
-                        type="text"
-                        id="chatInput"
-                        maxlength="90"
-                        placeholder="พิมพ์ข้อความสนทนา..."
-                        class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400 shadow-inner"
-                        onkeydown="if(event.key==='Enter') sendChatMessage()">
-
-                    <button
-                        onclick="sendChatMessage()"
-                        class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md active:scale-95">
-
-                        ส่ง
-
-                    </button>
-
-                </div>
+                <button
+                    onclick="sendChatMessage()"
+                    class="bg-amber-500 hover:bg-amber-400 text-indigo-950 font-bold px-4 py-2 rounded-xl text-xs transition shadow-md active:scale-95">
+                    ส่ง
+                </button>
 
             </div>
 
         </div>
 
-
-        <!-- MOBILE HINT -->
-
-        <div class="mobile-hint">
-            🖱️ คลิกเพื่อเดิน • WASD / ลูกศร
-        </div>
+    </div>
 
 
-        <!-- TOAST -->
+    <div class="mobile-hint">
+        🖱️ คลิกเพื่อเดิน • WASD / ลูกศร
+    </div>
 
-        <div id="toast" class="toast"></div>
-
-
-        <!-- ================= CHARACTER CREATION ================= -->
-
-        <div
-            id="nameModal"
-            class="absolute inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
-            style="
-                background:
-                radial-gradient(circle at 50% 42%, rgba(99,102,241,.20), transparent 30%),
-                radial-gradient(circle at 20% 80%, rgba(236,72,153,.10), transparent 28%),
-                radial-gradient(circle at 82% 18%, rgba(251,191,36,.10), transparent 25%),
-                rgba(2,6,23,.92);
-                backdrop-filter:blur(18px);
-            ">
-
-            <div class="absolute inset-0 pointer-events-none">
-
-                <span class="absolute left-[8%] top-[16%] text-xl opacity-70 animate-pulse">
-                    ✦
-                </span>
-
-                <span class="absolute left-[18%] top-[70%] text-sm text-amber-200 opacity-60">
-                    ✧
-                </span>
-
-                <span class="absolute right-[13%] top-[18%] text-2xl text-amber-200 opacity-70 animate-pulse">
-                    ✦
-                </span>
-
-                <span class="absolute right-[20%] bottom-[18%] text-lg opacity-60">
-                    ✧
-                </span>
-
-                <span class="absolute left-[31%] top-[11%] text-xs opacity-50">
-                    ✦
-                </span>
-
-                <span class="absolute right-[35%] bottom-[12%] text-xs opacity-50">
-                    ✦
-                </span>
-
-            </div>
+    <div id="toast" class="toast"></div>
 
 
-            <!-- MOON -->
+    <!-- =================================================
+    CHARACTER MODAL
+    ================================================= -->
+
+    <div
+        id="nameModal"
+        class="absolute inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
+        style="
+            background:
+            radial-gradient(circle at 50% 42%, rgba(99,102,241,.20), transparent 30%),
+            radial-gradient(circle at 20% 80%, rgba(236,72,153,.10), transparent 28%),
+            radial-gradient(circle at 82% 18%, rgba(251,191,36,.10), transparent 25%),
+            rgba(2,6,23,.92);
+            backdrop-filter:blur(18px);
+        ">
+
+        <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
 
             <div
-                class="absolute top-[5%] right-[7%] w-36 h-36 md:w-52 md:h-52 rounded-full pointer-events-none"
+                class="relative rounded-[32px] overflow-hidden border border-amber-300/20"
                 style="
                     background:
-                    radial-gradient(circle at 34% 30%,#fffde7 0,#fde68a 58%,#f59e0b 100%);
+                    radial-gradient(
+                        circle at 50% 0%,
+                        rgba(124,58,237,.22),
+                        transparent 35%
+                    ),
+                    linear-gradient(
+                        145deg,
+                        rgba(9,12,36,.97),
+                        rgba(18,10,43,.97)
+                    );
+
                     box-shadow:
-                    0 0 45px rgba(253,224,71,.45),
-                    0 0 130px rgba(253,224,71,.16);
-                    opacity:.38;
+                    0 35px 100px rgba(0,0,0,.75),
+                    0 0 80px rgba(124,58,237,.15);
                 ">
-            </div>
 
+                <div class="h-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent opacity-80"></div>
 
-            <div
-                class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+                <div class="p-6 md:p-10">
 
-                <div
-                    class="absolute -inset-[1px] rounded-[34px] pointer-events-none"
-                    style="
-                        background:
-                        linear-gradient(
-                            135deg,
-                            rgba(253,224,71,.65),
-                            rgba(167,139,250,.28),
-                            rgba(244,114,182,.45),
-                            rgba(253,224,71,.55)
-                        );
-                        filter:blur(.3px);
-                    ">
-                </div>
+                    <div class="text-center">
 
+                        <div class="flex justify-center items-center gap-4 mb-3">
 
-                <div
-                    class="relative rounded-[32px] overflow-hidden border border-amber-300/20"
-                    style="
-                        background:
-                        radial-gradient(
-                            circle at 50% 0%,
-                            rgba(124,58,237,.22),
-                            transparent 35%
-                        ),
-                        linear-gradient(
-                            145deg,
-                            rgba(9,12,36,.97),
-                            rgba(18,10,43,.97)
-                        );
+                            <span class="text-amber-300/60 text-xl">
+                                ✦
+                            </span>
 
-                        box-shadow:
-                        0 35px 100px rgba(0,0,0,.75),
-                        0 0 80px rgba(124,58,237,.15);
-                    ">
+                            <span class="text-4xl md:text-5xl">
+                                🌕
+                            </span>
 
-                    <div
-                        class="h-1 bg-gradient-to-r from-transparent via-amber-300 to-transparent opacity-80">
+                            <span class="text-amber-300/60 text-xl">
+                                ✦
+                            </span>
+
+                        </div>
+
+                        <div class="text-[10px] md:text-xs tracking-[.42em] text-indigo-300/80 uppercase mb-2">
+                            MOONLIT GATHERING
+                        </div>
+
+                        <h2 class="text-2xl md:text-4xl font-bold text-amber-200">
+                            คืนที่พระจันทร์เรียกหา
+                        </h2>
+
+                        <p class="text-xs md:text-sm text-slate-400 mt-3 leading-relaxed">
+                            ก่อนที่แสงจันทร์จะดับลง...<br>
+                            จงเลือกตัวตนของคุณ
+                            และก้าวเข้าสู่โลกแห่งคำอธิษฐาน
+                        </p>
+
                     </div>
 
 
-                    <div class="p-6 md:p-10">
+                    <div class="flex items-center justify-center gap-2 mt-6 mb-7">
 
-                        <div class="text-center">
+                        <span class="w-10 h-px bg-gradient-to-r from-transparent to-amber-400/60"></span>
 
-                            <div class="flex justify-center items-center gap-4 mb-3">
+                        <span class="px-3 py-1 rounded-full text-[10px] text-amber-200 border border-amber-300/20 bg-amber-400/5">
+                            ✦ CREATE YOUR CHARACTER ✦
+                        </span>
 
-                                <span class="text-amber-300/60 text-xl">
-                                    ✦
-                                </span>
+                        <span class="w-10 h-px bg-gradient-to-l from-transparent to-amber-400/60"></span>
 
-                                <span
-                                    class="text-4xl md:text-5xl"
-                                    style="
-                                        filter:
-                                        drop-shadow(
-                                            0 0 16px rgba(253,224,71,.55)
-                                        );
-                                    ">
-
-                                    🌕
-                                </span>
-
-                                <span class="text-amber-300/60 text-xl">
-                                    ✦
-                                </span>
-
-                            </div>
+                    </div>
 
 
-                            <div
-                                class="text-[10px] md:text-xs tracking-[.42em] text-indigo-300/80 uppercase mb-2">
+                    <div class="mb-7">
 
-                                MOONLIT GATHERING
+                        <div class="flex items-center justify-between mb-3">
 
-                            </div>
+                            <label class="text-xs font-semibold text-indigo-200">
+                                <span class="text-amber-300">01</span>
+                                เลือกผู้เดินทางแห่งจันทรา
+                            </label>
 
-
-                            <h2
-                                class="text-2xl md:text-4xl font-bold text-amber-200"
-                                style="
-                                    text-shadow:
-                                    0 0 18px rgba(251,191,36,.55),
-                                    0 0 45px rgba(124,58,237,.25);
-                                ">
-
-                                คืนที่พระจันทร์เรียกหา
-
-                            </h2>
-
-
-                            <p
-                                class="text-xs md:text-sm text-slate-400 mt-3 leading-relaxed">
-
-                                ก่อนที่แสงจันทร์จะดับลง...<br>
-                                จงเลือกตัวตนของคุณ
-                                และก้าวเข้าสู่โลกแห่งคำอธิษฐาน
-
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="flex items-center justify-center gap-2 mt-6 mb-7">
-
-                            <span
-                                class="w-10 h-px bg-gradient-to-r from-transparent to-amber-400/60">
-                            </span>
-
-                            <span
-                                class="px-3 py-1 rounded-full text-[10px] text-amber-200 border border-amber-300/20 bg-amber-400/5">
-
-                                ✦ CREATE YOUR CHARACTER ✦
-
-                            </span>
-
-                            <span
-                                class="w-10 h-px bg-gradient-to-l from-transparent to-amber-400/60">
+                            <span class="text-[10px] text-slate-500">
+                                SELECT AVATAR
                             </span>
 
                         </div>
 
 
-                        <!-- AVATAR -->
+                        <div class="grid grid-cols-4 gap-3 md:gap-4" id="avatarSelector">
 
-                        <div class="mb-7">
+                            <button
+                                type="button"
+                                onclick="selectAvatar('🐇')"
+                                class="avatar-btn relative h-20 md:h-24 rounded-2xl border-2 border-amber-300/80 bg-gradient-to-b from-amber-400/15 to-violet-500/10 transition-all duration-300 hover:-translate-y-1">
 
-                            <div
-                                class="flex items-center justify-between mb-3">
-
-                                <label
-                                    class="text-xs font-semibold text-indigo-200">
-
-                                    <span class="text-amber-300">
-                                        01
-                                    </span>
-
-                                    เลือกผู้เดินทางแห่งจันทรา
-
-                                </label>
-
-                                <span class="text-[10px] text-slate-500">
-                                    SELECT AVATAR
+                                <span class="text-4xl md:text-5xl block">
+                                    🐇
                                 </span>
 
-                            </div>
-
-
-                            <div
-                                class="grid grid-cols-4 gap-3 md:gap-4"
-                                id="avatarSelector">
-
-
-                                <button
-                                    type="button"
-                                    onclick="selectAvatar('🐇')"
-                                    class="avatar-btn group relative h-20 md:h-24 rounded-2xl border-2 border-amber-300/80 bg-gradient-to-b from-amber-400/15 to-violet-500/10 transition-all duration-300 hover:-translate-y-1"
-                                    style="
-                                        box-shadow:
-                                        0 0 25px rgba(251,191,36,.14);
-                                    ">
-
-                                    <span
-                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
-                                        🐇
-                                    </span>
-
-                                    <span
-                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-amber-200/80">
-
-                                        LUNAR RABBIT
-
-                                    </span>
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    onclick="selectAvatar('🐰')"
-                                    class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-
-                                    <span
-                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
-                                        🐰
-                                    </span>
-
-                                    <span
-                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
-
-                                        MOON BUNNY
-
-                                    </span>
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    onclick="selectAvatar('🪷')"
-                                    class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-
-                                    <span
-                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
-                                        🪷
-                                    </span>
-
-                                    <span
-                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
-
-                                        MOON LOTUS
-
-                                    </span>
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    onclick="selectAvatar('✨')"
-                                    class="avatar-btn group relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1 hover:border-violet-300/60">
-
-                                    <span
-                                        class="text-4xl md:text-5xl block group-hover:scale-110 transition-transform">
-                                        ✨
-                                    </span>
-
-                                    <span
-                                        class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
-
-                                        STAR SPIRIT
-
-                                    </span>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- NAME -->
-
-                        <div class="mb-7">
-
-                            <div
-                                class="flex items-center justify-between mb-3">
-
-                                <label
-                                    class="text-xs font-semibold text-indigo-200">
-
-                                    <span class="text-amber-300">
-                                        02
-                                    </span>
-
-                                    ตั้งชื่อผู้เดินทาง
-
-                                </label>
-
-                                <span class="text-[10px] text-slate-500">
-                                    YOUR NAME
+                                <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-amber-200/80">
+                                    LUNAR RABBIT
                                 </span>
 
-                            </div>
+                            </button>
 
 
-                            <div class="relative group">
+                            <button
+                                type="button"
+                                onclick="selectAvatar('🐰')"
+                                class="avatar-btn relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1">
 
-                                <span
-                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-lg text-amber-300/70">
-
-                                    ✦
-
+                                <span class="text-4xl md:text-5xl block">
+                                    🐰
                                 </span>
 
-
-                                <input
-                                    type="text"
-                                    id="usernameInput"
-                                    maxlength="12"
-                                    placeholder="ชื่อของคุณ..."
-                                    class="w-full bg-black/30 border border-violet-400/25 rounded-2xl pl-11 pr-16 py-4 text-sm md:text-base text-center text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-300/70 transition-all"
-                                    onkeydown="if(event.key==='Enter') joinGame()">
-
-
-                                <span
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-slate-600">
-
-                                    12 ตัว
-
+                                <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+                                    MOON BUNNY
                                 </span>
 
-                            </div>
-
-                        </div>
+                            </button>
 
 
-                        <!-- ENTER -->
+                            <button
+                                type="button"
+                                onclick="selectAvatar('🪷')"
+                                class="avatar-btn relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1">
 
-                        <button
-                            onclick="joinGame()"
-                            class="group relative w-full overflow-hidden rounded-2xl py-4 md:py-5 text-sm md:text-base font-bold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
-                            style="
-                                background:
-                                linear-gradient(
-                                    110deg,
-                                    #f59e0b,
-                                    #fde68a 45%,
-                                    #fbbf24 70%,
-                                    #f59e0b
-                                );
-
-                                box-shadow:
-                                0 12px 35px rgba(251,191,36,.22);
-                            ">
-
-                            <span
-                                class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                                style="
-                                    background:
-                                    linear-gradient(
-                                        90deg,
-                                        transparent,
-                                        rgba(255,255,255,.5),
-                                        transparent
-                                    );
-                                ">
-                            </span>
-
-
-                            <span
-                                class="relative flex items-center justify-center gap-3">
-
-                                <span>
-                                    เข้าสู่โลกใต้แสงจันทร์
+                                <span class="text-4xl md:text-5xl block">
+                                    🪷
                                 </span>
 
-                                <span class="text-xl">
-                                    →
+                                <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+                                    MOON LOTUS
                                 </span>
 
-                            </span>
-
-                        </button>
+                            </button>
 
 
-                        <div class="text-center mt-4">
+                            <button
+                                type="button"
+                                onclick="selectAvatar('✨')"
+                                class="avatar-btn relative h-20 md:h-24 rounded-2xl border border-indigo-500/30 bg-white/[.03] transition-all duration-300 hover:-translate-y-1">
 
-                            <span
-                                class="text-[10px] text-slate-600">
+                                <span class="text-4xl md:text-5xl block">
+                                    ✨
+                                </span>
 
-                                PRESS ENTER TO BEGIN YOUR JOURNEY
+                                <span class="absolute bottom-1.5 left-0 right-0 text-[9px] text-slate-400">
+                                    STAR SPIRIT
+                                </span>
 
-                            </span>
+                            </button>
 
                         </div>
 
                     </div>
 
 
-                    <div
-                        class="h-8 border-t border-white/5 flex items-center justify-center">
+                    <div class="mb-7">
 
-                        <span
-                            class="text-[10px] tracking-[.35em] text-amber-300/25">
+                        <div class="flex items-center justify-between mb-3">
 
-                            ✦ ❖ ✦
+                            <label class="text-xs font-semibold text-indigo-200">
+                                <span class="text-amber-300">02</span>
+                                ตั้งชื่อผู้เดินทาง
+                            </label>
 
+                            <span class="text-[10px] text-slate-500">
+                                YOUR NAME
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="text"
+                            id="usernameInput"
+                            maxlength="12"
+                            placeholder="ชื่อของคุณ..."
+                            class="w-full bg-black/30 border border-violet-400/25 rounded-2xl px-5 py-4 text-sm md:text-base text-center text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-300/70 transition-all"
+                            onkeydown="if(event.key==='Enter') joinGame()">
+
+                    </div>
+
+
+                    <button
+                        onclick="joinGame()"
+                        class="group relative w-full overflow-hidden rounded-2xl py-4 md:py-5 text-sm md:text-base font-bold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                        style="
+                            background:
+                            linear-gradient(
+                                110deg,
+                                #f59e0b,
+                                #fde68a 45%,
+                                #fbbf24 70%,
+                                #f59e0b
+                            );
+
+                            box-shadow:
+                            0 12px 35px rgba(251,191,36,.22);
+                        ">
+
+                        <span class="relative flex items-center justify-center gap-3">
+
+                            <span>
+                                เข้าสู่โลกใต้แสงจันทร์
+                            </span>
+
+                            <span class="text-xl">
+                                →
+                            </span>
+
+                        </span>
+
+                    </button>
+
+
+                    <div class="text-center mt-4">
+
+                        <span class="text-[10px] text-slate-600">
+                            PRESS ENTER TO BEGIN YOUR JOURNEY
                         </span>
 
                     </div>
 
                 </div>
 
+                <div class="h-8 border-t border-white/5 flex items-center justify-center">
+
+                    <span class="text-[10px] tracking-[.35em] text-amber-300/25">
+                        ✦ ❖ ✦
+                    </span>
+
+                </div>
+
             </div>
 
         </div>
 
-    </main>
+    </div>
+
+</main>
 
 
 <script type="module">
 
 /* =========================================================
-   FIREBASE
-   ========================================================= */
+   FIREBASE IMPORT
+========================================================= */
 
 import {
     initializeApp
@@ -1226,27 +787,38 @@ import {
 
 
 /* =========================================================
-   BASIC STATE
-   ========================================================= */
+   CANVAS
+========================================================= */
+
+const canvas =
+    document.getElementById("gameCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+/* =========================================================
+   APP CONFIG
+========================================================= */
 
 const appId =
-    typeof __app_id !== 'undefined'
+    typeof __app_id !== "undefined"
         ? __app_id
-        : 'moonlit-gathering-app-v1';
+        : "moonlit-gathering-app-v1";
 
 
 let firebaseConfig = null;
 
-if (typeof __firebase_config !== 'undefined') {
+if(typeof __firebase_config !== "undefined"){
 
-    try {
+    try{
 
         firebaseConfig =
-            typeof __firebase_config === 'string'
+            typeof __firebase_config === "string"
                 ? JSON.parse(__firebase_config)
                 : __firebase_config;
 
-    } catch(e) {
+    }catch(e){
 
         firebaseConfig = null;
 
@@ -1256,19 +828,20 @@ if (typeof __firebase_config !== 'undefined') {
 
 
 /*
-    IMPORTANT
-
-    ถ้าไม่มี Firebase Config จริง
-    เว็บจะทำงานใน Offline / Demo Mode
-    แทนที่จะพัง
+===========================================================
+อย่าตัด projectId = moonlit-gathering ออก
+เพราะมันสามารถเป็น Firebase Project จริงได้
+===========================================================
 */
 
-const hasRealFirebase =
-    firebaseConfig &&
-    firebaseConfig.apiKey &&
-    firebaseConfig.projectId &&
-    !String(firebaseConfig.apiKey).includes('Dummy') &&
-    !String(firebaseConfig.projectId).includes('moonlit-gathering');
+const hasFirebaseConfig =
+    !!(
+        firebaseConfig &&
+        firebaseConfig.apiKey &&
+        firebaseConfig.authDomain &&
+        firebaseConfig.projectId &&
+        firebaseConfig.appId
+    );
 
 
 let db = null;
@@ -1279,29 +852,34 @@ let firebaseReady = false;
 
 
 /* =========================================================
-   PLAYER STATE
-   ========================================================= */
+   PLAYER
+========================================================= */
 
 let myPlayerId =
-    'player_' +
+    "local_" +
     Math.random()
         .toString(36)
         .substring(2,10);
 
-let myName = "นักเดินทาง";
-let myAvatar = "🐇";
+let myName =
+    localStorage.getItem("moonlit_name") ||
+    "นักเดินทาง";
+
+let myAvatar =
+    localStorage.getItem("moonlit_avatar") ||
+    "🐇";
 
 let myRoom = "lobby";
 
-let myX = window.innerWidth / 2;
-let myY = window.innerHeight / 2;
+let myX = 400;
+let myY = 350;
 
 let isJoined = false;
 
 
 /* =========================================================
    GAME DATA
-   ========================================================= */
+========================================================= */
 
 let playersData = {};
 let lanternsData = {};
@@ -1315,43 +893,63 @@ let myBubbleUntil = 0;
 
 let lastPlayerSync = 0;
 
-let lastCakeReset = 0;
+let toastTimer = null;
 
 
 /* =========================================================
    DEMO PLAYERS
-   ========================================================= */
+========================================================= */
 
 const demoPlayers = {
 
-    luna_bot: {
+    luna_bot:{
         name:"Luna",
         avatar:"🐰",
         room:"lobby",
-        x:260,
-        y:330,
+        x:270,
+        y:350,
         bubbleText:"คืนนี้พระจันทร์สวยมาก 🌕",
-        bubbleUntil:Date.now()+999999
+        bubbleUntil:Infinity
     },
 
-    mei_bot: {
+    mei_bot:{
         name:"Mei",
         avatar:"🪷",
         room:"lobby",
-        x:window.innerWidth-280,
-        y:390,
-        bubbleText:"ไปดูโคมยักษ์กันไหม?",
-        bubbleUntil:Date.now()+999999
+        x:window.innerWidth-300,
+        y:400,
+        bubbleText:"ไปดูโคมยักษ์กันไหม? 🏮",
+        bubbleUntil:Infinity
     },
 
-    star_bot: {
-        name:"Star",
+    lantern_bot:{
+        name:"Ming",
         avatar:"✨",
+        room:"pagoda",
+        x:window.innerWidth*.35,
+        y:window.innerHeight*.65,
+        bubbleText:"ฉันขอให้ทุกคนมีความสุข ✨",
+        bubbleUntil:Infinity
+    },
+
+    cake_bot:{
+        name:"Bao",
+        avatar:"🐇",
         room:"minigame",
-        x:window.innerWidth/2+180,
+        x:window.innerWidth*.34,
         y:window.innerHeight*.72,
-        bubbleText:"ขนมของฉัน! 🥮",
-        bubbleUntil:Date.now()+999999
+        bubbleText:"ขนมชิ้นนี้ของฉัน! 🥮",
+        bubbleUntil:Infinity
+    },
+
+    cake_bot2:{
+        name:"Yue",
+        avatar:"🐰",
+        room:"minigame",
+        x:window.innerWidth*.68,
+        y:window.innerHeight*.78,
+        bubbleText:"แย่งกันเลย! 😂",
+        bubbleUntil:Infinity
     }
 
 };
@@ -1359,17 +957,17 @@ const demoPlayers = {
 
 /* =========================================================
    STARS
-   ========================================================= */
+========================================================= */
 
 const stars =
     Array.from(
-        {length:100},
+        {length:130},
         () => ({
             x:Math.random()*window.innerWidth,
             y:Math.random()*window.innerHeight,
             size:Math.random()*2.2+.4,
             opacity:Math.random()*.8+.2,
-            twinkleSpeed:Math.random()*.025+.005
+            twinkleSpeed:Math.random()*.02+.005
         })
     );
 
@@ -1382,13 +980,9 @@ function triggerShootingStar(){
     shootingStars.push({
 
         x:Math.random()*window.innerWidth,
-
         y:Math.random()*window.innerHeight*.35,
-
         length:Math.random()*80+40,
-
         speed:Math.random()*12+8,
-
         opacity:1
 
     });
@@ -1400,23 +994,20 @@ function triggerShootingStar(){
 
 }
 
-
 setTimeout(triggerShootingStar,2000);
 
 
 /* =========================================================
    TOAST
-   ========================================================= */
-
-let toastTimer = null;
-
+========================================================= */
 
 function showToast(message){
 
     const toast =
         document.getElementById("toast");
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.classList.add("show");
 
@@ -1427,48 +1018,44 @@ function showToast(message){
             () => toast.classList.remove("show"),
             2600
         );
+
 }
 
 
 /* =========================================================
    AVATAR
-   ========================================================= */
+========================================================= */
 
 window.selectAvatar = function(av){
 
     myAvatar = av;
 
+    localStorage.setItem(
+        "moonlit_avatar",
+        myAvatar
+    );
+
     document
         .querySelectorAll(".avatar-btn")
         .forEach(btn => {
 
-            btn.classList.remove(
-                "border-amber-400",
-                "bg-indigo-950/90",
-                "border-2"
+            const active =
+                btn.innerText.includes(av);
+
+            btn.classList.toggle(
+                "border-amber-300",
+                active
             );
 
-            btn.classList.add(
-                "border-indigo-800/80",
-                "bg-indigo-950/50",
-                "border"
+            btn.classList.toggle(
+                "border-2",
+                active
             );
 
-            if(btn.innerText.includes(av)){
-
-                btn.classList.add(
-                    "border-amber-400",
-                    "bg-indigo-950/90",
-                    "border-2"
-                );
-
-                btn.classList.remove(
-                    "border-indigo-800/80",
-                    "bg-indigo-950/50",
-                    "border"
-                );
-
-            }
+            btn.classList.toggle(
+                "border-indigo-500/30",
+                !active
+            );
 
         });
 
@@ -1476,25 +1063,25 @@ window.selectAvatar = function(av){
 
 
 /* =========================================================
-   INITIALIZE FIREBASE
-   ========================================================= */
+   RESTORE AVATAR
+========================================================= */
+
+selectAvatar(myAvatar);
+
+
+/* =========================================================
+   FIREBASE INITIALIZATION
+========================================================= */
 
 async function initializeFirebase(){
 
-    if(!hasRealFirebase){
+    if(!hasFirebaseConfig){
 
-        console.log(
-            "Moonlit Gathering: Offline / Demo Mode"
-        );
-
-        firebaseReady = false;
-
-        updateModeBadge();
+        enableOfflineMode();
 
         return;
 
     }
-
 
     try{
 
@@ -1509,7 +1096,7 @@ async function initializeFirebase(){
 
 
         if(
-            typeof __initial_auth_token !== 'undefined' &&
+            typeof __initial_auth_token !== "undefined" &&
             __initial_auth_token
         ){
 
@@ -1525,7 +1112,8 @@ async function initializeFirebase(){
         }
 
 
-        currentUser = auth.currentUser;
+        currentUser =
+            auth.currentUser;
 
 
         if(currentUser){
@@ -1542,29 +1130,51 @@ async function initializeFirebase(){
 
         startSync();
 
-        console.log(
-            "Firebase multiplayer connected."
+        showToast(
+            "🟢 เชื่อมต่อระบบ Multiplayer แล้ว"
         );
 
     }catch(error){
 
         console.warn(
-            "Firebase unavailable. Using Offline Mode.",
+            "Firebase connection failed:",
             error
         );
 
-        firebaseReady = false;
-
-        db = null;
-
-        auth = null;
-
-        updateModeBadge();
+        enableOfflineMode();
 
     }
 
 }
 
+
+/* =========================================================
+   OFFLINE MODE
+========================================================= */
+
+function enableOfflineMode(){
+
+    firebaseReady = false;
+
+    db = null;
+    auth = null;
+
+    updateModeBadge();
+
+    createLocalMoonCakes();
+
+    updatePlayerCount();
+
+    console.log(
+        "Moonlit Gathering running in Offline Demo Mode."
+    );
+
+}
+
+
+/* =========================================================
+   MODE BADGE
+========================================================= */
 
 function updateModeBadge(){
 
@@ -1572,7 +1182,6 @@ function updateModeBadge(){
         document.getElementById("mode-badge");
 
     if(!badge) return;
-
 
     if(firebaseReady){
 
@@ -1588,7 +1197,7 @@ function updateModeBadge(){
     }else{
 
         badge.textContent =
-            "OFFLINE / DEMO MODE";
+            "● OFFLINE DEMO • เล่นได้ครบ";
 
         badge.style.color =
             "#a5f3fc";
@@ -1602,8 +1211,8 @@ function updateModeBadge(){
 
 
 /* =========================================================
-   JOIN GAME
-   ========================================================= */
+   JOIN
+========================================================= */
 
 window.joinGame = function(){
 
@@ -1612,22 +1221,27 @@ window.joinGame = function(){
             "usernameInput"
         );
 
-
-    const typedName =
+    const name =
         input.value.trim();
 
 
-    if(typedName){
+    if(name){
 
         myName =
-            typedName
-                .substring(0,12);
-
-    }else{
-
-        myName = "นักเดินทาง";
+            name.substring(0,12);
 
     }
+
+
+    localStorage.setItem(
+        "moonlit_name",
+        myName
+    );
+
+    localStorage.setItem(
+        "moonlit_avatar",
+        myAvatar
+    );
 
 
     isJoined = true;
@@ -1638,21 +1252,40 @@ window.joinGame = function(){
         .classList.add("hidden");
 
 
+    const size =
+        getCanvasSize();
+
+
     myX =
-        window.innerWidth/2;
+        size.width/2;
 
     myY =
-        window.innerHeight*.55;
+        size.height*.62;
 
 
     createLocalMoonCakes();
+
+
+    if(!moonScoresData[myPlayerId]){
+
+        moonScoresData[myPlayerId] = {
+
+            name:myName,
+            avatar:myAvatar,
+            score:0
+
+        };
+
+    }
+
 
     renderScoreboard();
 
     updatePlayerCount();
 
+
     showToast(
-        `ยินดีต้อนรับ ${myName} 🌕✨`
+        `🌕 ยินดีต้อนรับ ${myName}!`
     );
 
 
@@ -1669,43 +1302,46 @@ window.joinGame = function(){
 
 /* =========================================================
    ROOM SWITCH
-   ========================================================= */
+========================================================= */
 
 window.switchRoom = function(roomName){
 
-    myRoom = roomName;
+    myRoom =
+        roomName;
 
 
     [
         "lobby",
         "pagoda",
         "minigame"
-    ].forEach(r => {
+    ].forEach(
+        r => {
 
-        const btn =
-            document.getElementById(
-                `btn-room-${r}`
-            );
+            const btn =
+                document.getElementById(
+                    `btn-room-${r}`
+                );
 
-        if(r === roomName){
+            if(r === roomName){
 
-            btn.className =
-                "px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95";
+                btn.className =
+                    "px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 text-indigo-950 shadow-lg transition transform active:scale-95";
 
-        }else{
+            }else{
 
-            btn.className =
-                "px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
+                btn.className =
+                    "px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition";
+
+            }
 
         }
-
-    });
+    );
 
 
     const labels = {
 
         lobby:
-            "กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา",
+            "กำลังอยู่ใน: ลานกิจกรรมสวนจันทรา • เดินหาเพื่อนและร่วมเทศกาล",
 
         pagoda:
             "กำลังอยู่ใน: หอชมโคมยักษ์ • ปล่อยคำอธิษฐาน",
@@ -1718,7 +1354,7 @@ window.switchRoom = function(roomName){
 
     document
         .getElementById("current-room-label")
-        .innerText =
+        .textContent =
         labels[roomName];
 
 
@@ -1748,11 +1384,15 @@ window.switchRoom = function(roomName){
         );
 
 
+    const size =
+        getCanvasSize();
+
+
     myX =
-        window.innerWidth/2;
+        size.width/2;
 
     myY =
-        window.innerHeight*.55;
+        size.height*.62;
 
 
     if(roomName === "minigame"){
@@ -1760,23 +1400,19 @@ window.switchRoom = function(roomName){
         createLocalMoonCakes();
 
         showToast(
-            "🥮 เข้าสู่สนามศึกชิงขนม!"
+            "🥮 เข้าสู่ศึกชิงขนม!"
         );
 
-    }
-
-    else if(roomName === "pagoda"){
+    }else if(roomName === "pagoda"){
 
         showToast(
-            "🏮 เขียนคำอธิษฐานแล้วปล่อยโคมได้เลย"
+            "🏮 เขียนคำอธิษฐานแล้วปล่อยโคม"
         );
 
-    }
-
-    else{
+    }else{
 
         showToast(
-            "🏮 ยินดีต้อนรับสู่ลานกิจกรรม"
+            "🏮 กลับสู่ลานกิจกรรม"
         );
 
     }
@@ -1789,28 +1425,24 @@ window.switchRoom = function(roomName){
 
 /* =========================================================
    CHAT
-   ========================================================= */
+========================================================= */
 
 window.toggleChatExpand = function(){
 
     const body =
-        document.getElementById(
-            "chat-body"
-        );
+        document.getElementById("chat-body");
 
     const icon =
-        document.getElementById(
-            "chat-toggle-icon"
-        );
+        document.getElementById("chat-toggle-icon");
 
 
     body.classList.toggle("hidden");
 
 
-    icon.style.transform =
+    icon.textContent =
         body.classList.contains("hidden")
-            ? "rotate(180deg)"
-            : "rotate(0deg)";
+            ? "▼"
+            : "▲";
 
 };
 
@@ -1818,14 +1450,10 @@ window.toggleChatExpand = function(){
 window.sendChatMessage = async function(){
 
     const input =
-        document.getElementById(
-            "chatInput"
-        );
-
+        document.getElementById("chatInput");
 
     const txt =
         input.value.trim();
-
 
     if(!txt) return;
 
@@ -1861,12 +1489,9 @@ window.sendChatMessage = async function(){
                     "public",
                     "data",
                     "chats",
-                    "chat_" +
-                    now +
-                    "_" +
-                    Math.random()
+                    "chat_"+now+"_"+Math.random()
                         .toString(36)
-                        .substring(2,5)
+                        .substring(2,6)
                 ),
 
                 {
@@ -1878,31 +1503,7 @@ window.sendChatMessage = async function(){
 
             );
 
-            await setDoc(
-
-                doc(
-                    db,
-                    "artifacts",
-                    appId,
-                    "public",
-                    "data",
-                    "players",
-                    myPlayerId
-                ),
-
-                {
-                    bubbleText:
-                        myBubbleText,
-
-                    bubbleUntil:
-                        myBubbleUntil
-                },
-
-                {
-                    merge:true
-                }
-
-            );
+            await syncMyPlayer();
 
         }catch(error){
 
@@ -1936,10 +1537,10 @@ function addLocalChat(name,text){
     });
 
 
-    if(chatMessages.length > 30){
+    if(chatMessages.length > 40){
 
         chatMessages =
-            chatMessages.slice(-30);
+            chatMessages.slice(-40);
 
     }
 
@@ -1956,29 +1557,26 @@ function renderLocalChat(){
             "chat-messages"
         );
 
-
     box.innerHTML =
         chatMessages
             .slice(-30)
-            .map(msg => `
+            .map(
+                msg => `
 
                 <div class="leading-relaxed">
 
                     <span class="font-bold text-amber-400">
-
                         ${escapeHtml(msg.name)}:
-
                     </span>
 
                     <span class="text-slate-200">
-
                         ${escapeHtml(msg.text)}
-
                     </span>
 
                 </div>
 
-            `)
+                `
+            )
             .join("");
 
 
@@ -1990,12 +1588,14 @@ function renderLocalChat(){
 
 /* =========================================================
    FIREBASE SYNC
-   ========================================================= */
+========================================================= */
 
 function startSync(){
 
     if(!db) return;
 
+
+    /* PLAYERS */
 
     onSnapshot(
 
@@ -2012,31 +1612,28 @@ function startSync(){
 
             playersData = {};
 
-            let count = 0;
-
             const now =
                 Date.now();
 
 
             snapshot.forEach(
-                docSnap => {
+                snap => {
 
                     const data =
-                        docSnap.data();
+                        snap.data();
 
 
                     if(
                         now -
                         (data.lastActive || 0)
                         <
-                        10000
+                        12000
                     ){
 
                         playersData[
-                            docSnap.id
-                        ] = data;
-
-                        count++;
+                            snap.id
+                        ] =
+                        data;
 
                     }
 
@@ -2044,20 +1641,14 @@ function startSync(){
             );
 
 
-            document
-                .getElementById(
-                    "player-count"
-                )
-                .innerText =
-                `ผู้เล่นออนไลน์: ${count}`;
-
+            updatePlayerCount();
 
         },
 
         error => {
 
             console.warn(
-                "Player sync failed",
+                "Player listener error",
                 error
             );
 
@@ -2065,6 +1656,8 @@ function startSync(){
 
     );
 
+
+    /* LANTERNS */
 
     onSnapshot(
 
@@ -2082,12 +1675,12 @@ function startSync(){
             lanternsData = {};
 
             snapshot.forEach(
-                docSnap => {
+                snap => {
 
                     lanternsData[
-                        docSnap.id
+                        snap.id
                     ] =
-                    docSnap.data();
+                    snap.data();
 
                 }
             );
@@ -2096,6 +1689,8 @@ function startSync(){
 
     );
 
+
+    /* MOONCAKES */
 
     onSnapshot(
 
@@ -2113,12 +1708,12 @@ function startSync(){
             moonCakesData = {};
 
             snapshot.forEach(
-                docSnap => {
+                snap => {
 
                     moonCakesData[
-                        docSnap.id
+                        snap.id
                     ] =
-                    docSnap.data();
+                    snap.data();
 
                 }
             );
@@ -2134,6 +1729,8 @@ function startSync(){
 
     );
 
+
+    /* SCORES */
 
     onSnapshot(
 
@@ -2151,16 +1748,15 @@ function startSync(){
             moonScoresData = {};
 
             snapshot.forEach(
-                docSnap => {
+                snap => {
 
                     moonScoresData[
-                        docSnap.id
+                        snap.id
                     ] =
-                    docSnap.data();
+                    snap.data();
 
                 }
             );
-
 
             renderScoreboard();
 
@@ -2168,6 +1764,8 @@ function startSync(){
 
     );
 
+
+    /* CHAT */
 
     onSnapshot(
 
@@ -2182,13 +1780,13 @@ function startSync(){
 
         snapshot => {
 
-            let arr = [];
+            const arr = [];
 
             snapshot.forEach(
-                docSnap => {
+                snap => {
 
                     arr.push(
-                        docSnap.data()
+                        snap.data()
                     );
 
                 }
@@ -2214,25 +1812,23 @@ function startSync(){
 
             box.innerHTML =
                 recent
-                    .map(msg => `
+                    .map(
+                        msg => `
 
                         <div class="leading-relaxed">
 
                             <span class="font-bold text-amber-400">
-
                                 ${escapeHtml(msg.name || "ผู้เล่น")}:
-
                             </span>
 
                             <span class="text-slate-200">
-
                                 ${escapeHtml(msg.text || "")}
-
                             </span>
 
                         </div>
 
-                    `)
+                        `
+                    )
                     .join("");
 
 
@@ -2247,12 +1843,16 @@ function startSync(){
 
 
 /* =========================================================
-   SYNC PLAYER
-   ========================================================= */
+   PLAYER SYNC
+========================================================= */
 
 async function syncMyPlayer(){
 
-    if(!firebaseReady || !db || !isJoined)
+    if(
+        !firebaseReady ||
+        !db ||
+        !isJoined
+    )
         return;
 
 
@@ -2273,13 +1873,10 @@ async function syncMyPlayer(){
             {
 
                 name:myName,
-
                 avatar:myAvatar,
-
                 room:myRoom,
 
                 x:Math.round(myX),
-
                 y:Math.round(myY),
 
                 lastActive:Date.now(),
@@ -2312,9 +1909,20 @@ async function syncMyPlayer(){
 
 /* =========================================================
    LANTERN
-   ========================================================= */
+========================================================= */
 
 window.releaseLantern = async function(){
+
+    if(!isJoined){
+
+        showToast(
+            "🌕 กรุณาเข้าสู่โลกก่อน"
+        );
+
+        return;
+
+    }
+
 
     const input =
         document.getElementById(
@@ -2342,22 +1950,27 @@ window.releaseLantern = async function(){
     input.value = "";
 
 
+    const size =
+        getCanvasSize();
+
+
     const lantern = {
 
         name:myName,
 
-        wish:txt.substring(0,35),
+        wish:
+            txt.substring(0,35),
 
         x:
             Math.random() *
-            (canvas.width-100)
+            Math.max(100,size.width-100)
             + 50,
 
         y:
-            canvas.height-100,
+            size.height-100,
 
         speed:
-            Math.random()*.7+.4
+            Math.random()*.7+.45
 
     };
 
@@ -2419,13 +2032,16 @@ window.releaseLantern = async function(){
         "🏮 ปล่อยโคมอธิษฐานขึ้นสู่ฟ้าแล้ว!"
     );
 
+
+    syncMyPlayer();
+
 };
 
 
 function addLocalLantern(lantern){
 
     const id =
-        "local_" +
+        "local_lantern_" +
         Date.now() +
         "_" +
         Math.random()
@@ -2441,49 +2057,57 @@ function addLocalLantern(lantern){
 
 /* =========================================================
    MOONCAKES
-   ========================================================= */
+========================================================= */
+
+const cakePositions = [
+
+    [.18,.73],
+    [.28,.67],
+    [.39,.76],
+    [.50,.66],
+    [.61,.76],
+    [.72,.68],
+    [.82,.75],
+
+    [.23,.84],
+    [.35,.83],
+    [.50,.84],
+    [.65,.84],
+    [.77,.83]
+
+];
+
 
 function createLocalMoonCakes(){
 
-    if(Object.keys(moonCakesData).length > 0)
+    if(
+        Object.keys(
+            moonCakesData
+        ).length >= cakePositions.length
+    )
         return;
 
 
-    const positions = [
-
-        [.18,.73],
-        [.28,.67],
-        [.39,.76],
-        [.50,.66],
-        [.61,.76],
-        [.72,.68],
-        [.82,.75],
-
-        [.23,.84],
-        [.35,.83],
-        [.50,.84],
-        [.65,.84],
-        [.77,.83]
-
-    ];
-
-
-    positions.forEach(
+    cakePositions.forEach(
         (pos,i) => {
 
-            moonCakesData[
-                "cake_"+i
-            ] = {
+            const id =
+                "cake_"+i;
 
-                x:pos[0],
 
-                y:pos[1],
+            if(!moonCakesData[id]){
 
-                eatenBy:"",
+                moonCakesData[id] = {
 
-                eatenAt:0
+                    x:pos[0],
+                    y:pos[1],
 
-            };
+                    eatenBy:"",
+                    eatenAt:0
+
+                };
+
+            }
 
         }
     );
@@ -2496,28 +2120,9 @@ async function ensureMoonCakes(){
     if(!db) return;
 
 
-    const positions = [
-
-        [.18,.73],
-        [.28,.67],
-        [.39,.76],
-        [.50,.66],
-        [.61,.76],
-        [.72,.68],
-        [.82,.75],
-
-        [.23,.84],
-        [.35,.83],
-        [.50,.84],
-        [.65,.84],
-        [.77,.83]
-
-    ];
-
-
     for(
         let i=0;
-        i<positions.length;
+        i<cakePositions.length;
         i++
     ){
 
@@ -2541,12 +2146,10 @@ async function ensureMoonCakes(){
 
                 {
 
-                    x:positions[i][0],
-
-                    y:positions[i][1],
+                    x:cakePositions[i][0],
+                    y:cakePositions[i][1],
 
                     eatenBy:"",
-
                     eatenAt:0
 
                 },
@@ -2565,8 +2168,8 @@ async function ensureMoonCakes(){
 
 
 /* =========================================================
-   SCOREBOARD
-   ========================================================= */
+   SCORE
+========================================================= */
 
 function renderScoreboard(){
 
@@ -2575,92 +2178,83 @@ function renderScoreboard(){
             "scoreboard"
         );
 
-
     if(!board) return;
 
 
-    const localScores =
+    const scores =
         {...moonScoresData};
 
 
     if(
-        !firebaseReady &&
-        isJoined
+        isJoined &&
+        !scores[myPlayerId]
     ){
 
-        if(!localScores[myPlayerId]){
+        scores[myPlayerId] = {
 
-            localScores[myPlayerId] = {
+            name:myName,
+            avatar:myAvatar,
+            score:0
 
-                name:myName,
-
-                avatar:myAvatar,
-
-                score:0
-
-            };
-
-        }
+        };
 
     }
 
 
     const rows =
-        Object.entries(localScores)
+        Object.entries(scores)
             .sort(
                 (a,b) =>
                     (b[1].score || 0) -
                     (a[1].score || 0)
             )
-            .slice(0,7);
+            .slice(0,8);
 
 
     board.innerHTML =
         rows.length
-            ? rows.map(
-                ([id,s],i) => {
+            ?
 
-                    const me =
-                        id === myPlayerId
-                            ? ' <span class="text-amber-300">(คุณ)</span>'
-                            : '';
+            rows.map(
+                ([id,s],i) => `
 
-
-                    return `
-
-                        <div
-                            class="
-                            flex
-                            justify-between
-                            items-center
-                            px-2
-                            py-1
-                            rounded-lg
-                            ${id===myPlayerId
+                    <div
+                        class="
+                        flex
+                        justify-between
+                        items-center
+                        px-2
+                        py-1
+                        rounded-lg
+                        ${
+                            id === myPlayerId
                                 ? "bg-amber-400/10 border border-amber-300/10"
                                 : ""
+                        }
+                        ">
+
+                        <span>
+
+                            ${i+1}.
+                            ${escapeHtml(
+                                s.name || "ผู้เล่น"
+                            )}
+
+                            ${
+                                id === myPlayerId
+                                    ? '<span class="text-amber-300">(คุณ)</span>'
+                                    : ""
                             }
-                            ">
 
-                            <span>
+                        </span>
 
-                                ${i+1}.
-                                ${escapeHtml(s.name || "ผู้เล่น")}
-                                ${me}
+                        <b class="text-amber-300">
+                            ${s.score || 0} 🥮
+                        </b>
 
-                            </span>
+                    </div>
 
-                            <b class="text-amber-300">
-
-                                ${s.score || 0} 🥮
-
-                            </b>
-
-                        </div>
-
-                    `;
-
-                }
+                `
             ).join("")
 
             :
@@ -2668,21 +2262,13 @@ function renderScoreboard(){
             '<div class="text-slate-500 italic">ยังไม่มีคะแนน ลุยเลย!</div>';
 
 
-    const mine =
-        localScores[myPlayerId]?.score || 0;
-
-
     document
         .getElementById("my-score")
         .textContent =
-        mine;
+        scores[myPlayerId]?.score || 0;
 
 }
 
-
-/* =========================================================
-   SCORE UPDATE
-   ========================================================= */
 
 async function addScore(){
 
@@ -2708,10 +2294,10 @@ async function addScore(){
 
             await runTransaction(
                 db,
-                async tx => {
+                async transaction => {
 
                     const snap =
-                        await tx.get(
+                        await transaction.get(
                             scoreRef
                         );
 
@@ -2722,14 +2308,13 @@ async function addScore(){
                             : {};
 
 
-                    tx.set(
+                    transaction.set(
 
                         scoreRef,
 
                         {
 
                             name:myName,
-
                             avatar:myAvatar,
 
                             score:
@@ -2773,9 +2358,7 @@ function addLocalScore(){
         moonScoresData[myPlayerId] = {
 
             name:myName,
-
             avatar:myAvatar,
-
             score:0
 
         };
@@ -2786,12 +2369,23 @@ function addLocalScore(){
     moonScoresData[myPlayerId].score =
         (moonScoresData[myPlayerId].score || 0)+1;
 
+
+    moonScoresData[myPlayerId].name =
+        myName;
+
+
+    moonScoresData[myPlayerId].avatar =
+        myAvatar;
+
+
+    renderScoreboard();
+
 }
 
 
 /* =========================================================
-   GRAB MOONCAKE
-   ========================================================= */
+   GRAB CAKE
+========================================================= */
 
 async function grabNearestMoonCake(px,py){
 
@@ -2807,7 +2401,11 @@ async function grabNearestMoonCake(px,py){
 
     let target = null;
 
-    let best = 95;
+    let best = 100;
+
+
+    const size =
+        getCanvasSize();
 
 
     for(
@@ -2815,21 +2413,19 @@ async function grabNearestMoonCake(px,py){
         of Object.entries(moonCakesData)
     ){
 
-        const eaten =
+        if(
             cake.eatenAt &&
-            Date.now()-cake.eatenAt < 1400;
-
-
-        if(eaten)
+            Date.now()-cake.eatenAt < 1400
+        )
             continue;
 
 
         const x =
-            cake.x * canvas.width;
+            cake.x*size.width;
 
 
         const y =
-            cake.y * canvas.height;
+            cake.y*size.height;
 
 
         const d =
@@ -2842,7 +2438,6 @@ async function grabNearestMoonCake(px,py){
         if(d < best){
 
             best = d;
-
             target = id;
 
         }
@@ -2861,10 +2456,7 @@ async function grabNearestMoonCake(px,py){
     }
 
 
-    if(
-        firebaseReady &&
-        db
-    ){
+    if(firebaseReady && db){
 
         await grabFirebaseCake(
             target
@@ -2906,10 +2498,10 @@ async function grabFirebaseCake(target){
 
         await runTransaction(
             db,
-            async tx => {
+            async transaction => {
 
                 const snap =
-                    await tx.get(ref);
+                    await transaction.get(ref);
 
 
                 if(!snap.exists())
@@ -2927,7 +2519,7 @@ async function grabFirebaseCake(target){
                     return;
 
 
-                tx.set(
+                transaction.set(
                     ref,
                     {
                         eatenBy:myPlayerId,
@@ -2958,7 +2550,6 @@ async function grabFirebaseCake(target){
 
         await addScore();
 
-
         celebrateCake();
 
 
@@ -2987,6 +2578,7 @@ async function grabFirebaseCake(target){
     }catch(error){
 
         console.warn(
+            "Cake transaction failed",
             error
         );
 
@@ -3032,7 +2624,6 @@ function grabLocalCake(target){
 
     addLocalScore();
 
-
     celebrateCake();
 
 
@@ -3040,7 +2631,6 @@ function grabLocalCake(target){
         () => {
 
             cake.eatenBy = "";
-
             cake.eatenAt = 0;
 
         },
@@ -3050,27 +2640,30 @@ function grabLocalCake(target){
 }
 
 
+/* =========================================================
+   CAKE CELEBRATION
+========================================================= */
+
 function celebrateCake(){
 
-    const shout = [
+    const messages = [
 
         "ได้แล้ว! 🥮✨",
-
         "ขนมชิ้นนี้ของฉัน! 😂🥮",
-
         "แย่งทันแล้ว! 🌕",
-
         "อร่อยที่สุดในคืนนี้! 🥮💜",
-
         "ฮ่าๆ ฉันไวกว่า! 🐇",
-
         "Mooncake ได้มาแล้ว! ✨"
 
-    ][
-        Math.floor(
-            Math.random()*6
-        )
     ];
+
+
+    const shout =
+        messages[
+            Math.floor(
+                Math.random()*messages.length
+            )
+        ];
 
 
     myBubbleText =
@@ -3085,43 +2678,14 @@ function celebrateCake(){
     );
 
 
-    if(firebaseReady && db){
-
-        setDoc(
-
-            doc(
-                db,
-                "artifacts",
-                appId,
-                "public",
-                "data",
-                "players",
-                myPlayerId
-            ),
-
-            {
-
-                bubbleText:shout,
-
-                bubbleUntil:
-                    myBubbleUntil
-
-            },
-
-            {
-                merge:true
-            }
-
-        ).catch(()=>{});
-
-    }
+    syncMyPlayer();
 
 }
 
 
 /* =========================================================
    KEYBOARD
-   ========================================================= */
+========================================================= */
 
 const keys = {
 
@@ -3142,14 +2706,17 @@ window.addEventListener(
     "keydown",
     e => {
 
+        const k =
+            e.key.toLowerCase();
+
+
         if(
             [
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight",
-                " "
-            ].includes(e.key)
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright"
+            ].includes(k)
         ){
 
             e.preventDefault();
@@ -3157,8 +2724,25 @@ window.addEventListener(
         }
 
 
-        const k =
-            e.key.toLowerCase();
+        if(k === " "){
+
+            if(
+                isJoined &&
+                myRoom === "minigame"
+            ){
+
+                e.preventDefault();
+
+                grabNearestMoonCake(
+                    myX,
+                    myY
+                );
+
+            }
+
+            return;
+
+        }
 
 
         if(
@@ -3199,32 +2783,9 @@ window.addEventListener(
 );
 
 
-window.addEventListener(
-    "keydown",
-    e => {
-
-        if(
-            e.code === "Space" &&
-            isJoined &&
-            myRoom === "minigame"
-        ){
-
-            e.preventDefault();
-
-            grabNearestMoonCake(
-                myX,
-                myY
-            );
-
-        }
-
-    }
-);
-
-
 /* =========================================================
-   POINTER MOVEMENT
-   ========================================================= */
+   POINTER
+========================================================= */
 
 let touchTarget = null;
 
@@ -3318,18 +2879,8 @@ canvas.addEventListener(
 
 
 /* =========================================================
-   CANVAS
-   ========================================================= */
-
-const canvas =
-    document.getElementById(
-        "gameCanvas"
-    );
-
-
-const ctx =
-    canvas.getContext("2d");
-
+   RESIZE
+========================================================= */
 
 function resizeCanvas(){
 
@@ -3366,18 +2917,29 @@ function resizeCanvas(){
     );
 
 
-    myX =
-        Math.min(
-            myX,
-            rect.width-35
-        );
+    if(!isJoined){
 
+        myX =
+            rect.width/2;
 
-    myY =
-        Math.min(
-            myY,
-            rect.height-90
-        );
+        myY =
+            rect.height*.62;
+
+    }else{
+
+        myX =
+            Math.min(
+                myX,
+                rect.width-35
+            );
+
+        myY =
+            Math.min(
+                myY,
+                rect.height-80
+            );
+
+    }
 
 }
 
@@ -3396,9 +2958,12 @@ function getCanvasSize(){
     const rect =
         canvas.getBoundingClientRect();
 
+
     return {
+
         width:rect.width,
         height:rect.height
+
     };
 
 }
@@ -3406,114 +2971,112 @@ function getCanvasSize(){
 
 /* =========================================================
    UPDATE
-   ========================================================= */
+========================================================= */
 
 function update(){
-
-    if(!isJoined)
-        return;
-
 
     const size =
         getCanvasSize();
 
 
-    const spd =
-        5.2;
+    if(isJoined){
+
+        const speed =
+            5.2;
 
 
-    if(
-        keys.w ||
-        keys.arrowup
-    )
-        myY -= spd;
+        if(
+            keys.w ||
+            keys.arrowup
+        )
+            myY -= speed;
 
 
-    if(
-        keys.s ||
-        keys.arrowdown
-    )
-        myY += spd;
+        if(
+            keys.s ||
+            keys.arrowdown
+        )
+            myY += speed;
 
 
-    if(
-        keys.a ||
-        keys.arrowleft
-    )
-        myX -= spd;
+        if(
+            keys.a ||
+            keys.arrowleft
+        )
+            myX -= speed;
 
 
-    if(
-        keys.d ||
-        keys.arrowright
-    )
-        myX += spd;
+        if(
+            keys.d ||
+            keys.arrowright
+        )
+            myX += speed;
 
 
-    if(touchTarget){
+        if(touchTarget){
 
-        const dx =
-            touchTarget.x -
-            myX;
-
-
-        const dy =
-            touchTarget.y -
-            myY;
+            const dx =
+                touchTarget.x -
+                myX;
 
 
-        const dist =
-            Math.hypot(
-                dx,
-                dy
-            );
+            const dy =
+                touchTarget.y -
+                myY;
 
 
-        if(dist > 5){
+            const distance =
+                Math.hypot(
+                    dx,
+                    dy
+                );
 
-            myX +=
-                (dx/dist)*spd;
 
-            myY +=
-                (dy/dist)*spd;
+            if(distance > 5){
+
+                myX +=
+                    dx/distance*speed;
+
+                myY +=
+                    dy/distance*speed;
+
+            }
 
         }
 
-    }
+
+        myX =
+            Math.max(
+                35,
+                Math.min(
+                    size.width-35,
+                    myX
+                )
+            );
 
 
-    myX =
-        Math.max(
-            35,
-            Math.min(
-                size.width-35,
-                myX
-            )
-        );
+        myY =
+            Math.max(
+                70,
+                Math.min(
+                    size.height-80,
+                    myY
+                )
+            );
 
 
-    myY =
-        Math.max(
-            70,
-            Math.min(
-                size.height-80,
-                myY
-            )
-        );
+        if(
+            firebaseReady &&
+            db &&
+            Date.now()-lastPlayerSync > 120
+        ){
 
+            lastPlayerSync =
+                Date.now();
 
-    if(
-        firebaseReady &&
-        db &&
-        currentUser &&
-        Date.now()-lastPlayerSync > 120
-    ){
+            syncMyPlayer();
 
-        lastPlayerSync =
-            Date.now();
-
-
-        syncMyPlayer();
+        }
 
     }
 
@@ -3525,7 +3088,7 @@ function update(){
 
 /* =========================================================
    LOCAL LANTERNS
-   ========================================================= */
+========================================================= */
 
 function updateLocalLanterns(){
 
@@ -3535,14 +3098,16 @@ function updateLocalLanterns(){
         ([id,l]) => {
 
             if(
-                !firebaseReady &&
                 id.startsWith("local_")
             ){
 
                 l.y -=
                     l.speed;
 
-                if(l.y < 70){
+
+                if(
+                    l.y < 20
+                ){
 
                     delete lanternsData[id];
 
@@ -3558,7 +3123,7 @@ function updateLocalLanterns(){
 
 /* =========================================================
    DRAW
-   ========================================================= */
+========================================================= */
 
 function draw(){
 
@@ -3568,7 +3133,6 @@ function draw(){
 
     const W =
         size.width;
-
 
     const H =
         size.height;
@@ -3582,9 +3146,7 @@ function draw(){
     );
 
 
-    /* =====================================================
-       SKY
-       ===================================================== */
+    /* SKY */
 
     const sky =
         ctx.createLinearGradient(
@@ -3623,12 +3185,9 @@ function draw(){
     );
 
 
-    /* =====================================================
-       AURORA
-       ===================================================== */
+    /* AURORA */
 
     ctx.save();
-
 
     for(
         let i=0;
@@ -3682,16 +3241,12 @@ function draw(){
 
     }
 
-
     ctx.restore();
 
 
-    /* =====================================================
-       STARS
-       ===================================================== */
+    /* STARS */
 
     ctx.save();
-
 
     stars.forEach(
         s => {
@@ -3731,27 +3286,20 @@ function draw(){
     );
 
 
-    /* =====================================================
-       SHOOTING STARS
-       ===================================================== */
+    /* SHOOTING STARS */
 
     shootingStars.forEach(
-        (st,idx) => {
+        (st,index) => {
 
-            st.x +=
-                st.speed;
-
-            st.y +=
-                st.speed*.6;
-
-            st.opacity -=
-                .015;
+            st.x += st.speed;
+            st.y += st.speed*.6;
+            st.opacity -= .015;
 
 
             if(st.opacity <= 0){
 
                 shootingStars.splice(
-                    idx,
+                    index,
                     1
                 );
 
@@ -3763,38 +3311,29 @@ function draw(){
             ctx.strokeStyle =
                 `rgba(254,240,138,${st.opacity})`;
 
-
-            ctx.lineWidth =
-                2;
-
+            ctx.lineWidth = 2;
 
             ctx.beginPath();
-
 
             ctx.moveTo(
                 st.x,
                 st.y
             );
 
-
             ctx.lineTo(
                 st.x-st.length,
                 st.y-st.length*.6
             );
-
 
             ctx.stroke();
 
         }
     );
 
-
     ctx.restore();
 
 
-    /* =====================================================
-       GIANT MOON
-       ===================================================== */
+    /* MOON */
 
     ctx.save();
 
@@ -3833,12 +3372,10 @@ function draw(){
         "#fffde7"
     );
 
-
     mg.addColorStop(
         .62,
         "#fde68a"
     );
-
 
     mg.addColorStop(
         1,
@@ -3849,10 +3386,8 @@ function draw(){
     ctx.shadowColor =
         "rgba(253,224,71,.48)";
 
-
     ctx.shadowBlur =
         55;
-
 
     ctx.fillStyle =
         mg;
@@ -3874,8 +3409,6 @@ function draw(){
     ctx.shadowBlur =
         0;
 
-
-    /* MOON CRATERS */
 
     ctx.fillStyle =
         "rgba(180,83,9,.10)";
@@ -3905,71 +3438,12 @@ function draw(){
     );
 
 
-    /* CLOUDS */
-
-    const cloudY =
-        H*.28;
-
-
-    for(
-        let i=0;
-        i<4;
-        i++
-    ){
-
-        const cx =
-            (
-                Date.now()/90 +
-                i*260
-            )
-            %
-            (W+360)
-            -180;
-
-
-        ctx.fillStyle =
-            "rgba(148,163,184,.055)";
-
-
-        ctx.beginPath();
-
-
-        ctx.ellipse(
-            cx,
-            cloudY+i*34,
-            120,
-            18,
-            0,
-            0,
-            Math.PI*2
-        );
-
-
-        ctx.ellipse(
-            cx+70,
-            cloudY-5+i*34,
-            75,
-            16,
-            0,
-            0,
-            Math.PI*2
-        );
-
-
-        ctx.fill();
-
-    }
-
-
     ctx.restore();
 
 
-    /* =====================================================
-       MOUNTAINS
-       ===================================================== */
+    /* MOUNTAINS */
 
     ctx.save();
-
 
     ctx.fillStyle =
         "rgba(15,23,42,.7)";
@@ -3977,18 +3451,8 @@ function draw(){
 
     ctx.beginPath();
 
-
-    ctx.moveTo(
-        0,
-        H
-    );
-
-
-    ctx.lineTo(
-        0,
-        H-160
-    );
-
+    ctx.moveTo(0,H);
+    ctx.lineTo(0,H-160);
 
     ctx.quadraticCurveTo(
         W*.35,
@@ -3997,7 +3461,6 @@ function draw(){
         H-170
     );
 
-
     ctx.quadraticCurveTo(
         W*.88,
         H-270,
@@ -4005,15 +3468,9 @@ function draw(){
         H-140
     );
 
-
-    ctx.lineTo(
-        W,
-        H
-    );
-
+    ctx.lineTo(W,H);
 
     ctx.closePath();
-
 
     ctx.fill();
 
@@ -4024,18 +3481,8 @@ function draw(){
 
     ctx.beginPath();
 
-
-    ctx.moveTo(
-        0,
-        H
-    );
-
-
-    ctx.lineTo(
-        0,
-        H-90
-    );
-
+    ctx.moveTo(0,H);
+    ctx.lineTo(0,H-90);
 
     ctx.quadraticCurveTo(
         W*.25,
@@ -4044,7 +3491,6 @@ function draw(){
         H-100
     );
 
-
     ctx.quadraticCurveTo(
         W*.8,
         H-160,
@@ -4052,52 +3498,39 @@ function draw(){
         H-75
     );
 
-
-    ctx.lineTo(
-        W,
-        H
-    );
-
+    ctx.lineTo(W,H);
 
     ctx.closePath();
 
-
     ctx.fill();
-
 
     ctx.restore();
 
 
-    /* =====================================================
-       ROOM BACKGROUND
-       ===================================================== */
+    /* ROOM */
 
     if(myRoom === "lobby"){
 
         drawLobby(W,H);
 
-    }
-
-    else if(myRoom === "pagoda"){
+    }else if(myRoom === "pagoda"){
 
         drawPagoda(W,H);
 
-    }
-
-    else if(myRoom === "minigame"){
+    }else{
 
         drawMinigame(W,H);
 
     }
 
 
-    /* =====================================================
-       RENDER PLAYERS
-       ===================================================== */
+    /* PLAYERS */
 
     const allPlayers = {
+
         ...demoPlayers,
         ...playersData
+
     };
 
 
@@ -4106,20 +3539,12 @@ function draw(){
         allPlayers[myPlayerId] = {
 
             name:myName,
-
             avatar:myAvatar,
-
             room:myRoom,
-
             x:myX,
-
             y:myY,
-
-            bubbleText:
-                myBubbleText,
-
-            bubbleUntil:
-                myBubbleUntil
+            bubbleText:myBubbleText,
+            bubbleUntil:myBubbleUntil
 
         };
 
@@ -4154,7 +3579,7 @@ function draw(){
             )*3;
 
 
-        /* PLAYER GLOW */
+        /* GLOW */
 
         const glow =
             ctx.createRadialGradient(
@@ -4163,13 +3588,13 @@ function draw(){
                 2,
                 p.x,
                 p.y,
-                34
+                38
             );
 
 
         glow.addColorStop(
             0,
-            "rgba(251,191,36,.16)"
+            "rgba(251,191,36,.18)"
         );
 
 
@@ -4188,7 +3613,7 @@ function draw(){
         ctx.arc(
             p.x,
             p.y,
-            34,
+            38,
             0,
             Math.PI*2
         );
@@ -4201,10 +3626,8 @@ function draw(){
         ctx.font =
             "38px sans-serif";
 
-
         ctx.textAlign =
             "center";
-
 
         ctx.textBaseline =
             "middle";
@@ -4222,18 +3645,11 @@ function draw(){
         ctx.font =
             "bold 11px Prompt,sans-serif";
 
-
         ctx.fillStyle =
             "#fde047";
 
-
-        ctx.textAlign =
-            "center";
-
-
         ctx.shadowColor =
             "rgba(0,0,0,.9)";
-
 
         ctx.shadowBlur =
             8;
@@ -4250,7 +3666,7 @@ function draw(){
             0;
 
 
-        /* CHAT BUBBLE */
+        /* SPEECH */
 
         if(
             p.bubbleText &&
@@ -4261,10 +3677,7 @@ function draw(){
             const txt =
                 String(
                     p.bubbleText
-                ).substring(
-                    0,
-                    58
-                );
+                ).substring(0,58);
 
 
             ctx.font =
@@ -4273,7 +3686,7 @@ function draw(){
 
             const bw =
                 Math.min(
-                    230,
+                    240,
                     ctx.measureText(txt).width+28
                 );
 
@@ -4289,17 +3702,14 @@ function draw(){
             ctx.fillStyle =
                 "rgba(7,10,28,.94)";
 
-
             ctx.strokeStyle =
                 "rgba(251,191,36,.6)";
-
 
             ctx.lineWidth =
                 1.5;
 
 
             ctx.beginPath();
-
 
             ctx.roundRect(
                 bx,
@@ -4309,49 +3719,16 @@ function draw(){
                 12
             );
 
-
             ctx.fill();
-
             ctx.stroke();
-
-
-            ctx.beginPath();
-
-
-            ctx.moveTo(
-                p.x-7,
-                by+31
-            );
-
-
-            ctx.lineTo(
-                p.x,
-                by+39
-            );
-
-
-            ctx.lineTo(
-                p.x+7,
-                by+31
-            );
-
-
-            ctx.closePath();
-
-
-            ctx.fill();
 
 
             ctx.fillStyle =
                 "#fff7ed";
 
 
-            ctx.shadowColor =
-                "rgba(0,0,0,.8)";
-
-
-            ctx.shadowBlur =
-                5;
+            ctx.textAlign =
+                "center";
 
 
             ctx.fillText(
@@ -4374,13 +3751,8 @@ function draw(){
             ctx.font =
                 "bold 9px Prompt,sans-serif";
 
-
             ctx.fillStyle =
-                "rgba(253,230,138,.9)";
-
-
-            ctx.shadowBlur =
-                4;
+                "#fde68a";
 
 
             ctx.fillText(
@@ -4397,43 +3769,32 @@ function draw(){
     }
 
 
-    /* =====================================================
-       UPDATE PLAYER COUNT
-       ===================================================== */
-
     if(!firebaseReady){
 
         document
-            .getElementById(
-                "player-count"
-            )
-            .innerText =
+            .getElementById("player-count")
+            .textContent =
             `ผู้เล่นออนไลน์: ${visiblePlayers}`;
 
     }
-
 
 }
 
 
 /* =========================================================
-   LOBBY DRAW
-   ========================================================= */
+   LOBBY
+========================================================= */
 
 function drawLobby(W,H){
 
     ctx.save();
 
-
     ctx.textAlign =
         "center";
 
 
-    /* FESTIVAL STRING */
-
     ctx.strokeStyle =
         "rgba(251,191,36,.22)";
-
 
     ctx.lineWidth =
         2;
@@ -4441,12 +3802,7 @@ function drawLobby(W,H){
 
     ctx.beginPath();
 
-
-    ctx.moveTo(
-        0,
-        80
-    );
-
+    ctx.moveTo(0,80);
 
     ctx.quadraticCurveTo(
         W*.5,
@@ -4455,22 +3811,21 @@ function drawLobby(W,H){
         70
     );
 
-
     ctx.stroke();
 
 
     for(
         let i=0;
-        i<9;
+        i<11;
         i++
     ){
 
         const x =
-            W*(i/8);
+            W*(i/10);
 
 
         const y =
-            95 +
+            95+
             Math.sin(i*.9)*25;
 
 
@@ -4480,7 +3835,6 @@ function drawLobby(W,H){
 
         ctx.shadowColor =
             "rgba(251,191,36,.55)";
-
 
         ctx.shadowBlur =
             16;
@@ -4501,7 +3855,7 @@ function drawLobby(W,H){
         0;
 
 
-    /* CENTER STAGE */
+    /* STAGE */
 
     const sx =
         W/2-250;
@@ -4556,10 +3910,6 @@ function drawLobby(W,H){
         "rgba(251,191,36,.35)";
 
 
-    ctx.lineWidth =
-        2;
-
-
     ctx.strokeRect(
         sx,
         sy,
@@ -4609,58 +3959,22 @@ function drawLobby(W,H){
     );
 
 
-    /* SIDE STALLS */
-
     ctx.font =
         "54px sans-serif";
 
 
-    ctx.fillText(
-        "🏮",
-        W*.16,
-        H-92
-    );
+    ctx.fillText("🏮",W*.16,H-92);
+    ctx.fillText("🥮",W*.28,H-88);
+    ctx.fillText("🪷",W*.72,H-88);
+    ctx.fillText("🏮",W*.84,H-92);
 
-
-    ctx.fillText(
-        "🥮",
-        W*.28,
-        H-88
-    );
-
-
-    ctx.fillText(
-        "🪷",
-        W*.72,
-        H-88
-    );
-
-
-    ctx.fillText(
-        "🏮",
-        W*.84,
-        H-92
-    );
-
-
-    /* SMALL DECOR */
 
     ctx.font =
         "30px sans-serif";
 
 
-    ctx.fillText(
-        "✨",
-        W*.08,
-        H*.53
-    );
-
-
-    ctx.fillText(
-        "🌸",
-        W*.91,
-        H*.55
-    );
+    ctx.fillText("✨",W*.08,H*.53);
+    ctx.fillText("🌸",W*.91,H*.55);
 
 
     ctx.restore();
@@ -4669,99 +3983,15 @@ function drawLobby(W,H){
 
 
 /* =========================================================
-   PAGODA DRAW
-   ========================================================= */
+   PAGODA
+========================================================= */
 
 function drawPagoda(W,H){
 
     ctx.save();
 
-
     ctx.textAlign =
         "center";
-
-
-    /* PAGODA */
-
-    ctx.fillStyle =
-        "rgba(8,12,30,.82)";
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        W/2-105,
-        H-70
-    );
-
-
-    ctx.lineTo(
-        W/2-72,
-        220
-    );
-
-
-    ctx.lineTo(
-        W/2+72,
-        220
-    );
-
-
-    ctx.lineTo(
-        W/2+105,
-        H-70
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.fill();
-
-
-    /* PAGODA LEVELS */
-
-    for(
-        let i=0;
-        i<4;
-        i++
-    ){
-
-        const yy =
-            240+i*52;
-
-
-        const ww =
-            88+i*22;
-
-
-        ctx.strokeStyle =
-            "rgba(251,191,36,.28)";
-
-
-        ctx.lineWidth =
-            3;
-
-
-        ctx.beginPath();
-
-
-        ctx.moveTo(
-            W/2-ww,
-            yy
-        );
-
-
-        ctx.lineTo(
-            W/2+ww,
-            yy
-        );
-
-
-        ctx.stroke();
-
-    }
 
 
     /* GIANT LANTERN */
@@ -4769,10 +3999,8 @@ function drawPagoda(W,H){
     ctx.font =
         "190px sans-serif";
 
-
     ctx.shadowColor =
         "rgba(251,191,36,.95)";
-
 
     ctx.shadowBlur =
         90;
@@ -4789,9 +4017,78 @@ function drawPagoda(W,H){
         0;
 
 
+    /* PAGODA */
+
+    ctx.fillStyle =
+        "rgba(8,12,30,.82)";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        W/2-105,
+        H-70
+    );
+
+    ctx.lineTo(
+        W/2-72,
+        220
+    );
+
+    ctx.lineTo(
+        W/2+72,
+        220
+    );
+
+    ctx.lineTo(
+        W/2+105,
+        H-70
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    for(
+        let i=0;
+        i<4;
+        i++
+    ){
+
+        const yy =
+            240+i*52;
+
+        const ww =
+            88+i*22;
+
+
+        ctx.strokeStyle =
+            "rgba(251,191,36,.28)";
+
+        ctx.lineWidth =
+            3;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            W/2-ww,
+            yy
+        );
+
+        ctx.lineTo(
+            W/2+ww,
+            yy
+        );
+
+        ctx.stroke();
+
+    }
+
+
     ctx.font =
         "bold 14px Prompt,sans-serif";
-
 
     ctx.fillStyle =
         "#fde047";
@@ -4807,7 +4104,6 @@ function drawPagoda(W,H){
     ctx.font =
         "11px Prompt,sans-serif";
 
-
     ctx.fillStyle =
         "rgba(255,255,255,.68)";
 
@@ -4822,7 +4118,7 @@ function drawPagoda(W,H){
     ctx.restore();
 
 
-    /* FLOATING LANTERNS */
+    /* LANTERNS */
 
     for(
         const [id,l]
@@ -4835,14 +4131,12 @@ function drawPagoda(W,H){
         ctx.font =
             "42px sans-serif";
 
-
         ctx.textAlign =
             "center";
 
 
         ctx.shadowColor =
             "rgba(251,191,36,.85)";
-
 
         ctx.shadowBlur =
             24;
@@ -4862,14 +4156,11 @@ function drawPagoda(W,H){
         ctx.font =
             "11px Prompt,sans-serif";
 
-
         ctx.fillStyle =
             "#fde047";
 
-
         ctx.shadowColor =
             "rgba(0,0,0,.9)";
-
 
         ctx.shadowBlur =
             6;
@@ -4890,8 +4181,8 @@ function drawPagoda(W,H){
 
 
 /* =========================================================
-   MINIGAME DRAW
-   ========================================================= */
+   MINIGAME
+========================================================= */
 
 function drawMinigame(W,H){
 
@@ -4942,7 +4233,6 @@ function drawMinigame(W,H){
     ctx.strokeStyle =
         "rgba(253,224,71,.13)";
 
-
     ctx.lineWidth =
         2;
 
@@ -4954,41 +4244,36 @@ function drawMinigame(W,H){
     ){
 
         const x =
-            (i/13)*W;
+            i/13*W;
 
 
         ctx.beginPath();
-
 
         ctx.moveTo(
             x,
             groundY
         );
 
-
         ctx.lineTo(
             x+(i%2?18:-18),
             H
         );
-
 
         ctx.stroke();
 
     }
 
 
-    /* FESTIVAL ARCH */
+    /* ARCH */
 
     ctx.strokeStyle =
         "rgba(251,191,36,.35)";
-
 
     ctx.lineWidth =
         9;
 
 
     ctx.beginPath();
-
 
     ctx.arc(
         W/2,
@@ -4998,20 +4283,17 @@ function drawMinigame(W,H){
         0
     );
 
-
     ctx.stroke();
 
 
     ctx.strokeStyle =
         "rgba(167,139,250,.28)";
 
-
     ctx.lineWidth =
         2;
 
 
     ctx.beginPath();
-
 
     ctx.arc(
         W/2,
@@ -5021,15 +4303,13 @@ function drawMinigame(W,H){
         0
     );
 
-
     ctx.stroke();
 
 
-    /* CENTER DECOR */
+    /* DECOR */
 
     ctx.font =
         "42px sans-serif";
-
 
     ctx.textAlign =
         "center";
@@ -5037,7 +4317,6 @@ function drawMinigame(W,H){
 
     ctx.shadowColor =
         "rgba(251,191,36,.55)";
-
 
     ctx.shadowBlur =
         20;
@@ -5049,13 +4328,11 @@ function drawMinigame(W,H){
         groundY-40
     );
 
-
     ctx.fillText(
         "🌕",
         W*.5,
         groundY-70
     );
-
 
     ctx.fillText(
         "🏮",
@@ -5084,7 +4361,6 @@ function drawMinigame(W,H){
 
     ctx.beginPath();
 
-
     ctx.ellipse(
         tx,
         ty,
@@ -5095,17 +4371,14 @@ function drawMinigame(W,H){
         Math.PI*2
     );
 
-
     ctx.fill();
 
 
     ctx.strokeStyle =
         "rgba(251,191,36,.45)";
 
-
     ctx.lineWidth =
         2;
-
 
     ctx.stroke();
 
@@ -5126,20 +4399,17 @@ function drawMinigame(W,H){
 
         ctx.fillText(
             "🥮",
-            tx+
-                Math.cos(a)*130,
-            ty+
-                Math.sin(a)*25-10
+            tx+Math.cos(a)*130,
+            ty+Math.sin(a)*25-10
         );
 
     }
 
 
-    /* LANTERN STRING */
+    /* FESTIVAL STRING */
 
     ctx.strokeStyle =
         "rgba(251,191,36,.18)";
-
 
     ctx.lineWidth =
         2;
@@ -5147,12 +4417,10 @@ function drawMinigame(W,H){
 
     ctx.beginPath();
 
-
     ctx.moveTo(
         0,
         125
     );
-
 
     ctx.quadraticCurveTo(
         W*.5,
@@ -5160,7 +4428,6 @@ function drawMinigame(W,H){
         W,
         120
     );
-
 
     ctx.stroke();
 
@@ -5173,7 +4440,6 @@ function drawMinigame(W,H){
 
         const x =
             W*(i/10);
-
 
         const y =
             145+
@@ -5195,7 +4461,7 @@ function drawMinigame(W,H){
     }
 
 
-    /* TITLE PLATE */
+    /* TITLE */
 
     const plateW =
         Math.min(
@@ -5207,17 +4473,14 @@ function drawMinigame(W,H){
     ctx.fillStyle =
         "rgba(9,7,26,.76)";
 
-
     ctx.strokeStyle =
         "rgba(251,191,36,.32)";
-
 
     ctx.lineWidth =
         2;
 
 
     ctx.beginPath();
-
 
     ctx.roundRect(
         W/2-plateW/2,
@@ -5227,7 +4490,6 @@ function drawMinigame(W,H){
         20
     );
 
-
     ctx.fill();
 
     ctx.stroke();
@@ -5235,7 +4497,6 @@ function drawMinigame(W,H){
 
     ctx.fillStyle =
         "#fde68a";
-
 
     ctx.font =
         "bold 18px Prompt,sans-serif";
@@ -5251,7 +4512,6 @@ function drawMinigame(W,H){
     ctx.fillStyle =
         "rgba(255,255,255,.72)";
 
-
     ctx.font =
         "11px Prompt,sans-serif";
 
@@ -5263,19 +4523,17 @@ function drawMinigame(W,H){
     );
 
 
-    /* MOONCAKES */
+    /* CAKES */
 
     for(
         const [id,cake]
         of Object.entries(moonCakesData)
     ){
 
-        const eaten =
+        if(
             cake.eatenAt &&
-            Date.now()-cake.eatenAt < 1400;
-
-
-        if(eaten)
+            Date.now()-cake.eatenAt < 1400
+        )
             continue;
 
 
@@ -5295,11 +4553,10 @@ function drawMinigame(W,H){
 
 
         ctx.shadowColor =
-            "rgba(251,191,36,.75)";
-
+            "rgba(251,191,36,.85)";
 
         ctx.shadowBlur =
-            18;
+            22;
 
 
         ctx.font =
@@ -5344,32 +4601,45 @@ function drawMinigame(W,H){
 
 /* =========================================================
    PLAYER COUNT
-   ========================================================= */
+========================================================= */
 
 function updatePlayerCount(){
 
-    const count =
-        Object.keys(
-            {
-                ...demoPlayers,
-                ...playersData
-            }
-        ).length;
+    const onlineFirebase =
+        Object.keys(playersData).length;
+
+
+    let count;
+
+
+    if(firebaseReady){
+
+        count =
+            Math.max(
+                onlineFirebase,
+                isJoined ? 1 : 0
+            );
+
+    }else{
+
+        count =
+            Object.keys(demoPlayers).length +
+            (isJoined ? 1 : 0);
+
+    }
 
 
     document
-        .getElementById(
-            "player-count"
-        )
-        .innerText =
+        .getElementById("player-count")
+        .textContent =
         `ผู้เล่นออนไลน์: ${count}`;
 
 }
 
 
 /* =========================================================
-   ESCAPE HTML
-   ========================================================= */
+   ESCAPE
+========================================================= */
 
 function escapeHtml(value){
 
@@ -5377,14 +4647,12 @@ function escapeHtml(value){
         .replace(
             /[&<>'"`]/g,
             c => ({
-
                 "&":"&amp;",
                 "<":"&lt;",
                 ">":"&gt;",
                 '"':"&quot;",
                 "'":"&#39;",
                 "`":"&#96;"
-
             }[c])
         );
 
@@ -5392,43 +4660,8 @@ function escapeHtml(value){
 
 
 /* =========================================================
-   BEFORE UNLOAD
-   ========================================================= */
-
-window.addEventListener(
-    "beforeunload",
-    () => {
-
-        if(
-            firebaseReady &&
-            db &&
-            currentUser &&
-            isJoined
-        ){
-
-            deleteDoc(
-
-                doc(
-                    db,
-                    "artifacts",
-                    appId,
-                    "public",
-                    "data",
-                    "players",
-                    myPlayerId
-                )
-
-            ).catch(()=>{});
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOCAL DEMO CHAT
-   ========================================================= */
+   DEMO CHAT
+========================================================= */
 
 setTimeout(
     () => {
@@ -5464,11 +4697,63 @@ setTimeout(
 );
 
 
+setTimeout(
+    () => {
+
+        if(!firebaseReady){
+
+            addLocalChat(
+                "Bao",
+                "ลานขนมเปิดแล้วนะ! 🥮😂"
+            );
+
+        }
+
+    },
+    6800
+);
+
+
+/* =========================================================
+   BEFORE UNLOAD
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if(
+            firebaseReady &&
+            db &&
+            currentUser &&
+            isJoined
+        ){
+
+            deleteDoc(
+
+                doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    "players",
+                    myPlayerId
+                )
+
+            ).catch(
+                () => {}
+            );
+
+        }
+
+    }
+);
+
+
 /* =========================================================
    START
-   ========================================================= */
-
-initializeFirebase();
+========================================================= */
 
 createLocalMoonCakes();
 
@@ -5476,10 +4761,12 @@ renderScoreboard();
 
 updatePlayerCount();
 
+initializeFirebase();
+
 
 /* =========================================================
-   GAME LOOP
-   ========================================================= */
+   LOOP
+========================================================= */
 
 function loop(){
 
@@ -5493,9 +4780,7 @@ function loop(){
 
 }
 
-
 loop();
-
 
 </script>
 
