@@ -1,1003 +1,1097 @@
+```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no,
-               viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Moonlit Gathering — เทศกาลชมจันทร์ร่วมกัน</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>MOONLIGHT FESTIVAL</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <style>
-:root{
-    --purple:#6d28d9;
-    --purple2:#8b5cf6;
-    --deep:#090517;
-    --deep2:#140827;
-    --gold:#ffd76a;
-    --gold2:#ffb703;
-    --pink:#f472b6;
-    --cyan:#67e8f9;
-    --glass:rgba(16,8,38,.78);
-    --line:rgba(255,215,106,.22);
-}
 
 *{
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --night:#070b20;
+    --night2:#11183c;
+    --purple:#6c4cff;
+    --purple2:#9c7bff;
+    --gold:#ffd86b;
+    --cream:#fff4cf;
+    --pink:#ff91c8;
+    --glass:rgba(11,15,45,.72);
+    --border:rgba(255,216,107,.35);
 }
 
 html,
 body{
-    margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    font-family:'Prompt',sans-serif;
-    background:#07040f;
-    color:white;
 }
 
 body{
-    touch-action:manipulation;
+    font-family:'Kanit',sans-serif;
+    color:white;
+    background:#070b20;
 }
 
-button,
-input{
-    font-family:inherit;
-}
-
-button{
-    user-select:none;
-    -webkit-user-select:none;
-}
-
-.hidden{
-    display:none!important;
-}
-
-/* =========================================================
+/* =========================
    BACKGROUND
-========================================================= */
+========================= */
 
-#app{
-    position:fixed;
-    inset:0;
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
     overflow:hidden;
     background:
-        radial-gradient(circle at 50% 15%,rgba(139,92,246,.22),transparent 30%),
-        linear-gradient(180deg,#0a0617 0%,#130823 55%,#09040f 100%);
+        radial-gradient(circle at 50% 20%,rgba(105,78,255,.22),transparent 35%),
+        linear-gradient(
+            180deg,
+            #070a1d 0%,
+            #11153b 45%,
+            #24164e 72%,
+            #100d28 100%
+        );
 }
 
-#gameCanvas{
+/* stars */
+
+.stars{
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
-    z-index:1;
-    touch-action:none;
+    pointer-events:none;
 }
 
-/* =========================================================
-   TOP HEADER
-========================================================= */
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:white;
+    opacity:.6;
+    animation:twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle{
+    0%,100%{
+        opacity:.25;
+        transform:scale(.7);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.4);
+    }
+}
+
+/* moon */
+
+.moon{
+    position:absolute;
+    top:80px;
+    right:11vw;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle at 35% 30%,#fffdf0,#fff2a9 45%,#eacb65 100%);
+    box-shadow:
+        0 0 35px rgba(255,231,142,.5),
+        0 0 100px rgba(255,220,90,.22);
+    z-index:1;
+}
+
+.moon:before,
+.moon:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(190,155,70,.12);
+}
+
+.moon:before{
+    width:35px;
+    height:35px;
+    left:45px;
+    top:40px;
+}
+
+.moon:after{
+    width:24px;
+    height:24px;
+    right:38px;
+    bottom:42px;
+}
+
+/* mountains */
+
+.mountains{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:150px;
+    height:180px;
+    background:
+        linear-gradient(135deg,transparent 25%,#0b0e2c 25%),
+        linear-gradient(225deg,transparent 25%,#0b0e2c 25%);
+    background-size:50% 100%;
+    background-position:left,right;
+    background-repeat:no-repeat;
+    opacity:.9;
+}
+
+/* ground */
+
+.ground{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:190px;
+    background:
+        radial-gradient(
+            ellipse at center top,
+            rgba(101,75,174,.7),
+            transparent 65%
+        ),
+        linear-gradient(
+            180deg,
+            #19113b,
+            #08091c
+        );
+    border-top:1px solid rgba(255,216,107,.1);
+}
+
+/* =========================
+   LANTERNS
+========================= */
+
+.lantern{
+    position:absolute;
+    width:40px;
+    height:55px;
+    background:
+        linear-gradient(
+            90deg,
+            #8d174d,
+            #ff5c8d,
+            #8d174d
+        );
+    border-radius:10px 10px 14px 14px;
+    box-shadow:0 0 25px rgba(255,84,133,.35);
+    z-index:2;
+    animation:floatLantern 4s ease-in-out infinite;
+}
+
+.lantern:before{
+    content:"";
+    position:absolute;
+    top:-8px;
+    left:7px;
+    right:7px;
+    height:8px;
+    background:#ffd66b;
+    border-radius:4px;
+}
+
+.lantern:after{
+    content:"";
+    position:absolute;
+    bottom:-16px;
+    left:50%;
+    width:2px;
+    height:18px;
+    background:#ffd66b;
+}
+
+.lantern span{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+@keyframes floatLantern{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+/* =========================
+   UI
+========================= */
 
 .topbar{
     position:absolute;
     top:0;
     left:0;
     right:0;
-    height:72px;
-    z-index:100;
+    height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 22px;
+    background:linear-gradient(
+        180deg,
+        rgba(4,7,22,.88),
+        rgba(4,7,22,.25)
+    );
+    z-index:50;
+}
+
+.logo{
     display:flex;
     align-items:center;
     gap:12px;
-    padding:10px 16px;
-    background:
-        linear-gradient(180deg,
-        rgba(8,3,18,.96),
-        rgba(8,3,18,.72));
-    border-bottom:1px solid rgba(255,215,106,.18);
-    backdrop-filter:blur(16px);
-    box-shadow:0 8px 30px rgba(0,0,0,.25);
 }
 
-.brand{
-    min-width:205px;
+.logo-icon{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    background:rgba(255,216,107,.1);
+    border:1px solid rgba(255,216,107,.3);
+}
+
+.logo h1{
+    font-family:'Itim',cursive;
+    color:#ffe69a;
+    font-size:24px;
+}
+
+.logo small{
+    display:block;
+    color:#aaaed0;
+    font-size:10px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.icon-btn{
+    border:1px solid rgba(255,255,255,.13);
+    background:rgba(255,255,255,.07);
+    color:white;
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:18px;
+    transition:.2s;
+}
+
+.icon-btn:hover{
+    background:rgba(255,255,255,.15);
+    transform:translateY(-2px);
+}
+
+/* player badge */
+
+.player-badge{
+    position:absolute;
+    top:88px;
+    left:20px;
+    z-index:20;
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(12px);
+    border-radius:18px;
+    padding:9px 14px;
     display:flex;
     align-items:center;
     gap:10px;
 }
 
-.brand-lantern{
-    width:43px;
-    height:43px;
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    font-size:25px;
-    background:
-        radial-gradient(circle at 50% 35%,
-        #fff0a8,
-        #ffbf35 30%,
-        #9b3412 70%);
-    box-shadow:
-        0 0 20px rgba(255,190,40,.6),
-        inset 0 0 10px rgba(255,255,255,.25);
-}
-
-.brand-title{
-    font-weight:700;
-    letter-spacing:.5px;
-    color:#fff4c4;
-    font-size:17px;
-    line-height:1.1;
-}
-
-.brand-sub{
-    font-size:10px;
-    color:#b7a8d5;
-    margin-top:2px;
-}
-
-.room-nav{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    gap:7px;
-}
-
-.room-btn{
-    border:1px solid rgba(255,255,255,.08);
-    color:#cfc6e7;
-    background:rgba(255,255,255,.04);
-    border-radius:13px;
-    padding:9px 13px;
-    cursor:pointer;
-    transition:.2s;
-    white-space:nowrap;
-    font-size:13px;
-}
-
-.room-btn:hover{
-    background:rgba(255,215,106,.1);
-    color:#ffeaa0;
-}
-
-.room-btn.active{
-    color:#180c02;
-    background:linear-gradient(135deg,#ffe58a,#ffb703);
-    border-color:#ffe7a0;
-    box-shadow:0 0 20px rgba(255,183,3,.25);
-    font-weight:700;
-}
-
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.online-pill{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:8px 11px;
-    border-radius:999px;
-    background:rgba(34,197,94,.08);
-    border:1px solid rgba(34,197,94,.2);
-    font-size:12px;
-    color:#b9fbcf;
-}
-
-.online-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#4ade80;
-    box-shadow:0 0 10px #4ade80;
-}
-
-.icon-btn{
+.avatar{
     width:38px;
     height:38px;
-    border-radius:11px;
-    border:1px solid rgba(255,255,255,.1);
-    background:rgba(255,255,255,.06);
-    color:white;
-    cursor:pointer;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ffb4d9,#705cff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
 }
 
-/* =========================================================
-   MAIN HUD
-========================================================= */
+.player-info strong{
+    display:block;
+    font-size:13px;
+}
 
-.room-title{
+.player-info small{
+    color:#ffd86b;
+    font-size:10px;
+}
+
+/* room */
+
+.room-info{
     position:absolute;
+    top:88px;
+    right:20px;
     z-index:20;
-    top:92px;
+    padding:10px 15px;
+    background:var(--glass);
+    border:1px solid var(--border);
+    border-radius:15px;
+    backdrop-filter:blur(10px);
+    text-align:right;
+}
+
+.room-info small{
+    color:#aaaed0;
+    display:block;
+    font-size:10px;
+}
+
+.room-code{
+    color:#ffd86b;
+    font-weight:600;
+    letter-spacing:2px;
+}
+
+/* =========================
+   WORLD
+========================= */
+
+.world{
+    position:absolute;
+    inset:0;
+    z-index:5;
+}
+
+/* player */
+
+.player{
+    position:absolute;
+    width:55px;
+    height:75px;
+    transform:translate(-50%,-50%);
+    z-index:15;
+    transition:left .08s linear,top .08s linear;
+}
+
+.player-character{
+    width:50px;
+    height:55px;
+    border-radius:45% 45% 35% 35%;
+    background:linear-gradient(135deg,#ffb5d7,#754eff);
+    border:3px solid rgba(255,255,255,.8);
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+}
+
+.player-name{
+    position:absolute;
+    top:58px;
     left:50%;
     transform:translateX(-50%);
-    padding:9px 18px;
-    border-radius:999px;
-    background:rgba(9,5,23,.66);
-    border:1px solid rgba(255,215,106,.2);
-    backdrop-filter:blur(12px);
-    color:#ffe8a1;
-    font-size:13px;
-    pointer-events:none;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-}
-
-.hud{
-    position:absolute;
-    z-index:40;
-    top:88px;
-    right:16px;
-    width:280px;
-    max-width:calc(100vw - 32px);
-    pointer-events:none;
-}
-
-.hud-card{
-    pointer-events:auto;
-    background:rgba(12,6,28,.82);
-    border:1px solid rgba(255,215,106,.18);
-    backdrop-filter:blur(16px);
-    border-radius:18px;
-    box-shadow:0 15px 40px rgba(0,0,0,.3);
-    overflow:hidden;
-}
-
-.hud-header{
-    padding:12px 14px;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.hud-title{
-    color:#ffe7a0;
-    font-size:13px;
-    font-weight:600;
-}
-
-.hud-body{
-    padding:12px;
-}
-
-.wish-input{
-    width:100%;
-    border:1px solid rgba(255,255,255,.1);
-    background:rgba(0,0,0,.22);
-    color:white;
-    border-radius:11px;
-    padding:10px 11px;
-    outline:none;
-    font-size:12px;
-}
-
-.wish-input:focus{
-    border-color:rgba(255,215,106,.55);
-}
-
-.primary-btn{
-    width:100%;
-    border:0;
-    border-radius:11px;
-    padding:10px 12px;
-    margin-top:8px;
-    cursor:pointer;
-    color:#201000;
-    font-weight:700;
-    background:linear-gradient(135deg,#ffeaa1,#ffb703);
-    box-shadow:0 6px 20px rgba(255,183,3,.18);
-}
-
-.primary-btn:active{
-    transform:scale(.97);
-}
-
-/* =========================================================
-   SCORE PANEL
-========================================================= */
-
-.score-panel{
-    position:absolute;
-    z-index:45;
-    top:88px;
-    left:16px;
-    width:300px;
-    pointer-events:none;
-}
-
-.score-card{
-    pointer-events:auto;
-    border-radius:20px;
-    overflow:hidden;
-    background:
-        linear-gradient(145deg,
-        rgba(24,11,45,.93),
-        rgba(10,5,23,.86));
-    border:1px solid rgba(255,215,106,.22);
-    box-shadow:
-        0 20px 55px rgba(0,0,0,.35),
-        0 0 35px rgba(139,92,246,.08);
-    backdrop-filter:blur(18px);
-}
-
-.score-top{
-    padding:14px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.score-heading{
-    font-size:13px;
-    font-weight:700;
-    color:#ffe8a5;
-}
-
-.my-score{
-    font-size:25px;
-    font-weight:800;
-    color:#fff;
-}
-
-.leader{
-    margin:0 12px 12px;
-    border-radius:16px;
-    padding:14px;
-    position:relative;
-    overflow:hidden;
-    background:
-        radial-gradient(circle at 50% 20%,
-        rgba(255,215,106,.2),
-        transparent 55%),
-        linear-gradient(145deg,
-        rgba(255,183,3,.12),
-        rgba(139,92,246,.12));
-    border:1px solid rgba(255,215,106,.3);
-}
-
-.leader::before{
-    content:"";
-    position:absolute;
-    inset:-40%;
-    background:conic-gradient(
-        transparent,
-        rgba(255,255,255,.12),
-        transparent 25%
-    );
-    animation:spin 6s linear infinite;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
-.leader-inner{
-    position:relative;
-    z-index:2;
-    text-align:center;
-}
-
-.leader-crown{
-    font-size:27px;
-}
-
-.leader-avatar{
-    font-size:46px;
-    margin:2px 0;
-    filter:drop-shadow(0 0 15px rgba(255,215,106,.45));
-}
-
-.leader-label{
+    background:rgba(5,7,20,.75);
+    padding:2px 8px;
+    border-radius:10px;
     font-size:10px;
-    color:#d5c6e8;
-}
-
-.leader-name{
-    color:#ffe8a2;
-    font-weight:700;
-    font-size:15px;
-}
-
-.leader-score{
-    font-size:30px;
-    font-weight:800;
-    color:white;
-    line-height:1;
-    margin-top:3px;
-}
-
-.rank-list{
-    padding:0 12px 12px;
-}
-
-.rank-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 9px;
-    border-radius:11px;
-    margin-top:5px;
-    background:rgba(255,255,255,.035);
-}
-
-.rank-num{
-    width:24px;
-    text-align:center;
-    color:#e8dff4;
-    font-weight:700;
-}
-
-.rank-avatar{
-    font-size:20px;
-}
-
-.rank-name{
-    flex:1;
-    font-size:11px;
-    color:#ded5ec;
-    overflow:hidden;
-    text-overflow:ellipsis;
     white-space:nowrap;
 }
 
-.rank-points{
-    color:#ffe18b;
+/* =========================
+   OBJECTS
+========================= */
+
+.object{
+    position:absolute;
+    cursor:pointer;
+    transition:.2s;
+    z-index:10;
+}
+
+.object:hover{
+    transform:scale(1.08);
+}
+
+.table{
+    left:35%;
+    bottom:85px;
+    width:180px;
+    height:85px;
+}
+
+.table-top{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:35px;
+    border-radius:50%;
+    background:#9b4b3b;
+    border:3px solid #d47a4c;
+}
+
+.table-leg{
+    position:absolute;
+    top:20px;
+    left:40px;
+    width:100px;
+    height:65px;
+    background:#5c2c2b;
+    clip-path:polygon(15% 0,85% 0,100% 100%,0 100%);
+}
+
+.mooncake{
+    position:absolute;
+    width:38px;
+    height:20px;
+    border-radius:50%;
+    background:#e8ad4d;
+    border:2px solid #ffdb83;
+    top:5px;
+}
+
+.mooncake.one{
+    left:30px;
+}
+
+.mooncake.two{
+    left:80px;
+}
+
+.mooncake.three{
+    left:125px;
+}
+
+.lantern-station{
+    right:23%;
+    bottom:100px;
+    width:120px;
+    height:130px;
+}
+
+.station-roof{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:30px;
+    background:#ad3854;
+    clip-path:polygon(0 100%,50% 0,100% 100%);
+}
+
+.station-body{
+    position:absolute;
+    left:25px;
+    right:25px;
+    top:25px;
+    bottom:0;
+    background:#632746;
+    border:2px solid #e0a35a;
+    border-radius:5px;
+}
+
+.station-text{
+    position:absolute;
+    inset:45px 0 auto;
+    text-align:center;
     font-size:11px;
-    font-weight:700;
+    color:#ffd66b;
 }
 
-/* =========================================================
-   TEAM
-========================================================= */
-
-.team-panel{
-    position:absolute;
-    z-index:42;
-    left:16px;
-    bottom:86px;
-    width:240px;
-    pointer-events:none;
+.view-point{
+    right:8%;
+    bottom:105px;
+    width:150px;
+    height:90px;
+    border-radius:50%;
+    background:radial-gradient(
+        ellipse,
+        rgba(255,216,107,.2),
+        transparent 70%
+    );
 }
 
-.team-card{
-    pointer-events:auto;
-    border-radius:17px;
-    padding:12px;
-    background:rgba(10,5,22,.78);
-    border:1px solid rgba(255,255,255,.1);
-    backdrop-filter:blur(15px);
+.view-text{
+    text-align:center;
+    color:#ffe89a;
+    font-size:13px;
 }
 
-.team-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:12px;
-    color:#d9ccea;
-}
-
-.team-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:4px 8px;
-    border-radius:999px;
-    font-size:10px;
-    font-weight:700;
-}
-
-.team-red{
-    background:rgba(239,68,68,.15);
-    color:#fca5a5;
-}
-
-.team-gold{
-    background:rgba(245,158,11,.15);
-    color:#fde68a;
-}
-
-.team-blue{
-    background:rgba(59,130,246,.15);
-    color:#93c5fd;
-}
-
-.team-purple{
-    background:rgba(168,85,247,.15);
-    color:#d8b4fe;
-}
-
-.team-members{
-    margin-top:9px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-}
-
-.team-member{
-    padding:4px 7px;
-    border-radius:8px;
-    background:rgba(255,255,255,.05);
-    font-size:10px;
-    color:#d8d0e5;
-}
-
-/* =========================================================
+/* =========================
    CHAT
-========================================================= */
+========================= */
 
-.chat-panel{
+.chat{
     position:absolute;
-    z-index:70;
-    right:16px;
-    bottom:82px;
+    left:20px;
+    bottom:20px;
     width:310px;
-    pointer-events:none;
-}
-
-.chat-box{
-    pointer-events:auto;
-    border-radius:18px;
-    overflow:hidden;
-    background:rgba(9,5,20,.84);
-    border:1px solid rgba(255,255,255,.1);
+    height:265px;
+    background:rgba(7,10,29,.84);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:20px;
     backdrop-filter:blur(15px);
-    box-shadow:0 15px 40px rgba(0,0,0,.3);
-}
-
-.chat-head{
-    padding:10px 12px;
+    z-index:60;
+    overflow:hidden;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.06);
+    flex-direction:column;
 }
 
-.chat-title{
-    color:#ffe8a3;
-    font-size:12px;
-    font-weight:700;
+.chat-header{
+    padding:11px 14px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.chat-header strong{
+    font-size:13px;
+}
+
+.online{
+    color:#7dffa4;
+    font-size:10px;
 }
 
 .chat-messages{
-    height:145px;
+    flex:1;
+    padding:10px;
     overflow-y:auto;
-    padding:9px 10px;
 }
 
-.chat-message{
-    font-size:11px;
-    margin-bottom:7px;
-    line-height:1.45;
+.message{
+    margin-bottom:8px;
+    font-size:12px;
+    line-height:1.4;
 }
 
-.chat-name{
-    color:#ffd76a;
-    font-weight:600;
-}
-
-.chat-text{
-    color:#ded6e8;
-}
-
-.chat-input-row{
-    display:flex;
-    gap:5px;
-    padding:8px;
-    border-top:1px solid rgba(255,255,255,.06);
+.message b{
+    color:#ffd86b;
 }
 
 .chat-input{
+    display:flex;
+    padding:8px;
+    gap:6px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.chat-input input{
     flex:1;
     min-width:0;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.04);
-    color:white;
-    border-radius:9px;
-    padding:8px;
-    font-size:11px;
-    outline:none;
-}
-
-.chat-send{
-    width:38px;
     border:0;
-    border-radius:9px;
-    background:#7c3aed;
+    outline:0;
+    background:rgba(255,255,255,.07);
     color:white;
+    border-radius:12px;
+    padding:9px;
+    font-family:inherit;
 }
 
-/* =========================================================
-   MOBILE NAV
-========================================================= */
-
-.mobile-nav{
-    display:none;
+.send{
+    border:0;
+    background:#765aff;
+    color:white;
+    width:40px;
+    border-radius:12px;
+    cursor:pointer;
 }
 
-/* =========================================================
-   MOBILE CONTROLLER
-========================================================= */
+/* =========================
+   ACTION BAR
+========================= */
 
-.mobile-controls{
-    display:none;
+.actions{
     position:absolute;
-    z-index:60;
-    left:12px;
-    bottom:76px;
-    width:150px;
-    height:150px;
-    pointer-events:none;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:9px;
+    z-index:50;
+    padding:8px;
+    background:rgba(5,7,22,.72);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
 }
 
-.dpad{
-    position:absolute;
-    inset:0;
-    pointer-events:auto;
+.action{
+    min-width:74px;
+    height:58px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.06);
+    color:white;
+    border-radius:15px;
+    cursor:pointer;
+    font-family:inherit;
+    transition:.2s;
 }
 
-.dpad button{
-    position:absolute;
-    width:48px;
-    height:48px;
-    border-radius:13px;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(20,10,40,.72);
-    color:#fff2bb;
+.action:hover{
+    background:rgba(255,216,107,.14);
+    border-color:rgba(255,216,107,.35);
+    transform:translateY(-4px);
+}
+
+.action span{
+    display:block;
     font-size:20px;
-    backdrop-filter:blur(10px);
-    box-shadow:0 6px 20px rgba(0,0,0,.25);
 }
 
-.dpad button:active{
-    background:rgba(139,92,246,.65);
-    transform:scale(.94);
+.action small{
+    font-size:9px;
 }
 
-.d-up{
-    left:51px;
-    top:0;
-}
+/* =========================
+   PLAYER LIST
+========================= */
 
-.d-left{
-    left:0;
-    top:51px;
-}
-
-.d-right{
-    right:0;
-    top:51px;
-}
-
-.d-down{
-    left:51px;
-    bottom:0;
-}
-
-.action-button{
+.players-panel{
     position:absolute;
-    right:17px;
-    bottom:96px;
-    z-index:61;
-    display:none;
-    width:67px;
-    height:67px;
-    border-radius:50%;
-    border:2px solid rgba(255,215,106,.5);
-    background:
-        radial-gradient(circle,
-        rgba(255,215,106,.35),
-        rgba(139,92,246,.45));
-    color:#fff5c5;
-    font-size:25px;
-    box-shadow:0 0 30px rgba(255,183,3,.18);
-}
-
-.action-button:active{
-    transform:scale(.92);
-}
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-.modal-layer{
-    position:fixed;
-    inset:0;
-    z-index:500;
-    display:grid;
-    place-items:center;
-    padding:20px;
-    background:rgba(3,1,10,.78);
+    right:20px;
+    top:145px;
+    width:190px;
+    max-height:220px;
+    background:rgba(7,10,29,.75);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:18px;
+    padding:12px;
+    z-index:25;
     backdrop-filter:blur(12px);
 }
 
+.players-title{
+    font-size:12px;
+    color:#ffd86b;
+    margin-bottom:8px;
+}
+
+.player-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:7px;
+    font-size:11px;
+}
+
+.mini-avatar{
+    width:27px;
+    height:27px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ffb5d7,#705cff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* =========================
+   POPUP
+========================= */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    background:rgba(2,4,16,.75);
+    backdrop-filter:blur(12px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
 .modal{
-    width:100%;
-    max-width:520px;
-    max-height:90vh;
-    overflow:auto;
-    border-radius:28px;
+    width:min(480px,100%);
     background:
-        radial-gradient(circle at 50% 0%,
-        rgba(139,92,246,.2),
-        transparent 40%),
-        linear-gradient(145deg,
-        #170a2d,
-        #08030f);
-    border:1px solid rgba(255,215,106,.2);
-    box-shadow:
-        0 30px 100px rgba(0,0,0,.6),
-        0 0 50px rgba(139,92,246,.12);
-    padding:25px;
+        linear-gradient(
+            145deg,
+            rgba(28,25,75,.97),
+            rgba(9,11,34,.98)
+        );
+    border:1px solid rgba(255,216,107,.28);
+    border-radius:28px;
+    padding:28px;
+    box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
 
-.modal-logo{
+.modal h2{
+    font-family:'Itim',cursive;
+    color:#ffe39a;
+    font-size:32px;
     text-align:center;
-    font-size:52px;
-    margin-bottom:4px;
-}
-
-.modal-title{
-    text-align:center;
-    color:#ffe9a4;
-    font-size:24px;
-    font-weight:800;
 }
 
 .modal-sub{
     text-align:center;
-    color:#a99bbd;
+    color:#aaaed0;
     font-size:12px;
-    margin-top:5px;
+    margin:5px 0 22px;
 }
 
-.avatar-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    margin-top:20px;
+.field{
+    margin-bottom:12px;
 }
 
-.avatar-option{
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.04);
-    border-radius:15px;
-    height:72px;
-    font-size:35px;
-    cursor:pointer;
-    transition:.2s;
+.field label{
+    display:block;
+    font-size:11px;
+    color:#aaaed0;
+    margin-bottom:5px;
 }
 
-.avatar-option.active{
-    border-color:#ffd76a;
-    background:rgba(255,215,106,.1);
-    box-shadow:0 0 20px rgba(255,215,106,.12);
-    transform:translateY(-2px);
-}
-
-.name-input{
+.field input{
     width:100%;
-    margin-top:15px;
-    padding:13px;
-    border-radius:12px;
     border:1px solid rgba(255,255,255,.1);
-    background:rgba(0,0,0,.25);
+    background:rgba(255,255,255,.06);
     color:white;
-    outline:none;
+    outline:0;
+    border-radius:13px;
+    padding:13px;
+    font-family:inherit;
 }
 
-.name-input:focus{
-    border-color:#a78bfa;
+.main-btn{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#7358ff,#a26cff);
+    color:white;
+    font-family:inherit;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:7px;
 }
 
-.team-select-title{
-    margin-top:16px;
-    font-size:12px;
-    color:#cfc3df;
-}
-
-.team-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:7px;
+.secondary-btn{
+    width:100%;
+    border:1px solid rgba(255,255,255,.1);
+    padding:12px;
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+    color:white;
+    font-family:inherit;
+    cursor:pointer;
     margin-top:8px;
 }
 
-.team-option{
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-    background:rgba(255,255,255,.035);
-    color:#ddd;
-    padding:9px 5px;
-    cursor:pointer;
-    font-size:10px;
-}
-
-.team-option.active{
-    border-color:#ffd76a;
-    background:rgba(255,215,106,.1);
-    color:#fff0af;
-}
-
-.join-btn{
-    width:100%;
-    margin-top:18px;
-    padding:14px;
-    border:0;
-    border-radius:14px;
-    color:#160c00;
-    background:linear-gradient(135deg,#ffeaa3,#ffb703);
-    font-size:14px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.modal-note{
+.divider{
     text-align:center;
-    color:#847794;
+    color:#777b9d;
     font-size:10px;
-    margin-top:12px;
+    margin:14px 0;
 }
 
-/* =========================================================
-   INFO MODAL
-========================================================= */
-
-.info-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:9px;
-    margin-top:15px;
-}
-
-.info-card{
-    padding:13px;
-    border-radius:14px;
-    background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.06);
-}
-
-.info-icon{
-    font-size:25px;
-}
-
-.info-name{
-    color:#ffe7a0;
-    font-weight:700;
-    font-size:12px;
-    margin-top:5px;
-}
-
-.info-desc{
-    color:#a99eb9;
+.connection{
+    margin-top:10px;
+    text-align:center;
+    color:#7dffa4;
     font-size:10px;
-    line-height:1.5;
-    margin-top:3px;
 }
 
-.close-modal{
-    width:100%;
-    margin-top:15px;
-    border:1px solid rgba(255,255,255,.1);
-    background:rgba(255,255,255,.04);
-    color:#ddd;
-    padding:10px;
-    border-radius:11px;
-}
+/* =========================
+   EVENT POPUP
+========================= */
 
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast{
-    position:fixed;
-    z-index:1000;
-    top:88px;
+.event-popup{
+    position:absolute;
     left:50%;
-    transform:translate(-50%,-20px);
+    top:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    z-index:90;
+    width:min(520px,90%);
+    padding:25px;
+    text-align:center;
+    border-radius:25px;
+    background:rgba(13,15,47,.93);
+    border:1px solid rgba(255,216,107,.4);
+    box-shadow:0 20px 80px rgba(0,0,0,.5);
     opacity:0;
     pointer-events:none;
-    padding:11px 17px;
-    border-radius:999px;
-    background:rgba(15,7,32,.92);
-    border:1px solid rgba(255,215,106,.25);
-    color:#ffe8a5;
-    font-size:12px;
-    backdrop-filter:blur(15px);
     transition:.3s;
-    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.event-popup.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+}
+
+.event-popup .big{
+    font-size:55px;
+}
+
+.event-popup h2{
+    color:#ffe39a;
+    font-family:'Itim',cursive;
+    font-size:30px;
+}
+
+.event-popup p{
+    color:#c8c9df;
+    font-size:12px;
+    line-height:1.7;
+    margin:8px 0;
+}
+
+/* =========================
+   MOON MODE
+========================= */
+
+.moon-mode{
+    position:absolute;
+    inset:0;
+    z-index:80;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,228,131,.18),
+            rgba(5,7,23,.94) 65%
+        );
+    display:none;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.moon-mode.active{
+    display:flex;
+}
+
+.moon-scene{
+    width:min(600px,90%);
+}
+
+.big-moon{
+    width:210px;
+    height:210px;
+    margin:auto;
+    border-radius:50%;
+    background:
+        radial-gradient(circle at 35% 30%,#fffef2,#fff0a1 50%,#d8b95a);
+    box-shadow:0 0 100px rgba(255,224,110,.35);
+}
+
+.moon-scene h2{
+    font-family:'Itim',cursive;
+    color:#ffe6a0;
+    font-size:42px;
+    margin-top:20px;
+}
+
+.moon-scene p{
+    color:#c7c9e4;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.close-btn{
+    margin-top:18px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.07);
+    color:white;
+    border-radius:13px;
+    padding:10px 22px;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+/* =========================
+   LANTERN ANIMATION
+========================= */
+
+.flying-lantern{
+    position:absolute;
+    width:35px;
+    height:48px;
+    border-radius:9px;
+    background:linear-gradient(90deg,#b53261,#ff668e,#b53261);
+    box-shadow:0 0 30px #ff668e;
+    z-index:70;
+    pointer-events:none;
+    animation:rise 7s linear forwards;
+}
+
+.flying-lantern:after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-10px;
+    width:2px;
+    height:12px;
+    background:#ffd86b;
+}
+
+@keyframes rise{
+    from{
+        transform:translate(-50%,0) rotate(-2deg);
+        opacity:1;
+    }
+    to{
+        transform:translate(
+            calc(-50% + 80px),
+            -100vh
+        ) rotate(8deg);
+        opacity:0;
+    }
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:absolute;
+    top:85px;
+    left:50%;
+    transform:translateX(-50%) translateY(-20px);
+    background:rgba(10,12,35,.92);
+    border:1px solid rgba(255,216,107,.3);
+    padding:10px 17px;
+    border-radius:15px;
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    font-size:12px;
 }
 
 .toast.show{
     opacity:1;
-    transform:translate(-50%,0);
+    transform:translateX(-50%) translateY(0);
 }
 
-/* =========================================================
-   OFFLINE STATUS
-========================================================= */
+/* =========================
+   SCORE
+========================= */
 
-.connection-status{
+.score{
     position:absolute;
-    z-index:50;
-    top:78px;
-    left:16px;
-    padding:5px 9px;
-    border-radius:999px;
-    background:rgba(34,197,94,.07);
-    border:1px solid rgba(34,197,94,.15);
-    color:#86efac;
-    font-size:9px;
-    pointer-events:none;
+    top:145px;
+    left:20px;
+    z-index:20;
+    background:rgba(7,10,29,.72);
+    border:1px solid rgba(255,216,107,.18);
+    padding:9px 13px;
+    border-radius:14px;
+    font-size:11px;
 }
 
-/* =========================================================
-   MOBILE RESPONSIVE
-========================================================= */
+.score strong{
+    color:#ffd86b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:900px){
 
-    .topbar{
-        height:62px;
-        padding:
-            7px
-            9px
-            7px
-            9px;
-        gap:7px;
+    .moon{
+        width:120px;
+        height:120px;
+        top:90px;
+        right:7%;
     }
 
-    .brand{
-        min-width:auto;
-        flex:1;
-    }
-
-    .brand-lantern{
-        width:38px;
-        height:38px;
-        font-size:22px;
-    }
-
-    .brand-title{
-        font-size:13px;
-    }
-
-    .brand-sub{
-        font-size:8px;
-    }
-
-    .room-nav{
+    .players-panel{
         display:none;
     }
 
-    .header-right{
-        gap:4px;
+    .chat{
+        width:calc(100% - 30px);
+        left:15px;
+        bottom:90px;
+        height:185px;
     }
 
-    .online-pill{
-        padding:7px;
-        font-size:0;
+    .actions{
+        left:15px;
+        right:15px;
+        transform:none;
+        justify-content:center;
+        overflow-x:auto;
     }
 
-    .online-pill .online-dot{
-        width:8px;
-        height:8px;
+    .action{
+        min-width:62px;
+        height:54px;
+    }
+
+    .action small{
+        font-size:8px;
+    }
+
+    .room-info{
+        right:15px;
+        top:82px;
+    }
+
+    .player-badge{
+        left:15px;
+        top:82px;
+    }
+
+    .score{
+        top:130px;
+        left:15px;
+    }
+
+    .table{
+        left:30%;
+    }
+
+    .lantern-station{
+        right:12%;
+    }
+
+    .view-point{
+        display:none;
+    }
+
+    .logo h1{
+        font-size:18px;
+    }
+
+    .logo small{
+        display:none;
+    }
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        height:65px;
+        padding:8px 12px;
+    }
+
+    .logo-icon{
+        width:38px;
+        height:38px;
+        font-size:19px;
     }
 
     .icon-btn{
@@ -1005,2734 +1099,2014 @@ button{
         height:36px;
     }
 
-    .room-title{
-        top:73px;
-        font-size:10px;
-        padding:7px 12px;
+    .chat{
+        bottom:82px;
+        height:160px;
     }
 
-    .connection-status{
-        top:70px;
-        left:9px;
-        font-size:8px;
+    .actions{
+        bottom:10px;
+        padding:5px;
+        gap:5px;
+        border-radius:15px;
     }
 
-    .score-panel{
-        top:105px;
-        left:9px;
-        width:145px;
+    .action{
+        min-width:55px;
+        height:52px;
+        border-radius:12px;
     }
 
-    .score-card{
-        border-radius:14px;
-    }
-
-    .score-top{
-        padding:8px 10px;
-    }
-
-    .score-heading{
-        font-size:9px;
-    }
-
-    .my-score{
-        font-size:18px;
-    }
-
-    .leader{
-        margin:0 7px 7px;
-        padding:8px;
-        border-radius:11px;
-    }
-
-    .leader-crown{
+    .action span{
         font-size:17px;
     }
 
-    .leader-avatar{
-        font-size:30px;
-    }
-
-    .leader-label{
+    .action small{
         font-size:7px;
     }
 
-    .leader-name{
-        font-size:10px;
+    .player-badge{
+        transform:scale(.85);
+        transform-origin:left top;
     }
 
-    .leader-score{
-        font-size:20px;
+    .room-info{
+        transform:scale(.85);
+        transform-origin:right top;
     }
 
-    .rank-list{
-        padding:0 7px 7px;
+    .score{
+        top:125px;
     }
 
-    .rank-item{
-        padding:5px;
-        margin-top:3px;
-    }
-
-    .rank-avatar{
-        font-size:14px;
-    }
-
-    .rank-name,
-    .rank-points{
-        font-size:8px;
-    }
-
-    .rank-num{
-        width:15px;
-        font-size:9px;
-    }
-
-    .hud{
-        top:105px;
-        right:9px;
-        width:150px;
-    }
-
-    .hud-card{
-        border-radius:14px;
-    }
-
-    .hud-header{
-        padding:8px 9px;
-    }
-
-    .hud-title{
-        font-size:9px;
-    }
-
-    .hud-body{
-        padding:8px;
-    }
-
-    .wish-input{
-        padding:8px;
-        font-size:9px;
-    }
-
-    .primary-btn{
-        padding:8px;
-        font-size:9px;
-    }
-
-    .team-panel{
-        display:none;
-    }
-
-    .chat-panel{
-        width:calc(100vw - 180px);
-        max-width:230px;
-        right:8px;
-        bottom:73px;
-    }
-
-    .chat-box{
-        border-radius:13px;
-    }
-
-    .chat-messages{
-        height:80px;
-        padding:6px;
-    }
-
-    .chat-message{
-        font-size:8px;
-        margin-bottom:4px;
-    }
-
-    .chat-input-row{
-        padding:5px;
-    }
-
-    .chat-input{
-        font-size:8px;
-        padding:7px;
-    }
-
-    .chat-send{
-        width:32px;
-    }
-
-    .mobile-controls{
-        display:block;
-    }
-
-    .action-button{
-        display:block;
-    }
-
-    .mobile-nav{
-        position:absolute;
-        display:flex;
-        left:0;
-        right:0;
-        bottom:0;
-        height:61px;
-        z-index:100;
-        background:rgba(8,3,18,.94);
-        border-top:1px solid rgba(255,215,106,.14);
-        backdrop-filter:blur(18px);
-        padding:
-            5px
-            6px
-            calc(5px + env(safe-area-inset-bottom));
-        gap:5px;
-    }
-
-    .mobile-room-btn{
-        flex:1;
-        border:0;
-        border-radius:11px;
-        color:#a99eb9;
-        background:transparent;
-        font-size:9px;
-        line-height:1.25;
-    }
-
-    .mobile-room-btn span{
-        display:block;
-        font-size:18px;
-    }
-
-    .mobile-room-btn.active{
-        color:#ffe7a0;
-        background:rgba(255,215,106,.08);
-    }
-
-    .modal-layer{
-        padding:12px;
-    }
-
-    .modal{
-        padding:18px;
-        border-radius:21px;
-        max-height:88vh;
-    }
-
-    .modal-logo{
-        font-size:42px;
-    }
-
-    .modal-title{
-        font-size:20px;
-    }
-
-    .avatar-option{
-        height:62px;
-        font-size:29px;
-    }
-
-    .team-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:430px){
-
-    .brand-sub{
-        display:none;
-    }
-
-    .score-panel{
-        width:132px;
-    }
-
-    .hud{
-        width:143px;
-    }
-
-    .chat-panel{
-        width:calc(100vw - 160px);
-    }
-
-    .mobile-controls{
-        transform:scale(.88);
-        transform-origin:left bottom;
-        bottom:69px;
-    }
-
-    .action-button{
-        right:10px;
-        bottom:82px;
-        width:59px;
-        height:59px;
-    }
-}
-
-/* Landscape mobile */
-@media(max-height:500px) and (max-width:900px){
-
-    .score-panel{
-        top:74px;
-    }
-
-    .hud{
-        top:74px;
-    }
-
-    .chat-panel{
-        bottom:58px;
-    }
-
-    .mobile-controls{
-        bottom:59px;
-        transform:scale(.72);
-        transform-origin:left bottom;
-    }
-
-    .action-button{
-        bottom:62px;
+    .table{
+        left:25%;
         transform:scale(.8);
+        transform-origin:bottom;
     }
 
-    .mobile-nav{
-        height:48px;
-    }
-
-    .mobile-room-btn span{
-        font-size:14px;
-    }
-}
-
-/* =========================================================
-   EFFECTS
-========================================================= */
-
-.pulse{
-    animation:pulseGlow 1.8s ease-in-out infinite;
-}
-
-@keyframes pulseGlow{
-    0%,100%{
-        box-shadow:0 0 10px rgba(255,215,106,.1);
-    }
-    50%{
-        box-shadow:0 0 25px rgba(255,215,106,.28);
+    .lantern-station{
+        right:4%;
+        transform:scale(.8);
+        transform-origin:bottom;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div id="game">
 
-    <!-- CANVAS -->
-    <canvas id="gameCanvas"></canvas>
+    <div class="stars" id="stars"></div>
 
-    <!-- TOP BAR -->
-    <header class="topbar">
+    <div class="moon"></div>
 
-        <div class="brand">
-            <div class="brand-lantern">🏮</div>
+    <div class="lantern" style="left:8%;top:120px;animation-delay:.5s;">
+        <span>🏮</span>
+    </div>
+
+    <div class="lantern" style="left:22%;top:180px;animation-delay:1.4s;">
+        <span>🏮</span>
+    </div>
+
+    <div class="lantern" style="right:29%;top:130px;animation-delay:2s;">
+        <span>🏮</span>
+    </div>
+
+    <div class="lantern" style="right:8%;top:210px;animation-delay:.9s;">
+        <span>🏮</span>
+    </div>
+
+    <div class="mountains"></div>
+    <div class="ground"></div>
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="logo">
+            <div class="logo-icon">🌕</div>
 
             <div>
-                <div class="brand-title">
-                    MOONLIT GATHERING
-                </div>
-
-                <div class="brand-sub">
-                    เทศกาลชมจันทร์ร่วมกัน
-                </div>
+                <h1>MOONLIGHT FESTIVAL</h1>
+                <small>คืนแห่งแสงจันทร์ • เทศกาลไหว้พระจันทร์</small>
             </div>
         </div>
 
-        <div class="room-nav">
+        <div class="top-actions">
 
-            <button
-                class="room-btn active"
-                data-room="lobby"
-                onclick="switchRoom('lobby')">
-                🏮 ลานกิจกรรม
+            <button class="icon-btn" onclick="showEvent('help')">
+                ❔
             </button>
 
-            <button
-                class="room-btn"
-                data-room="pagoda"
-                onclick="switchRoom('pagoda')">
-                🏯 หอชมโคม
-            </button>
-
-            <button
-                class="room-btn"
-                data-room="minigame"
-                onclick="switchRoom('minigame')">
-                🥮 ศึกชิงขนม
+            <button class="icon-btn" onclick="toggleSound()" id="soundBtn">
+                🔊
             </button>
 
         </div>
 
-        <div class="header-right">
-
-            <div class="online-pill">
-                <span class="online-dot"></span>
-                <span id="onlineCount">1</span> คน
-            </div>
-
-            <button
-                class="icon-btn"
-                onclick="openInfo()">
-                ?
-            </button>
-
-        </div>
-
-    </header>
-
-    <!-- CONNECTION -->
-    <div
-        id="connectionStatus"
-        class="connection-status">
-        ● โหมดเทศกาล
     </div>
 
-    <!-- ROOM TITLE -->
-    <div
-        id="roomTitle"
-        class="room-title">
-        🏮 ลานกิจกรรมเทศกาลชมจันทร์
+    <!-- PLAYER -->
+
+    <div class="player-badge">
+
+        <div class="avatar" id="myAvatar">
+            🐰
+        </div>
+
+        <div class="player-info">
+            <strong id="myName">Guest</strong>
+            <small>🌙 Moon Traveler</small>
+        </div>
+
     </div>
 
-    <!-- SCORE -->
-    <section
-        id="scorePanel"
-        class="score-panel hidden">
+    <div class="score">
+        🌕 Moon Points:
+        <strong id="myScore">0</strong>
+    </div>
 
-        <div class="score-card">
+    <!-- ROOM -->
 
-            <div class="score-top">
-
-                <div class="score-heading">
-                    🥮 ตารางคะแนน
-                </div>
-
-                <div
-                    id="myScore"
-                    class="my-score">
-                    0
-                </div>
-
-            </div>
-
-            <div class="leader">
-
-                <div class="leader-inner">
-
-                    <div class="leader-crown">
-                        👑
-                    </div>
-
-                    <div
-                        id="leaderAvatar"
-                        class="leader-avatar">
-                        🐰
-                    </div>
-
-                    <div class="leader-label">
-                        ผู้นำการแข่งขัน
-                    </div>
-
-                    <div
-                        id="leaderName"
-                        class="leader-name">
-                        รอผู้เล่น...
-                    </div>
-
-                    <div
-                        id="leaderScore"
-                        class="leader-score">
-                        0
-                    </div>
-
-                    <div class="leader-label">
-                        คะแนน
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div
-                id="rankList"
-                class="rank-list">
-            </div>
-
+    <div class="room-info">
+        <small>ROOM</small>
+        <div class="room-code" id="roomCode">
+            OFFLINE
         </div>
+    </div>
 
-    </section>
+    <!-- WORLD -->
 
-    <!-- HUD -->
-    <section
-        id="hud"
-        class="hud">
+    <div class="world" id="world">
+
+        <!-- moon viewing -->
 
         <div
-            id="wishCard"
-            class="hud-card hidden">
-
-            <div class="hud-header">
-
-                <div class="hud-title">
-                    🏮 เขียนคำอธิษฐาน
-                </div>
-
-                <span>
-                    ✨
-                </span>
-
+            class="object view-point"
+            onclick="watchMoon()"
+        >
+            <div class="view-text">
+                🌕<br>
+                จุดชมจันทร์
             </div>
-
-            <div class="hud-body">
-
-                <input
-                    id="wishInput"
-                    class="wish-input"
-                    maxlength="80"
-                    placeholder="ขอพรในคืนพระจันทร์เต็มดวง...">
-
-                <button
-                    class="primary-btn"
-                    onclick="releaseLantern()">
-                    🏮 ปล่อยโคมอธิษฐาน
-                </button>
-
-            </div>
-
         </div>
+
+        <!-- mooncake table -->
 
         <div
-            id="gameCard"
-            class="hud-card hidden">
+            class="object table"
+            onclick="eatMooncake()"
+        >
 
-            <div class="hud-header">
+            <div class="table-top">
 
-                <div class="hud-title">
-                    🥮 ศึกชิงขนม
-                </div>
-
-                <span>
-                    ⚡
-                </span>
+                <div class="mooncake one"></div>
+                <div class="mooncake two"></div>
+                <div class="mooncake three"></div>
 
             </div>
 
-            <div class="hud-body">
+            <div class="table-leg"></div>
 
-                <div style="
-                    color:#aaa0b9;
-                    font-size:10px;
-                    line-height:1.5;
-                ">
-                    คลิก/แตะขนมไหว้พระจันทร์
-                    หรือใช้ปุ่ม 🥮 เพื่อเก็บคะแนน
-                </div>
+        </div>
 
-                <button
-                    class="primary-btn"
-                    onclick="grabNearestMoonCake()">
-                    🥮 หยิบขนม!
-                </button>
+        <!-- lantern station -->
 
+        <div
+            class="object lantern-station"
+            onclick="releaseLantern()"
+        >
+
+            <div class="station-roof"></div>
+
+            <div class="station-body"></div>
+
+            <div class="station-text">
+                🏮<br>
+                ลานปล่อยโคม
             </div>
 
         </div>
 
-    </section>
+        <!-- players -->
 
-    <!-- TEAM -->
-    <section
-        id="teamPanel"
-        class="team-panel">
+        <div id="players"></div>
 
-        <div class="team-card">
-
-            <div class="team-title">
-
-                <span>
-                    👥 ทีมเทศกาล
-                </span>
-
-                <span
-                    id="myTeamBadge"
-                    class="team-badge team-gold">
-                    🟡 ทองจันทร์
-                </span>
-
-            </div>
-
-            <div
-                id="teamMembers"
-                class="team-members">
-            </div>
-
-        </div>
-
-    </section>
+    </div>
 
     <!-- CHAT -->
-    <section class="chat-panel">
 
-        <div class="chat-box">
+    <div class="chat">
 
-            <div class="chat-head">
+        <div class="chat-header">
 
-                <div class="chat-title">
-                    💬 แชตเทศกาล
-                </div>
+            <strong>💬 คุยกันในงาน</strong>
 
-                <button
-                    onclick="toggleChatExpand()"
-                    style="
-                    background:none;
-                    border:0;
-                    color:#aaa;
-                    cursor:pointer;
-                    ">
-                    ↕
-                </button>
+            <span
+                class="online"
+                id="onlineCount"
+            >
+                ● 1 ออนไลน์
+            </span>
 
+        </div>
+
+        <div
+            class="chat-messages"
+            id="messages"
+        >
+
+            <div class="message">
+                <b>ระบบ:</b>
+                ยินดีต้อนรับสู่คืนแห่งแสงจันทร์ 🌕
             </div>
 
-            <div
-                id="chatMessages"
-                class="chat-messages">
-            </div>
-
-            <div class="chat-input-row">
-
-                <input
-                    id="chatInput"
-                    class="chat-input"
-                    maxlength="100"
-                    placeholder="พิมพ์ข้อความ...">
-
-                <button
-                    class="chat-send"
-                    onclick="sendChatMessage()">
-                    ➤
-                </button>
-
+            <div class="message">
+                <b>ระบบ:</b>
+                ชวนเพื่อนเข้าห้อง แล้วไปปล่อยโคมด้วยกันเลย 🏮
             </div>
 
         </div>
 
-    </section>
+        <div class="chat-input">
 
-    <!-- MOBILE CONTROLLER -->
-
-    <div class="mobile-controls">
-
-        <div class="dpad">
-
-            <button
-                class="d-up"
-                data-key="ArrowUp">
-                ▲
-            </button>
+            <input
+                id="chatInput"
+                maxlength="120"
+                placeholder="พิมพ์ข้อความ..."
+                onkeydown="if(event.key==='Enter')sendChat()"
+            >
 
             <button
-                class="d-left"
-                data-key="ArrowLeft">
-                ◀
-            </button>
-
-            <button
-                class="d-right"
-                data-key="ArrowRight">
-                ▶
-            </button>
-
-            <button
-                class="d-down"
-                data-key="ArrowDown">
-                ▼
+                class="send"
+                onclick="sendChat()"
+            >
+                ➤
             </button>
 
         </div>
 
     </div>
 
-    <button
-        id="mobileAction"
-        class="action-button">
-        🥮
-    </button>
+    <!-- PLAYERS -->
 
-    <!-- MOBILE NAV -->
+    <div class="players-panel">
 
-    <nav class="mobile-nav">
+        <div class="players-title">
+            👥 ผู้ร่วมงาน
+        </div>
 
-        <button
-            class="mobile-room-btn active"
-            data-mobile-room="lobby"
-            onclick="switchRoom('lobby')">
+        <div id="playerList"></div>
 
+    </div>
+
+    <!-- ACTION BAR -->
+
+    <div class="actions">
+
+        <button class="action" onclick="releaseLantern()">
             <span>🏮</span>
-            ลานกิจกรรม
-
+            <small>ปล่อยโคม</small>
         </button>
 
-        <button
-            class="mobile-room-btn"
-            data-mobile-room="pagoda"
-            onclick="switchRoom('pagoda')">
-
-            <span>🏯</span>
-            หอชมโคม
-
+        <button class="action" onclick="watchMoon()">
+            <span>🌕</span>
+            <small>ชมจันทร์</small>
         </button>
 
-        <button
-            class="mobile-room-btn"
-            data-mobile-room="minigame"
-            onclick="switchRoom('minigame')">
-
+        <button class="action" onclick="eatMooncake()">
             <span>🥮</span>
-            แข่งกิน
-
+            <small>กินขนม</small>
         </button>
 
-    </nav>
+        <button class="action" onclick="sendEmote('❤️')">
+            <span>❤️</span>
+            <small>ส่งหัวใจ</small>
+        </button>
 
-</div>
+        <button class="action" onclick="sendEmote('🎉')">
+            <span>🎉</span>
+            <small>เฮ!</small>
+        </button>
 
-<!-- ======================================================
-     CHARACTER MODAL
-====================================================== -->
+        <button class="action" onclick="showEvent('photo')">
+            <span>📸</span>
+            <small>ถ่ายรูป</small>
+        </button>
 
-<div
-    id="characterModal"
-    class="modal-layer">
+    </div>
 
-    <div class="modal">
+    <!-- TOAST -->
 
-        <div class="modal-logo">
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+    <!-- EVENT -->
+
+    <div
+        class="event-popup"
+        id="eventPopup"
+    >
+
+        <div
+            class="big"
+            id="eventIcon"
+        >
             🌕
         </div>
 
-        <div class="modal-title">
-            MOONLIT GATHERING
-        </div>
+        <h2 id="eventTitle">
+            คืนแห่งแสงจันทร์
+        </h2>
 
-        <div class="modal-sub">
-            เข้าร่วมเทศกาลชมจันทร์กับเพื่อนของคุณ
-        </div>
+        <p id="eventText">
+            คืนนี้มานั่งชมจันทร์ด้วยกัน
+        </p>
 
-        <div class="team-select-title">
-            เลือกตัวละคร
-        </div>
+    </div>
 
-        <div class="avatar-grid">
+    <!-- MOON MODE -->
 
-            <button
-                class="avatar-option active"
-                data-avatar="🐇"
-                onclick="selectAvatar('🐇')">
-                🐇
-            </button>
+    <div
+        class="moon-mode"
+        id="moonMode"
+    >
 
-            <button
-                class="avatar-option"
-                data-avatar="🐰"
-                onclick="selectAvatar('🐰')">
-                🐰
-            </button>
+        <div class="moon-scene">
 
-            <button
-                class="avatar-option"
-                data-avatar="🪷"
-                onclick="selectAvatar('🪷')">
-                🪷
-            </button>
+            <div class="big-moon"></div>
+
+            <h2>คืนนี้จันทร์สวยจัง 🌕</h2>
+
+            <p>
+                บางคืนเราไม่จำเป็นต้องทำอะไรเลย<br>
+                แค่นั่งมองพระจันทร์กับคนที่เราชอบคุยด้วยก็พอ
+            </p>
 
             <button
-                class="avatar-option"
-                data-avatar="✨"
-                onclick="selectAvatar('✨')">
-                ✨
+                class="close-btn"
+                onclick="closeMoon()"
+            >
+                กลับไปที่งาน 🎑
             </button>
 
         </div>
 
-        <input
-            id="nameInput"
-            class="name-input"
-            maxlength="18"
-            placeholder="ชื่อของคุณ">
+    </div>
 
-        <div class="team-select-title">
-            เลือกทีมเทศกาล
-        </div>
+    <!-- START -->
 
-        <div class="team-grid">
+    <div
+        class="overlay"
+        id="startScreen"
+    >
 
-            <button
-                class="team-option active"
-                data-team="gold"
-                onclick="selectTeam('gold')">
-                🟡<br>
-                ทองจันทร์
-            </button>
+        <div class="modal">
 
-            <button
-                class="team-option"
-                data-team="red"
-                onclick="selectTeam('red')">
-                🔴<br>
-                แดงโคมไฟ
-            </button>
+            <h2>🌕 MOONLIGHT FESTIVAL</h2>
 
-            <button
-                class="team-option"
-                data-team="blue"
-                onclick="selectTeam('blue')">
-                🔵<br>
-                ฟ้าราตรี
-            </button>
+            <div class="modal-sub">
+                คืนนี้...มาสนุกกับเพื่อนใต้แสงจันทร์
+            </div>
+
+            <div class="field">
+
+                <label>
+                    ชื่อของคุณ
+                </label>
+
+                <input
+                    id="nameInput"
+                    maxlength="18"
+                    placeholder="เช่น Moon, Alice, บอส..."
+                >
+
+            </div>
 
             <button
-                class="team-option"
-                data-team="purple"
-                onclick="selectTeam('purple')">
-                🟣<br>
-                ม่วงจันทร์
+                class="main-btn"
+                onclick="createRoom()"
+            >
+                🌙 สร้างห้องใหม่
             </button>
 
-        </div>
+            <div class="divider">
+                — หรือ —
+            </div>
 
-        <button
-            class="join-btn"
-            onclick="joinGame()">
-            🌕 เข้าร่วมเทศกาล
-        </button>
+            <div class="field">
 
-        <div class="modal-note">
-            สามารถเปลี่ยนห้องและเล่นกิจกรรมร่วมกับเพื่อนได้
+                <label>
+                    รหัสห้องของเพื่อน
+                </label>
+
+                <input
+                    id="joinCode"
+                    maxlength="8"
+                    placeholder="เช่น MOON123"
+                >
+
+            </div>
+
+            <button
+                class="secondary-btn"
+                onclick="joinRoom()"
+            >
+                🏮 เข้าห้องเพื่อน
+            </button>
+
+            <div
+                class="connection"
+                id="connectionStatus"
+            >
+                ● พร้อมเชื่อมต่อ
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
-<!-- ======================================================
-     INFO MODAL
-====================================================== -->
+<script>
 
-<div
-    id="infoModal"
-    class="modal-layer hidden">
+/* =====================================================
+   MOONLIGHT FESTIVAL
+   ONLINE SOCIAL GAME
+===================================================== */
 
-    <div class="modal">
+let peer = null;
+let connections = [];
+let hostConnection = null;
 
-        <div class="modal-logo">
-            🏮
-        </div>
+let roomId = null;
+let playerId = null;
 
-        <div class="modal-title">
-            เทศกาลชมจันทร์
-        </div>
+let playerName = "Guest";
 
-        <div class="modal-sub">
-            รวมตัวกับเพื่อน แล้วสนุกไปด้วยกัน
-        </div>
+let myX = 50;
+let myY = 55;
 
-        <div class="info-grid">
+let score = 0;
 
-            <div class="info-card">
-                <div class="info-icon">🏮</div>
-                <div class="info-name">
-                    ลานกิจกรรม
-                </div>
-                <div class="info-desc">
-                    เดินเล่น พบเพื่อน และชมบรรยากาศเทศกาล
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-icon">🏯</div>
-                <div class="info-name">
-                    หอชมโคม
-                </div>
-                <div class="info-desc">
-                    เขียนคำอธิษฐานแล้วปล่อยโคมขึ้นสู่ท้องฟ้า
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-icon">🥮</div>
-                <div class="info-name">
-                    ศึกชิงขนม
-                </div>
-                <div class="info-desc">
-                    แข่งกันเก็บขนมไหว้พระจันทร์ ใครได้คะแนนสูงสุดจะขึ้นอันดับ 1
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-icon">👥</div>
-                <div class="info-name">
-                    ทีมเทศกาล
-                </div>
-                <div class="info-desc">
-                    รวมทีมกับเพื่อนและดูสมาชิกทีมของคุณ
-                </div>
-            </div>
-
-        </div>
-
-        <button
-            class="close-modal"
-            onclick="closeInfo()">
-            ปิด
-        </button>
-
-    </div>
-
-</div>
-
-<div
-    id="toast"
-    class="toast">
-</div>
-
-<!-- ======================================================
-     FIREBASE + GAME
-====================================================== -->
-
-<script type="module">
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-
-import {
-    getAuth,
-    signInAnonymously,
-    signInWithCustomToken
-} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-import {
-    getFirestore,
-    collection,
-    doc,
-    setDoc,
-    addDoc,
-    updateDoc,
-    onSnapshot,
-    serverTimestamp,
-    query,
-    orderBy,
-    limit,
-    runTransaction,
-    deleteDoc
-} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-let W = window.innerWidth;
-let H = window.innerHeight;
-
-let db = null;
-let auth = null;
-let currentUser = null;
-
-let offlineMode = false;
-let isJoined = false;
-
-let myPlayerId =
-    "local_" +
-    Math.random().toString(36).slice(2);
-
-let myName = "ผู้มาเยือน";
-let myAvatar = "🐇";
-let myTeam = "gold";
-let myRoom = "lobby";
-
-let myScore = 0;
-
-let playersData = {};
-let lanternsData = {};
-let moonCakesData = {};
-let moonScoresData = {};
-let chatsData = {};
-
-let localBots = {};
-
-let keys = {};
-
-let touchTarget = null;
-
-let player = {
-    x: W / 2,
-    y: H / 2,
-    speed: 4.5,
-    bubble: "",
-    bubbleUntil: 0
-};
-
-let selectedAvatar = "🐇";
-let selectedTeam = "gold";
-
-let chatExpanded = false;
-
-const TEAM_INFO = {
-
-    gold:{
-        name:"ทองจันทร์",
-        icon:"🟡",
-        className:"team-gold"
-    },
-
-    red:{
-        name:"แดงโคมไฟ",
-        icon:"🔴",
-        className:"team-red"
-    },
-
-    blue:{
-        name:"ฟ้าราตรี",
-        icon:"🔵",
-        className:"team-blue"
-    },
-
-    purple:{
-        name:"ม่วงจันทร์",
-        icon:"🟣",
-        className:"team-purple"
-    }
-
-};
-
-const ROOM_INFO = {
-
-    lobby:{
-        title:"🏮 ลานกิจกรรมเทศกาลชมจันทร์"
-    },
-
-    pagoda:{
-        title:"🏯 หอชมโคมยักษ์ — ลานอธิษฐาน"
-    },
-
-    minigame:{
-        title:"🥮 ศึกชิงขนมไหว้พระจันทร์"
-    }
-
-};
-
-
-/* =========================================================
-   SOUND
-========================================================= */
-
-let audioCtx = null;
 let soundEnabled = true;
 
-function playSound(
-    frequency = 500,
-    duration = 0.08,
-    type = "sine"
-){
+const players = {};
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    createStars();
+
+    document
+        .getElementById("nameInput")
+        .focus();
+
+});
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+function createStars(){
+
+    const container =
+        document.getElementById("stars");
+
+    for(let i=0;i<100;i++){
+
+        const star =
+            document.createElement("div");
+
+        star.className="star";
+
+        star.style.left =
+            Math.random()*100+"%";
+
+        star.style.top =
+            Math.random()*70+"%";
+
+        star.style.animationDelay =
+            Math.random()*3+"s";
+
+        star.style.opacity =
+            .2+Math.random()*.8;
+
+        container.appendChild(star);
+
+    }
+
+}
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+let audioContext = null;
+
+function beep(freq=500,duration=.08){
 
     if(!soundEnabled) return;
 
     try{
 
-        if(!audioCtx){
-            audioCtx =
+        if(!audioContext){
+
+            audioContext =
                 new (
                     window.AudioContext ||
                     window.webkitAudioContext
                 )();
+
         }
 
         const oscillator =
-            audioCtx.createOscillator();
+            audioContext.createOscillator();
 
         const gain =
-            audioCtx.createGain();
+            audioContext.createGain();
 
-        oscillator.type = type;
-        oscillator.frequency.value = frequency;
+        oscillator.frequency.value = freq;
+
+        oscillator.type="sine";
 
         gain.gain.setValueAtTime(
-            .001,
-            audioCtx.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            .08,
-            audioCtx.currentTime + .01
+            .06,
+            audioContext.currentTime
         );
 
         gain.gain.exponentialRampToValueAtTime(
             .001,
-            audioCtx.currentTime + duration
+            audioContext.currentTime+duration
         );
 
         oscillator.connect(gain);
-        gain.connect(audioCtx.destination);
+
+        gain.connect(audioContext.destination);
 
         oscillator.start();
 
         oscillator.stop(
-            audioCtx.currentTime + duration
+            audioContext.currentTime+duration
         );
 
     }catch(e){}
+
 }
 
 
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
+function toggleSound(){
 
-const firebaseConfig =
-    typeof __firebase_config !== "undefined"
-    ? JSON.parse(__firebase_config)
-    : {
+    soundEnabled=!soundEnabled;
+
+    document.getElementById("soundBtn")
+        .textContent =
+        soundEnabled ? "🔊" : "🔇";
+
+}
+
+
+/* =====================================================
+   ROOM ID
+===================================================== */
+
+function generateRoom(){
+
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let result="";
+
+    for(let i=0;i<6;i++){
+
+        result +=
+            chars[
+                Math.floor(
+                    Math.random()*chars.length
+                )
+            ];
+
+    }
+
+    return result;
+
+}
+
+
+/* =====================================================
+   PLAYER ID
+===================================================== */
+
+function generatePlayerId(){
+
+    return "player-" +
+        Math.random()
+            .toString(36)
+            .substring(2,10);
+
+}
+
+
+/* =====================================================
+   CREATE ROOM
+===================================================== */
+
+function createRoom(){
+
+    playerName =
+        document.getElementById("nameInput")
+            .value.trim() ||
+        "Moon Traveler";
+
+    roomId = generateRoom();
+
+    playerId = generatePlayerId();
+
+    document.getElementById("connectionStatus")
+        .textContent =
+        "● กำลังสร้างห้อง...";
+
+    /*
+       PeerJS ID:
+       moonlight-room-player
+    */
+
+    peer =
+        new Peer(
+            "moonlight-" +
+            roomId +
+            "-host-" +
+            Math.random()
+                .toString(36)
+                .substring(2,6),
+            {
+                debug:0
+            }
+        );
+
+    peer.on("open",id=>{
+
+        window.roomPeerId=id;
+
+        startGame();
+
+        addChat(
+            "ระบบ",
+            "สร้างห้องแล้ว! ส่งรหัส " +
+            roomId +
+            " ให้เพื่อนของคุณ 🎑"
+        );
+
+    });
+
+    peer.on("connection",conn=>{
+
+        setupConnection(conn,true);
+
+    });
+
+    peer.on("error",err=>{
+
+        console.error(err);
+
+        showToast(
+            "ไม่สามารถสร้างห้องได้ ลองใหม่อีกครั้ง"
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   JOIN ROOM
+===================================================== */
+
+function joinRoom(){
+
+    playerName =
+        document.getElementById("nameInput")
+            .value.trim() ||
+        "Moon Traveler";
+
+    const code =
+        document.getElementById("joinCode")
+            .value.trim()
+            .toUpperCase();
+
+    if(!code){
+
+        showToast("กรุณาใส่รหัสห้อง");
+
+        return;
+
+    }
+
+    roomId=code;
+
+    playerId=generatePlayerId();
+
+    document.getElementById("connectionStatus")
+        .textContent =
+        "● กำลังเข้าห้อง...";
+
+    /*
+       เพราะ PeerJS ต้องมี peer id ที่รู้ได้
+       ห้องจะใช้ deterministic host ID
+       พร้อม suffix ที่ผู้สร้างส่งไม่ได้
+       ดังนั้นใช้วิธี discovery ผ่าน public PeerJS ID
+       ด้วยห้องกลาง
+    */
+
+    /*
+       เพื่อให้ GitHub Pages ใช้ง่าย:
+       สร้าง peer ตัวเองก่อน
+    */
+
+    peer =
+        new Peer({
+            debug:0
+        });
+
+    peer.on("open",id=>{
+
+        window.roomPeerId=id;
+
         /*
-         * ใส่ Firebase Config จริงของคุณตรงนี้
-         * ถ้ายังไม่ใส่ ระบบจะทำงานเป็น Offline Demo
-         */
+           เชื่อมต่อผ่าน lobby peer
+           ที่ผู้สร้างห้องประกาศไว้ใน local
+           ในเวอร์ชัน P2P จริง production
+           ควรใช้ signaling server เพิ่ม
+        */
 
-        apiKey:"AIzaSyDummyKeyForGitHubPagesTemplate",
-        authDomain:"projectId.firebaseapp.com",
-        projectId:"moonlit-gathering",
-        storageBucket:"moonlit-gathering.appspot.com",
-        messagingSenderId:"123456789",
-        appId:"1:123:web:abc"
-    };
+        /*
+           ใช้ room discovery แบบ hash
+           ผ่าน BroadcastChannel ไม่สามารถข้ามเครื่องได้
+
+           ดังนั้นสำหรับการเล่นออนไลน์จริง
+           เราจะใช้ public signaling endpoint
+           ด้านล่าง
+        */
+
+        connectToRoomHost();
+
+    });
+
+    peer.on("error",err=>{
+
+        console.error(err);
+
+        showToast(
+            "เข้าห้องไม่สำเร็จ"
+        );
+
+    });
+
+}
 
 
-/* =========================================================
-   INIT FIREBASE
-========================================================= */
+/* =====================================================
+   ROOM HOST DISCOVERY
+===================================================== */
 
-async function initFirebase(){
+/*
+   หมายเหตุ:
 
-    try{
+   PeerJS public cloud ต้องรู้ peer ID
+   ของ host ก่อน
 
-        if(
-            firebaseConfig.apiKey.includes("Dummy") ||
-            firebaseConfig.projectId === "moonlit-gathering"
-        ){
+   เราสร้าง ID จาก room code โดยตรง
 
-            throw new Error("Demo config");
+   Host ID:
+   moon-room-[ROOM]
 
-        }
+   ดังนั้นทุกคนรู้ว่าจะ connect ไปที่ไหน
+*/
 
-        const app =
-            initializeApp(firebaseConfig);
+function createRoom(){
 
-        db = getFirestore(app);
+    playerName =
+        document.getElementById("nameInput")
+            .value.trim() ||
+        "Moon Traveler";
 
-        auth = getAuth(app);
+    roomId = generateRoom();
 
-        if(
-            typeof __initial_auth_token !== "undefined" &&
-            __initial_auth_token
-        ){
+    playerId = generatePlayerId();
 
-            await signInWithCustomToken(
-                auth,
-                __initial_auth_token
+    const hostId =
+        "moon-room-" +
+        roomId;
+
+    document.getElementById("connectionStatus")
+        .textContent =
+        "● กำลังสร้างห้อง...";
+
+    peer =
+        new Peer(
+            hostId,
+            {
+                debug:0
+            }
+        );
+
+    peer.on("open",id=>{
+
+        window.roomPeerId=id;
+
+        startGame();
+
+        addChat(
+            "ระบบ",
+            "สร้างห้องแล้ว 🎑 รหัสห้อง: " +
+            roomId
+        );
+
+        addChat(
+            "ระบบ",
+            "ส่งรหัสนี้ให้เพื่อนเพื่อเข้าร่วม"
+        );
+
+    });
+
+    peer.on("connection",conn=>{
+
+        setupConnection(conn,true);
+
+    });
+
+    peer.on("error",err=>{
+
+        console.error(err);
+
+        if(err.type==="unavailable-id"){
+
+            showToast(
+                "รหัสห้องชนกัน ลองสร้างใหม่"
             );
 
         }else{
 
-            await signInAnonymously(auth);
+            showToast(
+                "เกิดข้อผิดพลาดในการเชื่อมต่อ"
+            );
 
         }
-
-        currentUser = auth.currentUser;
-
-        if(currentUser){
-            myPlayerId = currentUser.uid;
-        }
-
-        offlineMode = false;
-
-        document.getElementById(
-            "connectionStatus"
-        ).textContent =
-            "● เชื่อมต่อเทศกาลออนไลน์";
-
-        document.getElementById(
-            "connectionStatus"
-        ).style.color =
-            "#86efac";
-
-        startSync();
-
-    }catch(error){
-
-        console.log(
-            "Firebase unavailable. Offline mode.",
-            error
-        );
-
-        startOfflineMode();
-
-    }
-
-}
-
-
-/* =========================================================
-   OFFLINE MODE
-========================================================= */
-
-function startOfflineMode(){
-
-    offlineMode = true;
-
-    document.getElementById(
-        "connectionStatus"
-    ).textContent =
-        "● โหมดทดลองเล่น";
-
-    createOfflineWorld();
-
-    showToast(
-        "🌙 เข้าสู่เทศกาลแล้ว"
-    );
-
-    setTimeout(()=>{
-        addSystemChat(
-            "ระบบ",
-            "ยินดีต้อนรับสู่เทศกาลชมจันทร์ ✨"
-        );
-    },500);
-
-}
-
-
-/* =========================================================
-   OFFLINE WORLD
-========================================================= */
-
-function createOfflineWorld(){
-
-    localBots = {
-
-        bot1:{
-            id:"bot1",
-            name:"จันทร์น้อย",
-            avatar:"🐰",
-            team:"gold",
-            room:"lobby",
-            x:.32,
-            y:.53,
-            score:7,
-            color:"#ffd76a"
-        },
-
-        bot2:{
-            id:"bot2",
-            name:"โคมแดง",
-            avatar:"✨",
-            team:"red",
-            room:"pagoda",
-            x:.72,
-            y:.47,
-            score:11,
-            color:"#fb7185"
-        },
-
-        bot3:{
-            id:"bot3",
-            name:"กระต่ายฟ้า",
-            avatar:"🐇",
-            team:"blue",
-            room:"minigame",
-            x:.65,
-            y:.56,
-            score:23,
-            color:"#67e8f9"
-        },
-
-        bot4:{
-            id:"bot4",
-            name:"ดอกบัว",
-            avatar:"🪷",
-            team:"purple",
-            room:"lobby",
-            x:.68,
-            y:.57,
-            score:18,
-            color:"#c084fc"
-        },
-
-        bot5:{
-            id:"bot5",
-            name:"ขนมหวาน",
-            avatar:"🐰",
-            team:"gold",
-            room:"minigame",
-            x:.38,
-            y:.58,
-            score:15,
-            color:"#fde68a"
-        }
-
-    };
-
-    playersData = {};
-
-    Object.values(localBots).forEach(bot=>{
-        playersData[bot.id] = {
-            ...bot,
-            bubble:"",
-            bubbleUntil:0
-        };
-    });
-
-    createLocalMoonCakes();
-
-    moonScoresData = {};
-
-    Object.values(localBots).forEach(bot=>{
-
-        moonScoresData[bot.id] = {
-            name:bot.name,
-            avatar:bot.avatar,
-            score:bot.score,
-            team:bot.team
-        };
-
-    });
-
-    updateOnlineCount();
-
-    renderScoreboard();
-
-    renderTeam();
-
-}
-
-
-/* =========================================================
-   LOCAL MOONCAKES
-========================================================= */
-
-function createLocalMoonCakes(){
-
-    const positions = [
-
-        [.25,.42],
-        [.38,.36],
-        [.50,.40],
-        [.62,.34],
-        [.75,.43],
-
-        [.30,.55],
-        [.45,.52],
-        [.56,.60],
-        [.70,.55],
-
-        [.36,.68],
-        [.52,.72],
-        [.67,.68],
-
-        [.82,.60],
-        [.20,.65]
-
-    ];
-
-    positions.forEach((p,index)=>{
-
-        const id =
-            "cake_" + index;
-
-        moonCakesData[id] = {
-
-            id,
-
-            x:p[0],
-
-            y:p[1],
-
-            eatenBy:"",
-
-            eatenAt:0,
-
-            visible:true
-
-        };
 
     });
 
 }
 
 
-/* =========================================================
-   CHARACTER
-========================================================= */
-
-window.selectAvatar = function(av){
-
-    selectedAvatar = av;
-
-    document
-        .querySelectorAll(".avatar-option")
-        .forEach(btn=>{
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.avatar === av
-            );
-
-        });
-
-    playSound(650,.06);
-
-};
-
-
-window.selectTeam = function(team){
-
-    selectedTeam = team;
-
-    document
-        .querySelectorAll(".team-option")
-        .forEach(btn=>{
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.team === team
-            );
-
-        });
-
-    playSound(550,.06);
-
-};
-
-
-/* =========================================================
-   JOIN
-========================================================= */
-
-window.joinGame = async function(){
-
-    const input =
-        document.getElementById("nameInput");
-
-    const entered =
-        input.value.trim();
-
-    myName =
-        entered ||
-        "ผู้มาเยือน";
-
-    myAvatar =
-        selectedAvatar;
-
-    myTeam =
-        selectedTeam;
-
-    isJoined = true;
-
-    player.x = W / 2;
-    player.y = H * .58;
-
-    document
-        .getElementById("characterModal")
-        .classList.add("hidden");
-
-    updateMyPlayer();
-
-    renderTeam();
-
-    showToast(
-        `🌙 ยินดีต้อนรับ ${myName}`
-    );
-
-    playSound(700,.12);
-
-    addSystemChat(
-        "เทศกาล",
-        `${myName} เข้าร่วมเทศกาลแล้ว ✨`
-    );
-
-    if(!offlineMode && db){
-
-        try{
-
-            await setDoc(
-                doc(
-                    db,
-                    "players",
-                    myPlayerId
-                ),
-                {
-
-                    name:myName,
-
-                    avatar:myAvatar,
-
-                    team:myTeam,
-
-                    room:myRoom,
-
-                    x:player.x,
-
-                    y:player.y,
-
-                    bubble:"",
-
-                    updatedAt:serverTimestamp()
-
-                },
-                {merge:true}
-            );
-
-        }catch(e){
-
-            console.log(e);
-
-        }
-
-    }
-
-};
-
-
-/* =========================================================
-   ROOM
-========================================================= */
-
-window.switchRoom = function(roomName){
-
-    myRoom = roomName;
-
-    player.x = W / 2;
-    player.y = H * .58;
-
-    document
-        .querySelectorAll(".room-btn")
-        .forEach(btn=>{
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.room === roomName
-            );
-
-        });
-
-    document
-        .querySelectorAll(".mobile-room-btn")
-        .forEach(btn=>{
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.mobileRoom === roomName
-            );
-
-        });
-
-    document.getElementById(
-        "roomTitle"
-    ).textContent =
-        ROOM_INFO[roomName].title;
-
-    const wishCard =
-        document.getElementById("wishCard");
-
-    const gameCard =
-        document.getElementById("gameCard");
-
-    const scorePanel =
-        document.getElementById("scorePanel");
-
-    wishCard.classList.toggle(
-        "hidden",
-        roomName !== "pagoda"
-    );
-
-    gameCard.classList.toggle(
-        "hidden",
-        roomName !== "minigame"
-    );
-
-    scorePanel.classList.toggle(
-        "hidden",
-        roomName !== "minigame"
-    );
-
-    const action =
-        document.getElementById("mobileAction");
-
-    action.textContent =
-        roomName === "minigame"
-        ? "🥮"
-        : roomName === "pagoda"
-            ? "🏮"
-            : "✨";
-
-    updateMyPlayer();
-
-    renderTeam();
-
-    playSound(
-        roomName === "minigame"
-        ? 800
-        : 500,
-        .08
-    );
-
-};
-
-
-/* =========================================================
-   PLAYER
-========================================================= */
-
-function updateMyPlayer(){
-
-    playersData[myPlayerId] = {
-
-        id:myPlayerId,
-
-        name:myName,
-
-        avatar:myAvatar,
-
-        team:myTeam,
-
-        room:myRoom,
-
-        x:player.x / W,
-
-        y:player.y / H,
-
-        score:myScore,
-
-        bubble:player.bubble,
-
-        bubbleUntil:player.bubbleUntil
-
-    };
-
-    updateOnlineCount();
-
-    if(
-        !offlineMode &&
-        db &&
-        isJoined
-    ){
-
-        setDoc(
-            doc(
-                db,
-                "players",
-                myPlayerId
-            ),
+/* =====================================================
+   CONNECT TO HOST
+===================================================== */
+
+function connectToRoomHost(){
+
+    const hostId =
+        "moon-room-" +
+        roomId;
+
+    const conn =
+        peer.connect(
+            hostId,
             {
+                reliable:true
+            }
+        );
 
-                name:myName,
-
-                avatar:myAvatar,
-
-                team:myTeam,
-
-                room:myRoom,
-
-                x:player.x,
-
-                y:player.y,
-
-                score:myScore,
-
-                bubble:player.bubble || "",
-
-                updatedAt:serverTimestamp()
-
-            },
-            {merge:true}
-        ).catch(()=>{});
-
-    }
+    setupConnection(conn,false);
 
 }
 
 
-/* =========================================================
-   ONLINE COUNT
-========================================================= */
+/* =====================================================
+   CONNECTION
+===================================================== */
 
-function updateOnlineCount(){
+function setupConnection(conn,isHost){
 
-    let count = 0;
+    conn.on("open",()=>{
 
-    Object.values(playersData)
-        .forEach(p=>{
+        connections.push(conn);
+
+        if(!isHost){
+
+            hostConnection=conn;
+
+        }
+
+        /*
+           send player information
+        */
+
+        conn.send({
+
+            type:"join",
+
+            id:playerId,
+
+            name:playerName,
+
+            x:myX,
+
+            y:myY,
+
+            score:score
+
+        });
+
+        updateOnlineCount();
+
+    });
+
+    conn.on("data",data=>{
+
+        handleNetworkData(
+            data,
+            conn,
+            isHost
+        );
+
+    });
+
+    conn.on("close",()=>{
+
+        connections =
+            connections.filter(
+                c=>c!==conn
+            );
+
+        updateOnlineCount();
+
+    });
+
+    conn.on("error",err=>{
+
+        console.error(err);
+
+    });
+
+}
+
+
+/* =====================================================
+   NETWORK DATA
+===================================================== */
+
+function handleNetworkData(
+    data,
+    conn,
+    isHost
+){
+
+    if(!data || !data.type)
+        return;
+
+
+    /* player joined */
+
+    if(data.type==="join"){
+
+        if(isHost){
+
+            /*
+               add player
+            */
+
+            players[data.id]={
+                id:data.id,
+                name:data.name,
+                x:data.x,
+                y:data.y,
+                score:data.score||0
+            };
+
+            renderPlayer(
+                players[data.id]
+            );
+
+            /*
+               tell everyone
+            */
+
+            broadcast({
+
+                type:"playerJoined",
+
+                player:players[data.id]
+
+            });
+
+            /*
+               send existing players
+            */
+
+            Object.values(players)
+                .forEach(p=>{
+
+                    conn.send({
+
+                        type:"playerJoined",
+
+                        player:p
+
+                    });
+
+                });
+
+            }
+
+            updatePlayerList();
+
+        }
+
+        return;
+
+    }
+
+
+    /* player joined */
+
+    if(data.type==="playerJoined"){
+
+        if(
+            data.player &&
+            data.player.id!==playerId
+        ){
+
+            players[data.player.id] =
+                data.player;
+
+            renderPlayer(
+                data.player
+            );
+
+            updatePlayerList();
+
+        }
+
+        return;
+
+    }
+
+
+    /* player movement */
+
+    if(data.type==="move"){
+
+        if(isHost){
+
+            if(players[data.id]){
+
+                players[data.id].x=data.x;
+                players[data.id].y=data.y;
+
+            }
+
+            broadcast(
+                data,
+                conn
+            );
+
+        }else{
 
             if(
-                p.room === myRoom ||
-                p.id === myPlayerId
+                data.id &&
+                data.id!==playerId
             ){
 
-                count++;
+                if(!players[data.id]){
 
-            }
-
-        });
-
-    if(count < 1){
-        count = 1;
-    }
-
-    document.getElementById(
-        "onlineCount"
-    ).textContent = count;
-
-}
-
-
-/* =========================================================
-   TEAM
-========================================================= */
-
-function renderTeam(){
-
-    const team =
-        TEAM_INFO[myTeam];
-
-    const badge =
-        document.getElementById(
-            "myTeamBadge"
-        );
-
-    badge.className =
-        "team-badge " +
-        team.className;
-
-    badge.textContent =
-        `${team.icon} ${team.name}`;
-
-    const members =
-        document.getElementById(
-            "teamMembers"
-        );
-
-    members.innerHTML = "";
-
-    const teamPlayers =
-        Object.values(playersData)
-        .filter(p=>p.team === myTeam);
-
-    if(
-        isJoined &&
-        !teamPlayers.some(
-            p=>p.id === myPlayerId
-        )
-    ){
-
-        teamPlayers.push({
-
-            id:myPlayerId,
-
-            name:myName,
-
-            avatar:myAvatar,
-
-            team:myTeam
-
-        });
-
-    }
-
-    teamPlayers
-        .slice(0,8)
-        .forEach(p=>{
-
-            const div =
-                document.createElement("div");
-
-            div.className =
-                "team-member";
-
-            div.textContent =
-                `${p.avatar || "🐇"} ${p.name}`;
-
-            members.appendChild(div);
-
-        });
-
-}
-
-
-/* =========================================================
-   FIREBASE SYNC
-========================================================= */
-
-function startSync(){
-
-    if(!db) return;
-
-    try{
-
-        onSnapshot(
-            collection(db,"players"),
-            snapshot=>{
-
-                playersData = {};
-
-                snapshot.forEach(docSnap=>{
-
-                    const data =
-                        docSnap.data();
-
-                    playersData[docSnap.id] = {
-
-                        id:docSnap.id,
-
-                        ...data
-
+                    players[data.id]={
+                        id:data.id,
+                        name:data.name||"Player",
+                        x:data.x,
+                        y:data.y
                     };
 
-                });
+                }else{
 
-                updateOnlineCount();
-
-                renderTeam();
-
-            }
-        );
-
-    }catch(e){
-
-        console.log(e);
-
-    }
-
-    try{
-
-        onSnapshot(
-            collection(db,"lanterns"),
-            snapshot=>{
-
-                lanternsData = {};
-
-                snapshot.forEach(docSnap=>{
-
-                    lanternsData[
-                        docSnap.id
-                    ] = {
-
-                        id:docSnap.id,
-
-                        ...docSnap.data()
-
-                    };
-
-                });
-
-            }
-        );
-
-    }catch(e){}
-
-    try{
-
-        onSnapshot(
-            collection(db,"moonCakes"),
-            snapshot=>{
-
-                moonCakesData = {};
-
-                snapshot.forEach(docSnap=>{
-
-                    moonCakesData[
-                        docSnap.id
-                    ] = {
-
-                        id:docSnap.id,
-
-                        ...docSnap.data()
-
-                    };
-
-                });
-
-                if(snapshot.empty){
-
-                    createFirebaseMoonCakes();
+                    players[data.id].x=data.x;
+                    players[data.id].y=data.y;
 
                 }
 
-            }
-        );
-
-    }catch(e){}
-
-    try{
-
-        onSnapshot(
-            collection(db,"moonScores"),
-            snapshot=>{
-
-                moonScoresData = {};
-
-                snapshot.forEach(docSnap=>{
-
-                    moonScoresData[
-                        docSnap.id
-                    ] = {
-
-                        id:docSnap.id,
-
-                        ...docSnap.data()
-
-                    };
-
-                });
-
-                renderScoreboard();
+                renderPlayer(
+                    players[data.id]
+                );
 
             }
-        );
 
-    }catch(e){}
+        }
 
-    try{
-
-        const chatQuery =
-            query(
-                collection(db,"chats"),
-                orderBy("timestamp","desc"),
-                limit(40)
-            );
-
-        onSnapshot(
-            chatQuery,
-            snapshot=>{
-
-                chatsData = {};
-
-                const messages = [];
-
-                snapshot.forEach(docSnap=>{
-
-                    messages.push({
-                        id:docSnap.id,
-                        ...docSnap.data()
-                    });
-
-                });
-
-                messages
-                    .reverse()
-                    .forEach(m=>{
-                        chatsData[m.id] = m;
-                    });
-
-                renderChat();
-
-            }
-        );
-
-    }catch(e){}
-
-}
-
-
-/* =========================================================
-   FIREBASE CAKES
-========================================================= */
-
-async function createFirebaseMoonCakes(){
-
-    if(!db) return;
-
-    const positions = [
-
-        [.25,.42],
-        [.38,.36],
-        [.50,.40],
-        [.62,.34],
-        [.75,.43],
-
-        [.30,.55],
-        [.45,.52],
-        [.56,.60],
-        [.70,.55],
-
-        [.36,.68],
-        [.52,.72],
-        [.67,.68],
-
-        [.82,.60],
-        [.20,.65]
-
-    ];
-
-    for(
-        let i=0;
-        i<positions.length;
-        i++
-    ){
-
-        try{
-
-            await setDoc(
-                doc(
-                    db,
-                    "moonCakes",
-                    "cake_"+i
-                ),
-                {
-
-                    x:positions[i][0],
-
-                    y:positions[i][1],
-
-                    eatenBy:"",
-
-                    eatenAt:0
-
-                },
-                {merge:true}
-            );
-
-        }catch(e){}
+        return;
 
     }
 
-}
 
+    /* chat */
 
-/* =========================================================
-   LANTERN
-========================================================= */
+    if(data.type==="chat"){
 
-window.releaseLantern = async function(){
+        if(isHost){
 
-    const input =
-        document.getElementById(
-            "wishInput"
-        );
+            broadcast(
+                data,
+                conn
+            );
 
-    const wish =
-        input.value.trim();
+        }
 
-    if(!wish){
-
-        showToast(
-            "✨ เขียนคำอธิษฐานก่อนนะ"
+        addChat(
+            data.name,
+            data.message
         );
 
         return;
 
     }
 
-    const lantern = {
 
-        name:myName,
+    /* event */
 
-        avatar:myAvatar,
+    if(data.type==="event"){
 
-        wish:wish,
+        if(isHost){
 
-        x:player.x,
-
-        y:player.y,
-
-        speed:
-            0.35 +
-            Math.random() * .25,
-
-        createdAt:Date.now()
-
-    };
-
-    if(
-        !offlineMode &&
-        db
-    ){
-
-        try{
-
-            await addDoc(
-                collection(db,"lanterns"),
-                {
-
-                    ...lantern,
-
-                    timestamp:serverTimestamp()
-
-                }
+            broadcast(
+                data,
+                conn
             );
-
-        }catch(e){
-
-            console.log(e);
 
         }
 
-    }else{
-
-        const id =
-            "local_lantern_" +
-            Date.now();
-
-        lanternsData[id] = {
-            id,
-            ...lantern
-        };
-
-    }
-
-    input.value = "";
-
-    player.bubble =
-        "ขอให้คำอธิษฐานเป็นจริง ✨";
-
-    player.bubbleUntil =
-        Date.now() + 2500;
-
-    showToast(
-        "🏮 ปล่อยโคมขึ้นสู่ท้องฟ้าแล้ว"
-    );
-
-    playSound(900,.2,"triangle");
-
-};
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-window.sendChatMessage = async function(){
-
-    const input =
-        document.getElementById(
-            "chatInput"
+        handleEvent(
+            data
         );
 
-    const text =
-        input.value.trim();
-
-    if(!text) return;
-
-    input.value = "";
-
-    player.bubble = text;
-
-    player.bubbleUntil =
-        Date.now() + 3500;
-
-    if(
-        !offlineMode &&
-        db
-    ){
-
-        try{
-
-            await addDoc(
-                collection(db,"chats"),
-                {
-
-                    name:myName,
-
-                    avatar:myAvatar,
-
-                    text:text,
-
-                    room:myRoom,
-
-                    timestamp:serverTimestamp()
-
-                }
-            );
-
-        }catch(e){}
-
-    }else{
-
-        const id =
-            "chat_" +
-            Date.now();
-
-        chatsData[id] = {
-
-            id,
-
-            name:myName,
-
-            avatar:myAvatar,
-
-            text,
-
-            room:myRoom,
-
-            timestamp:Date.now()
-
-        };
-
-        renderChat();
+        return;
 
     }
 
-    playSound(580,.06);
 
-};
+    /* score */
 
+    if(data.type==="score"){
 
-function addSystemChat(name,text){
+        if(isHost){
 
-    const id =
-        "system_" +
-        Date.now() +
-        Math.random();
+            if(players[data.id]){
 
-    chatsData[id] = {
+                players[data.id].score =
+                    data.score;
 
-        id,
+            }
 
-        name,
+            broadcast(
+                data,
+                conn
+            );
 
-        avatar:"🌙",
+        }
 
-        text,
+        if(
+            data.id!==playerId &&
+            players[data.id]
+        ){
 
-        room:myRoom,
+            players[data.id].score =
+                data.score;
 
-        timestamp:Date.now()
+            updatePlayerList();
 
-    };
+        }
 
-    renderChat();
+    }
 
 }
 
 
-function renderChat(){
+/* =====================================================
+   BROADCAST
+===================================================== */
 
-    const box =
+function broadcast(data,except=null){
+
+    connections.forEach(conn=>{
+
+        if(
+            conn &&
+            conn.open &&
+            conn!==except
+        ){
+
+            try{
+
+                conn.send(data);
+
+            }catch(e){}
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+function startGame(){
+
+    document.getElementById("startScreen")
+        .style.display="none";
+
+    document.getElementById("myName")
+        .textContent=playerName;
+
+    document.getElementById("roomCode")
+        .textContent=roomId;
+
+    addMyPlayer();
+
+    updateOnlineCount();
+
+    showToast(
+        "เข้าสู่ MOONLIGHT FESTIVAL 🌕"
+    );
+
+}
+
+
+/* =====================================================
+   MY PLAYER
+===================================================== */
+
+function addMyPlayer(){
+
+    players[playerId]={
+        id:playerId,
+        name:playerName,
+        x:myX,
+        y:myY,
+        score:score
+    };
+
+    renderPlayer(
+        players[playerId],
+        true
+    );
+
+    updatePlayerList();
+
+}
+
+
+/* =====================================================
+   RENDER PLAYER
+===================================================== */
+
+function renderPlayer(player,isMe=false){
+
+    let el =
         document.getElementById(
-            "chatMessages"
+            "player-"+player.id
         );
 
-    const messages =
-        Object.values(chatsData)
-        .filter(m=>
-            !m.room ||
-            m.room === myRoom
-        )
-        .sort(
-            (a,b)=>
-                getTime(a.timestamp) -
-                getTime(b.timestamp)
-        )
-        .slice(-30);
+    if(!el){
 
-    box.innerHTML = "";
-
-    messages.forEach(m=>{
-
-        const div =
+        el =
             document.createElement("div");
 
-        div.className =
-            "chat-message";
+        el.className="player";
 
-        div.innerHTML = `
-            <span class="chat-name">
-                ${escapeHtml(
-                    m.avatar || "🐇"
-                )}
-                ${escapeHtml(
-                    m.name || "ผู้เล่น"
-                )}
-            </span>
-            <span class="chat-text">
-                ${escapeHtml(
-                    m.text || ""
-                )}
-            </span>
+        el.id =
+            "player-"+player.id;
+
+        el.innerHTML=`
+
+            <div class="player-character">
+                ${isMe ? "🐰" : "🧑"}
+            </div>
+
+            <div class="player-name">
+                ${escapeHTML(player.name)}
+            </div>
+
         `;
 
-        box.appendChild(div);
+        document
+            .getElementById("players")
+            .appendChild(el);
 
-    });
+    }
 
-    box.scrollTop =
-        box.scrollHeight;
+    el.style.left =
+        player.x+"%";
+
+    el.style.top =
+        player.y+"%";
 
 }
 
 
-function getTime(timestamp){
+/* =====================================================
+   MOVEMENT
+===================================================== */
 
-    if(!timestamp){
-        return Date.now();
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            document.getElementById("startScreen")
+                .style.display!=="none"
+        )
+            return;
+
+        const step=2;
+
+        let moved=false;
+
+        if(
+            e.key==="ArrowLeft" ||
+            e.key.toLowerCase()==="a"
+        ){
+
+            myX-=step;
+            moved=true;
+
+        }
+
+        if(
+            e.key==="ArrowRight" ||
+            e.key.toLowerCase()==="d"
+        ){
+
+            myX+=step;
+            moved=true;
+
+        }
+
+        if(
+            e.key==="ArrowUp" ||
+            e.key.toLowerCase()==="w"
+        ){
+
+            myY-=step;
+            moved=true;
+
+        }
+
+        if(
+            e.key==="ArrowDown" ||
+            e.key.toLowerCase()==="s"
+        ){
+
+            myY+=step;
+            moved=true;
+
+        }
+
+        if(moved){
+
+            myX=Math.max(
+                5,
+                Math.min(95,myX)
+            );
+
+            myY=Math.max(
+                30,
+                Math.min(85,myY)
+            );
+
+            players[playerId].x=myX;
+            players[playerId].y=myY;
+
+            renderPlayer(
+                players[playerId],
+                true
+            );
+
+            sendMove();
+
+        }
+
     }
-
-    if(
-        typeof timestamp.toMillis ===
-        "function"
-    ){
-
-        return timestamp.toMillis();
-
-    }
-
-    if(
-        typeof timestamp === "number"
-    ){
-
-        return timestamp;
-
-    }
-
-    return Date.now();
-
-}
+);
 
 
-function escapeHtml(text){
+/* =====================================================
+   MOBILE MOVEMENT
+===================================================== */
 
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+let touchStart=null;
 
-}
+document
+    .getElementById("game")
+    .addEventListener(
+        "touchstart",
+        e=>{
 
+            if(e.touches.length!==1)
+                return;
 
-window.toggleChatExpand = function(){
+            touchStart={
+                x:e.touches[0].clientX,
+                y:e.touches[0].clientY
+            };
 
-    chatExpanded =
-        !chatExpanded;
+        },
+        {passive:true}
+    );
 
-    const box =
-        document.querySelector(
-            ".chat-messages"
-        );
+document
+    .getElementById("game")
+    .addEventListener(
+        "touchend",
+        e=>{
 
-    box.style.height =
-        chatExpanded
-        ? "280px"
-        : "";
+            if(!touchStart)
+                return;
 
-};
+            const dx =
+                e.changedTouches[0].clientX -
+                touchStart.x;
 
+            const dy =
+                e.changedTouches[0].clientY -
+                touchStart.y;
 
-/* =========================================================
-   MOON CAKE GAME
-========================================================= */
-
-window.grabNearestMoonCake =
-async function(){
-
-    if(myRoom !== "minigame"){
-
-        showToast(
-            "🥮 ไปที่ห้องศึกชิงขนมก่อน!"
-        );
-
-        return;
-
-    }
-
-    let nearest = null;
-
-    let nearestDistance =
-        Infinity;
-
-    Object.values(moonCakesData)
-        .forEach(cake=>{
+            const threshold=30;
 
             if(
-                cake.eatenBy &&
-                cake.eatenAt &&
-                Date.now() -
-                getTime(cake.eatenAt)
-                < 1200
+                Math.abs(dx)<threshold &&
+                Math.abs(dy)<threshold
             ){
+
+                touchStart=null;
 
                 return;
 
             }
 
-            const x =
-                Number(cake.x) * W;
-
-            const y =
-                Number(cake.y) * H;
-
-            const dx =
-                x - player.x;
-
-            const dy =
-                y - player.y;
-
-            const distance =
-                Math.sqrt(
-                    dx*dx +
-                    dy*dy
-                );
-
             if(
-                distance <
-                nearestDistance
+                Math.abs(dx)>Math.abs(dy)
             ){
 
-                nearestDistance =
-                    distance;
+                myX +=
+                    dx>0 ? 3 : -3;
 
-                nearest = cake;
+            }else{
+
+                myY +=
+                    dy>0 ? 3 : -3;
 
             }
 
-        });
-
-    if(
-        !nearest ||
-        nearestDistance > 170
-    ){
-
-        showToast(
-            "🥮 ขยับเข้าไปใกล้ขนมอีกนิด!"
-        );
-
-        return;
-
-    }
-
-    if(
-        offlineMode ||
-        !db
-    ){
-
-        nearest.eatenBy =
-            myPlayerId;
-
-        nearest.eatenAt =
-            Date.now();
-
-        nearest.visible =
-            false;
-
-        addScoreLocal();
-
-        player.bubble =
-            "งั่ม! 🥮 +1";
-
-        player.bubbleUntil =
-            Date.now() + 1200;
-
-        playSound(
-            900 +
-            Math.random()*200,
-            .1,
-            "triangle"
-        );
-
-        setTimeout(()=>{
-
-            nearest.eatenBy = "";
-            nearest.eatenAt = 0;
-            nearest.visible = true;
-
-        },1300);
-
-        return;
-
-    }
-
-    try{
-
-        const cakeRef =
-            doc(
-                db,
-                "moonCakes",
-                nearest.id
+            myX=Math.max(
+                5,
+                Math.min(95,myX)
             );
 
-        await runTransaction(
-            db,
-            async(transaction)=>{
+            myY=Math.max(
+                30,
+                Math.min(85,myY)
+            );
 
-                const snap =
-                    await transaction.get(
-                        cakeRef
-                    );
+            players[playerId].x=myX;
+            players[playerId].y=myY;
 
-                if(!snap.exists()){
-                    throw new Error("cake");
-                }
+            renderPlayer(
+                players[playerId],
+                true
+            );
 
-                const data =
-                    snap.data();
+            sendMove();
 
-                const eatenAt =
-                    Number(
-                        data.eatenAt || 0
-                    );
+            touchStart=null;
 
-                if(
-                    data.eatenBy &&
-                    Date.now() - eatenAt < 1200
-                ){
-
-                    throw new Error(
-                        "already"
-                    );
-
-                }
-
-                transaction.update(
-                    cakeRef,
-                    {
-
-                        eatenBy:myPlayerId,
-
-                        eatenAt:Date.now()
-
-                    }
-                );
-
-            }
-        );
-
-        await addScoreFirebase();
-
-        player.bubble =
-            "งั่ม! 🥮 +1";
-
-        player.bubbleUntil =
-            Date.now() + 1200;
-
-        playSound(
-            950,
-            .1,
-            "triangle"
-        );
-
-    }catch(e){
-
-        console.log(e);
-
-    }
-
-};
+        },
+        {passive:true}
+    );
 
 
-/* =========================================================
-   LOCAL SCORE
-========================================================= */
+function sendMove(){
 
-function addScoreLocal(){
+    const data={
 
-    myScore++;
+        type:"move",
 
-    moonScoresData[myPlayerId] = {
+        id:playerId,
 
-        id:myPlayerId,
+        name:playerName,
 
-        name:myName,
+        x:myX,
 
-        avatar:myAvatar,
-
-        team:myTeam,
-
-        score:myScore
+        y:myY
 
     };
 
-    playersData[myPlayerId] = {
+    if(hostConnection){
 
-        ...playersData[myPlayerId],
+        if(hostConnection.open)
+            hostConnection.send(data);
 
-        score:myScore
+    }else{
 
-    };
-
-    renderScoreboard();
-
-}
-
-
-/* =========================================================
-   FIREBASE SCORE
-========================================================= */
-
-async function addScoreFirebase(){
-
-    if(!db) return;
-
-    const scoreRef =
-        doc(
-            db,
-            "moonScores",
-            myPlayerId
-        );
-
-    try{
-
-        await runTransaction(
-            db,
-            async(transaction)=>{
-
-                const snap =
-                    await transaction.get(
-                        scoreRef
-                    );
-
-                const oldScore =
-                    snap.exists()
-                    ? Number(
-                        snap.data().score || 0
-                    )
-                    : 0;
-
-                const newScore =
-                    oldScore + 1;
-
-                myScore =
-                    newScore;
-
-                transaction.set(
-                    scoreRef,
-                    {
-
-                        name:myName,
-
-                        avatar:myAvatar,
-
-                        team:myTeam,
-
-                        score:newScore,
-
-                        updatedAt:
-                            serverTimestamp()
-
-                    },
-                    {merge:true}
-                );
-
-            }
-        );
-
-    }catch(e){
-
-        console.log(e);
+        broadcast(data);
 
     }
 
 }
 
 
-/* =========================================================
-   SCOREBOARD
-========================================================= */
+/* =====================================================
+   CHAT
+===================================================== */
 
-function renderScoreboard(){
+function sendChat(){
 
-    const scores =
-        Object.values(moonScoresData)
-        .map(s=>({
+    const input =
+        document.getElementById("chatInput");
 
-            ...s,
+    const message =
+        input.value.trim();
 
-            score:Number(
-                s.score || 0
-            )
+    if(!message)
+        return;
 
-        }))
-        .sort(
-            (a,b)=>
-                b.score - a.score
-        );
+    const data={
 
-    const mine =
-        scores.find(
-            s=>s.id === myPlayerId
-        );
+        type:"chat",
 
-    document.getElementById(
-        "myScore"
-    ).textContent =
-        mine
-        ? mine.score
-        : myScore;
+        name:playerName,
 
-    const leader =
-        scores[0];
+        message:message
 
-    if(leader){
+    };
 
-        document.getElementById(
-            "leaderAvatar"
-        ).textContent =
-            leader.avatar || "🐰";
+    addChat(
+        playerName,
+        message
+    );
 
-        document.getElementById(
-            "leaderName"
-        ).textContent =
-            leader.name || "ผู้เล่น";
+    if(hostConnection){
 
-        document.getElementById(
-            "leaderScore"
-        ).textContent =
-            leader.score;
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
 
     }
+
+    input.value="";
+
+    beep(700,.06);
+
+}
+
+
+function addChat(name,message){
+
+    const box =
+        document.getElementById("messages");
+
+    const div =
+        document.createElement("div");
+
+    div.className="message";
+
+    div.innerHTML=
+        `<b>${escapeHTML(name)}:</b>
+         ${escapeHTML(message)}`;
+
+    box.appendChild(div);
+
+    box.scrollTop=
+        box.scrollHeight;
+
+}
+
+
+/* =====================================================
+   LANTERN
+===================================================== */
+
+function releaseLantern(){
+
+    const x =
+        25 +
+        Math.random()*50;
+
+    createFlyingLantern(
+        x,
+        82
+    );
+
+    addScore(10);
+
+    const data={
+
+        type:"event",
+
+        event:"lantern",
+
+        name:playerName
+
+    };
+
+    if(hostConnection){
+
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
+
+    }
+
+    showToast(
+        "🏮 ปล่อยโคมขึ้นสู่ท้องฟ้า +10"
+    );
+
+    beep(850,.15);
+
+}
+
+
+function createFlyingLantern(x,y){
+
+    const lantern =
+        document.createElement("div");
+
+    lantern.className=
+        "flying-lantern";
+
+    lantern.style.left=x+"%";
+
+    lantern.style.bottom=
+        (100-y)+"px";
+
+    document
+        .getElementById("game")
+        .appendChild(lantern);
+
+    setTimeout(
+        ()=>lantern.remove(),
+        7200
+    );
+
+}
+
+
+/* =====================================================
+   MOON
+===================================================== */
+
+function watchMoon(){
+
+    addScore(5);
+
+    document
+        .getElementById("moonMode")
+        .classList.add("active");
+
+    const data={
+
+        type:"event",
+
+        event:"moon",
+
+        name:playerName
+
+    };
+
+    if(hostConnection){
+
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
+
+    }
+
+    beep(600,.2);
+
+}
+
+
+function closeMoon(){
+
+    document
+        .getElementById("moonMode")
+        .classList.remove("active");
+
+}
+
+
+/* =====================================================
+   MOONCAKE
+===================================================== */
+
+function eatMooncake(){
+
+    addScore(8);
+
+    showEvent(
+        "mooncake"
+    );
+
+    const data={
+
+        type:"event",
+
+        event:"mooncake",
+
+        name:playerName
+
+    };
+
+    if(hostConnection){
+
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
+
+    }
+
+    beep(500,.1);
+
+}
+
+
+/* =====================================================
+   EMOTE
+===================================================== */
+
+function sendEmote(icon){
+
+    showToast(
+        icon+" ส่งให้ทุกคน!"
+    );
+
+    const data={
+
+        type:"event",
+
+        event:"emote",
+
+        icon:icon,
+
+        name:playerName
+
+    };
+
+    if(hostConnection){
+
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
+
+    }
+
+    beep(900,.08);
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+function showEvent(type){
+
+    const popup =
+        document.getElementById("eventPopup");
+
+    const icon =
+        document.getElementById("eventIcon");
+
+    const title =
+        document.getElementById("eventTitle");
+
+    const text =
+        document.getElementById("eventText");
+
+
+    if(type==="help"){
+
+        icon.textContent="🌙";
+
+        title.textContent=
+            "วิธีเล่น";
+
+        text.innerHTML=
+            `
+            🎮 ใช้ WASD หรือปุ่มลูกศรเพื่อเดิน<br>
+            🏮 กดปล่อยโคมเพื่อสร้างโคมขึ้นฟ้า<br>
+            🌕 ไปชมจันทร์<br>
+            🥮 กินขนมไหว้พระจันทร์<br>
+            💬 คุยกับเพื่อนผ่านแชต<br>
+            ❤️ ส่งอีโมตให้คนในห้อง<br>
+            📸 ใช้ปุ่มถ่ายรูปเพื่อเข้าสู่โหมดภาพ
+            `;
+
+    }
+
+
+    if(type==="mooncake"){
+
+        icon.textContent="🥮";
+
+        title.textContent=
+            "ขนมไหว้พระจันทร์";
+
+        text.textContent=
+            `${playerName} ได้กินขนมไหว้พระจันทร์ +8 Moon Points`;
+
+    }
+
+
+    if(type==="photo"){
+
+        icon.textContent="📸";
+
+        title.textContent=
+            "Moonlight Photo";
+
+        text.innerHTML=
+            `
+            ซ่อนหน้าต่างนี้แล้วแคปหน้าจอได้เลย<br>
+            ชวนทุกคนมายืนหน้าพระจันทร์แล้วถ่ายรูปหมู่กัน 🌕
+            `;
+
+    }
+
+    popup.classList.add("show");
+
+    setTimeout(
+        ()=>{
+            popup.classList.remove("show");
+        },
+        type==="photo" ? 5000 : 2300
+    );
+
+}
+
+
+function handleEvent(data){
+
+    if(data.event==="lantern"){
+
+        createFlyingLantern(
+            25+Math.random()*50,
+            82
+        );
+
+        showToast(
+            "🏮 "+data.name+
+            " ปล่อยโคม!"
+        );
+
+    }
+
+    if(data.event==="moon"){
+
+        showToast(
+            "🌕 "+data.name+
+            " กำลังชมจันทร์"
+        );
+
+    }
+
+    if(data.event==="mooncake"){
+
+        showToast(
+            "🥮 "+data.name+
+            " กำลังกินขนมไหว้พระจันทร์"
+        );
+
+    }
+
+    if(data.event==="emote"){
+
+        showToast(
+            data.icon+" "+
+            data.name
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+function addScore(points){
+
+    score+=points;
+
+    document.getElementById("myScore")
+        .textContent=score;
+
+    if(players[playerId]){
+
+        players[playerId].score=score;
+
+    }
+
+    const data={
+
+        type:"score",
+
+        id:playerId,
+
+        score:score
+
+    };
+
+    if(hostConnection){
+
+        if(hostConnection.open)
+            hostConnection.send(data);
+
+    }else{
+
+        broadcast(data);
+
+    }
+
+    updatePlayerList();
+
+}
+
+
+/* =====================================================
+   PLAYER LIST
+===================================================== */
+
+function updatePlayerList(){
 
     const list =
         document.getElementById(
-            "rankList"
+            "playerList"
         );
 
-    list.innerHTML = "";
+    list.innerHTML="";
 
-    scores
-        .slice(0,5)
-        .forEach((s,index)=>{
+    Object.values(players)
+        .sort(
+            (a,b)=>
+                (b.score||0) -
+                (a.score||0)
+        )
+        .forEach((p,index)=>{
 
             const row =
                 document.createElement("div");
 
-            row.className =
-                "rank-item";
+            row.className="player-row";
 
-            row.innerHTML = `
+            row.innerHTML=`
 
-                <div class="rank-num">
-                    ${index + 1}
+                <div class="mini-avatar">
+                    ${index===0 ? "👑" : "🧑"}
                 </div>
 
-                <div class="rank-avatar">
-                    ${escapeHtml(
-                        s.avatar || "🐰"
-                    )}
-                </div>
-
-                <div class="rank-name">
-                    ${escapeHtml(
-                        s.name || "ผู้เล่น"
-                    )}
-                </div>
-
-                <div class="rank-points">
-                    ${s.score}
+                <div style="flex:1;">
+                    ${escapeHTML(p.name)}
+                    <br>
+                    <span style="color:#ffd86b;">
+                        🌕 ${p.score||0}
+                    </span>
                 </div>
 
             `;
@@ -3744,2370 +3118,126 @@ function renderScoreboard(){
 }
 
 
-/* =========================================================
-   INPUT
-========================================================= */
+function updateOnlineCount(){
 
-window.addEventListener(
-    "keydown",
-    e=>{
+    let count =
+        Object.keys(players).length;
 
-        keys[e.key.toLowerCase()] = true;
+    if(count<1)
+        count=1;
 
-        if(
-            e.key === "Enter" &&
-            document.activeElement.id ===
-            "chatInput"
-        ){
-
-            sendChatMessage();
-
-        }
-
-    }
-);
-
-window.addEventListener(
-    "keyup",
-    e=>{
-
-        keys[e.key.toLowerCase()] = false;
-
-    }
-);
-
-
-/* =========================================================
-   MOBILE D-PAD
-========================================================= */
-
-document
-    .querySelectorAll(
-        ".dpad button"
-    )
-    .forEach(button=>{
-
-        const key =
-            button.dataset.key
-            .toLowerCase();
-
-        const start = e=>{
-
-            e.preventDefault();
-
-            keys[key] = true;
-
-        };
-
-        const end = e=>{
-
-            e.preventDefault();
-
-            keys[key] = false;
-
-        };
-
-        button.addEventListener(
-            "pointerdown",
-            start
-        );
-
-        button.addEventListener(
-            "pointerup",
-            end
-        );
-
-        button.addEventListener(
-            "pointercancel",
-            end
-        );
-
-        button.addEventListener(
-            "pointerleave",
-            end
-        );
-
-    });
-
-
-/* =========================================================
-   MOBILE ACTION
-========================================================= */
-
-document
-    .getElementById("mobileAction")
-    .addEventListener(
-        "pointerdown",
-        e=>{
-
-            e.preventDefault();
-
-            if(myRoom === "minigame"){
-
-                grabNearestMoonCake();
-
-            }else if(myRoom === "pagoda"){
-
-                document
-                    .getElementById(
-                        "wishInput"
-                    )
-                    .focus();
-
-            }else{
-
-                player.bubble =
-                    "คืนนี้พระจันทร์สวยมาก ✨";
-
-                player.bubbleUntil =
-                    Date.now() + 1800;
-
-                playSound(700,.08);
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   CANVAS POINTER
-========================================================= */
-
-canvas.addEventListener(
-    "pointerdown",
-    e=>{
-
-        e.preventDefault();
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-        touchTarget = {
-
-            x:
-                e.clientX -
-                rect.left,
-
-            y:
-                e.clientY -
-                rect.top
-
-        };
-
-        if(myRoom === "minigame"){
-
-            grabNearestMoonCake();
-
-        }
-
-    }
-);
-
-canvas.addEventListener(
-    "pointermove",
-    e=>{
-
-        if(!touchTarget) return;
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-        touchTarget = {
-
-            x:
-                e.clientX -
-                rect.left,
-
-            y:
-                e.clientY -
-                rect.top
-
-        };
-
-    }
-);
-
-canvas.addEventListener(
-    "pointerup",
-    ()=>{
-        touchTarget = null;
-    }
-);
-
-
-/* =========================================================
-   UPDATE
-========================================================= */
-
-function update(){
-
-    if(!isJoined) return;
-
-    let dx = 0;
-    let dy = 0;
-
-    if(
-        keys["w"] ||
-        keys["arrowup"]
-    ){
-
-        dy -= 1;
-
-    }
-
-    if(
-        keys["s"] ||
-        keys["arrowdown"]
-    ){
-
-        dy += 1;
-
-    }
-
-    if(
-        keys["a"] ||
-        keys["arrowleft"]
-    ){
-
-        dx -= 1;
-
-    }
-
-    if(
-        keys["d"] ||
-        keys["arrowright"]
-    ){
-
-        dx += 1;
-
-    }
-
-    if(dx || dy){
-
-        const length =
-            Math.sqrt(
-                dx*dx +
-                dy*dy
-            );
-
-        dx /= length;
-        dy /= length;
-
-        player.x +=
-            dx * player.speed;
-
-        player.y +=
-            dy * player.speed;
-
-    }
-
-    /*
-     * Pointer movement
-     */
-
-    if(touchTarget){
-
-        const dx =
-            touchTarget.x -
-            player.x;
-
-        const dy =
-            touchTarget.y -
-            player.y;
-
-        const distance =
-            Math.sqrt(
-                dx*dx +
-                dy*dy
-            );
-
-        if(distance > 10){
-
-            player.x +=
-                dx / distance *
-                player.speed;
-
-            player.y +=
-                dy / distance *
-                player.speed;
-
-        }
-
-    }
-
-    /*
-     * Clamp
-     */
-
-    player.x =
-        Math.max(
-            30,
-            Math.min(
-                W - 30,
-                player.x
-            )
-        );
-
-    player.y =
-        Math.max(
-            85,
-            Math.min(
-                H - 35,
-                player.y
-            )
-        );
-
-    updateMyPlayer();
-
-    updateOfflineBots();
-
-    updateLanterns();
+    document.getElementById(
+        "onlineCount"
+    ).textContent =
+        "● "+count+" ออนไลน์";
 
 }
 
 
-/* =========================================================
-   OFFLINE BOT MOVEMENT
-========================================================= */
-
-function updateOfflineBots(){
-
-    if(!offlineMode) return;
-
-    Object.values(localBots)
-        .forEach(bot=>{
-
-            const targetX =
-                bot.x * W +
-                Math.sin(
-                    Date.now()/1700 +
-                    bot.id.length
-                ) * 40;
-
-            const targetY =
-                bot.y * H +
-                Math.cos(
-                    Date.now()/2100 +
-                    bot.id.length
-                ) * 25;
-
-            bot.renderX =
-                targetX;
-
-            bot.renderY =
-                targetY;
-
-        });
-
-}
-
-
-/* =========================================================
-   LANTERN UPDATE
-========================================================= */
-
-function updateLanterns(){
-
-    Object.keys(lanternsData)
-        .forEach(id=>{
-
-            const lantern =
-                lanternsData[id];
-
-            if(
-                typeof lantern.y !== "number"
-            ){
-
-                return;
-
-            }
-
-            lantern.y -=
-                Number(
-                    lantern.speed || .3
-                );
-
-            if(
-                lantern.y < -100
-            ){
-
-                delete lanternsData[id];
-
-            }
-
-        });
-
-}
-
-
-/* =========================================================
-   DRAW
-========================================================= */
-
-function draw(){
-
-    ctx.clearRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-    drawSky();
-
-    drawStars();
-
-    drawMoon();
-
-    drawClouds();
-
-    drawMountains();
-
-    if(myRoom === "lobby"){
-
-        drawLobby();
-
-    }else if(myRoom === "pagoda"){
-
-        drawPagoda();
-
-    }else if(myRoom === "minigame"){
-
-        drawMinigame();
-
-    }
-
-    drawLanterns();
-
-    drawAllPlayers();
-
-}
-
-
-/* =========================================================
-   SKY
-========================================================= */
-
-function drawSky(){
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            H
-        );
-
-    gradient.addColorStop(
-        0,
-        "#080419"
-    );
-
-    gradient.addColorStop(
-        .45,
-        "#1a0b38"
-    );
-
-    gradient.addColorStop(
-        1,
-        "#08040f"
-    );
-
-    ctx.fillStyle =
-        gradient;
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-    /*
-     * Purple glow
-     */
-
-    const glow =
-        ctx.createRadialGradient(
-            W*.5,
-            H*.25,
-            10,
-            W*.5,
-            H*.25,
-            W*.6
-        );
-
-    glow.addColorStop(
-        0,
-        "rgba(139,92,246,.20)"
-    );
-
-    glow.addColorStop(
-        1,
-        "rgba(139,92,246,0)"
-    );
-
-    ctx.fillStyle =
-        glow;
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-}
-
-
-/* =========================================================
-   STARS
-========================================================= */
-
-function drawStars(){
-
-    for(
-        let i=0;
-        i<95;
-        i++
-    ){
-
-        const x =
-            ((i*173)%1000)/1000 * W;
-
-        const y =
-            80 +
-            ((i*97)%520)/520 * H*.55;
-
-        const alpha =
-            .25 +
-            .45 *
-            Math.abs(
-                Math.sin(
-                    Date.now()/900 +
-                    i
-                )
-            );
-
-        ctx.globalAlpha =
-            alpha;
-
-        ctx.fillStyle =
-            i%7===0
-            ? "#ffe7a0"
-            : "#ffffff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            i%9===0 ? 1.7 : 1,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    }
-
-    ctx.globalAlpha = 1;
-
-}
-
-
-/* =========================================================
-   MOON
-========================================================= */
-
-function drawMoon(){
-
-    const x =
-        W * .78;
-
-    const y =
-        Math.max(
-            130,
-            H * .18
-        );
-
-    const radius =
-        Math.min(
-            72,
-            W*.1
-        );
-
-    const glow =
-        ctx.createRadialGradient(
-            x,
-            y,
-            radius*.5,
-            x,
-            y,
-            radius*2.2
-        );
-
-    glow.addColorStop(
-        0,
-        "rgba(255,235,160,.28)"
-    );
-
-    glow.addColorStop(
-        1,
-        "rgba(255,235,160,0)"
-    );
-
-    ctx.fillStyle =
-        glow;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        radius*2.2,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-        "#fff0b3";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        radius,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    /*
-     * Moon craters
-     */
-
-    ctx.fillStyle =
-        "rgba(180,145,80,.13)";
-
-    for(
-        let i=0;
-        i<9;
-        i++
-    ){
-
-        const cx =
-            x +
-            Math.sin(i*4.3) *
-            radius*.6;
-
-        const cy =
-            y +
-            Math.cos(i*2.7) *
-            radius*.6;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            cx,
-            cy,
-            4 + i%4,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    }
-
-}
-
-
-/* =========================================================
-   CLOUDS
-========================================================= */
-
-function drawClouds(){
-
-    ctx.fillStyle =
-        "rgba(93,65,137,.12)";
-
-    for(
-        let i=0;
-        i<4;
-        i++
-    ){
-
-        const x =
-            ((Date.now()/30000 *
-            20 + i*270)%(
-                W+300
-            )) - 150;
-
-        const y =
-            180 +
-            i*75;
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            x,
-            y,
-            100,
-            25,
-            0,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    }
-
-}
-
-
-/* =========================================================
-   MOUNTAINS
-========================================================= */
-
-function drawMountains(){
-
-    const base =
-        H*.64;
-
-    ctx.fillStyle =
-        "#100a22";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        base
-    );
-
-    for(
-        let x=0;
-        x<=W;
-        x+=90
-    ){
-
-        const y =
-            base -
-            50 -
-            Math.sin(x*.013)*30;
-
-        ctx.lineTo(
-            x,
-            y
-        );
-
-    }
-
-    ctx.lineTo(
-        W,
-        H
-    );
-
-    ctx.lineTo(
-        0,
-        H
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   LOBBY
-========================================================= */
-
-function drawLobby(){
-
-    /*
-     * Festival ground
-     */
-
-    const groundY =
-        H*.67;
-
-    const ground =
-        ctx.createLinearGradient(
-            0,
-            groundY,
-            0,
-            H
-        );
-
-    ground.addColorStop(
-        0,
-        "#211036"
-    );
-
-    ground.addColorStop(
-        1,
-        "#0c0714"
-    );
-
-    ctx.fillStyle =
-        ground;
-
-    ctx.fillRect(
-        0,
-        groundY,
-        W,
-        H-groundY
-    );
-
-    /*
-     * Main festival stage
-     */
-
-    const cx =
-        W/2;
-
-    const stageY =
-        H*.56;
-
-    ctx.fillStyle =
-        "#30134b";
-
-    roundRect(
-        cx-180,
-        stageY,
-        360,
-        100,
-        18
-    );
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        "rgba(255,215,106,.4)";
-
-    ctx.lineWidth = 2;
-
-    roundRect(
-        cx-180,
-        stageY,
-        360,
-        100,
-        18
-    );
-
-    ctx.stroke();
-
-    /*
-     * Large central sign
-     */
-
-    ctx.fillStyle =
-        "#ffd76a";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.font =
-        "700 22px Prompt";
-
-    ctx.fillText(
-        "🏮 เทศกาลชมจันทร์ 🏮",
-        cx,
-        stageY+40
-    );
-
-    ctx.fillStyle =
-        "#d9c5ee";
-
-    ctx.font =
-        "12px Prompt";
-
-    ctx.fillText(
-        "คืนนี้เราไม่ได้มาชมจันทร์คนเดียว",
-        cx,
-        stageY+64
-    );
-
-    /*
-     * Giant lanterns
-     */
-
-    drawFestivalLantern(
-        W*.15,
-        H*.45,
-        55,
-        "#ef4444"
-    );
-
-    drawFestivalLantern(
-        W*.85,
-        H*.43,
-        55,
-        "#f59e0b"
-    );
-
-    drawFestivalLantern(
-        W*.32,
-        H*.28,
-        34,
-        "#a855f7"
-    );
-
-    drawFestivalLantern(
-        W*.68,
-        H*.31,
-        38,
-        "#ec4899"
-    );
-
-    /*
-     * Stalls
-     */
-
-    drawStall(
-        W*.08,
-        H*.73,
-        "🍡",
-        "ขนมหวาน"
-    );
-
-    drawStall(
-        W*.82,
-        H*.73,
-        "🍵",
-        "ชาชมจันทร์"
-    );
-
-    /*
-     * World text
-     */
-
-    drawWorldText(
-        W/2,
-        H*.48,
-        "✨ ยินดีต้อนรับสู่ค่ำคืนแห่งดวงจันทร์ ✨"
-    );
-
-}
-
-
-/* =========================================================
-   PAGODA
-========================================================= */
-
-function drawPagoda(){
-
-    const groundY =
-        H*.67;
-
-    ctx.fillStyle =
-        "#170b29";
-
-    ctx.fillRect(
-        0,
-        groundY,
-        W,
-        H-groundY
-    );
-
-    /*
-     * Pagoda
-     */
-
-    const cx =
-        W/2;
-
-    const baseY =
-        H*.65;
-
-    ctx.fillStyle =
-        "#39195a";
-
-    ctx.fillRect(
-        cx-95,
-        baseY-220,
-        190,
-        220
-    );
-
-    ctx.fillStyle =
-        "#522177";
-
-    for(
-        let i=0;
-        i<4;
-        i++
-    ){
-
-        const y =
-            baseY -
-            65 -
-            i*52;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            cx-120+i*15,
-            y
-        );
-
-        ctx.lineTo(
-            cx+120-i*15,
-            y
-        );
-
-        ctx.lineTo(
-            cx+92-i*13,
-            y-17
-        );
-
-        ctx.lineTo(
-            cx-92+i*13,
-            y-17
-        );
-
-        ctx.closePath();
-
-        ctx.fill();
-
-    }
-
-    /*
-     * Giant lantern
-     */
-
-    drawGiantLantern(
-        cx,
-        H*.28
-    );
-
-    /*
-     * Wish platform
-     */
-
-    ctx.fillStyle =
-        "rgba(255,215,106,.12)";
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        cx,
-        groundY+25,
-        210,
-        48,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    drawWorldText(
-        cx,
-        H*.55,
-        "🏮 เขียนคำอธิษฐาน แล้วปล่อยให้ลอยไปกับแสงจันทร์"
-    );
-
-}
-
-
-/* =========================================================
-   MINIGAME
-========================================================= */
-
-function drawMinigame(){
-
-    const groundY =
-        H*.62;
-
-    /*
-     * Courtyard
-     */
-
-    ctx.fillStyle =
-        "#21102f";
-
-    ctx.fillRect(
-        0,
-        groundY,
-        W,
-        H-groundY
-    );
-
-    /*
-     * Decorative floor
-     */
-
-    ctx.strokeStyle =
-        "rgba(255,215,106,.08)";
-
-    ctx.lineWidth = 1;
-
-    for(
-        let x=0;
-        x<W;
-        x+=50
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            groundY
-        );
-
-        ctx.lineTo(
-            W/2,
-            H
-        );
-
-        ctx.stroke();
-
-    }
-
-    /*
-     * Big gate
-     */
-
-    ctx.strokeStyle =
-        "#8b5cf6";
-
-    ctx.lineWidth = 13;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.25,
-        groundY
-    );
-
-    ctx.lineTo(
-        W*.25,
-        groundY-150
-    );
-
-    ctx.quadraticCurveTo(
-        W*.5,
-        groundY-240,
-        W*.75,
-        groundY-150
-    );
-
-    ctx.lineTo(
-        W*.75,
-        groundY
-    );
-
-    ctx.stroke();
-
-    /*
-     * Center competition table
-     */
-
-    const tableX =
-        W*.5;
-
-    const tableY =
-        groundY+50;
-
-    ctx.fillStyle =
-        "#5b2b74";
-
-    roundRect(
-        tableX-210,
-        tableY,
-        420,
-        95,
-        20
-    );
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        "rgba(255,215,106,.4)";
-
-    ctx.lineWidth = 2;
-
-    roundRect(
-        tableX-210,
-        tableY,
-        420,
-        95,
-        20
-    );
-
-    ctx.stroke();
-
-    /*
-     * Big title
-     */
-
-    drawWorldText(
-        tableX,
-        groundY-190,
-        "🥮 ศึกชิงขนมไหว้พระจันทร์ 🥮"
-    );
-
-    /*
-     * Leader announcement
-     */
-
-    const scores =
-        Object.values(moonScoresData)
-        .sort(
-            (a,b)=>
-                Number(b.score||0) -
-                Number(a.score||0)
-        );
-
-    const leader =
-        scores[0];
-
-    if(leader){
-
-        ctx.save();
-
-        const plateY =
-            groundY-115;
-
-        ctx.fillStyle =
-            "rgba(9,4,20,.85)";
-
-        roundRect(
-            W/2-150,
-            plateY,
-            300,
-            62,
-            20
-        );
-
-        ctx.fill();
-
-        ctx.strokeStyle =
-            "#ffd76a";
-
-        ctx.lineWidth = 2;
-
-        roundRect(
-            W/2-150,
-            plateY,
-            300,
-            62,
-            20
-        );
-
-        ctx.stroke();
-
-        ctx.textAlign =
-            "center";
-
-        ctx.fillStyle =
-            "#ffe9a5";
-
-        ctx.font =
-            "700 11px Prompt";
-
-        ctx.fillText(
-            "👑 ผู้นำการแข่งขันตอนนี้",
-            W/2,
-            plateY+20
-        );
-
-        ctx.font =
-            "700 15px Prompt";
-
-        ctx.fillText(
-            `${leader.avatar || "🐰"} ${leader.name}`,
-            W/2,
-            plateY+42
-        );
-
-        ctx.fillStyle =
-            "#fff";
-
-        ctx.font =
-            "800 12px Prompt";
-
-        ctx.fillText(
-            `${leader.score} คะแนน`,
-            W/2+105,
-            plateY+42
-        );
-
-        ctx.restore();
-
-    }
-
-    /*
-     * Cakes
-     */
-
-    Object.values(moonCakesData)
-        .forEach(cake=>{
-
-            if(
-                cake.eatenBy &&
-                cake.eatenAt &&
-                Date.now() -
-                getTime(cake.eatenAt)
-                < 1200
-            ){
-
-                return;
-
-            }
-
-            const x =
-                Number(cake.x)*W;
-
-            const y =
-                Number(cake.y)*H;
-
-            drawMoonCake(
-                x,
-                y
-            );
-
-        });
-
-}
-
-
-/* =========================================================
-   LANTERNS
-========================================================= */
-
-function drawLanterns(){
-
-    Object.values(lanternsData)
-        .forEach(lantern=>{
-
-            const x =
-                Number(lantern.x || W/2);
-
-            const y =
-                Number(lantern.y || H/2);
-
-            drawSmallLantern(
-                x,
-                y
-            );
-
-            if(
-                myRoom === "pagoda" &&
-                lantern.wish
-            ){
-
-                ctx.save();
-
-                ctx.textAlign =
-                    "center";
-
-                ctx.font =
-                    "10px Prompt";
-
-                ctx.fillStyle =
-                    "rgba(255,240,190,.8)";
-
-                ctx.fillText(
-                    lantern.wish.slice(0,22),
-                    x,
-                    y+45
-                );
-
-                ctx.restore();
-
-            }
-
-        });
-
-}
-
-
-/* =========================================================
-   PLAYERS
-========================================================= */
-
-function drawAllPlayers(){
-
-    const list =
-        Object.values(playersData)
-        .filter(
-            p =>
-                p.room === myRoom ||
-                p.id === myPlayerId
-        );
-
-    list.forEach(p=>{
-
-        let x;
-        let y;
-
-        if(
-            p.id === myPlayerId
-        ){
-
-            x = player.x;
-            y = player.y;
-
-        }else if(
-            p.renderX !== undefined
-        ){
-
-            x = p.renderX;
-            y = p.renderY;
-
-        }else{
-
-            x =
-                Number(p.x || .5);
-
-            y =
-                Number(p.y || .5);
-
-            if(
-                x <= 1 &&
-                y <= 1
-            ){
-
-                x *= W;
-                y *= H;
-
-            }
-
-        }
-
-        drawPlayer(
-            x,
-            y,
-            p
-        );
-
-    });
-
-}
-
-
-/* =========================================================
-   PLAYER
-========================================================= */
-
-function drawPlayer(
-    x,
-    y,
-    p
-){
-
-    ctx.save();
-
-    /*
-     * Team glow
-     */
-
-    const team =
-        TEAM_INFO[p.team || "gold"];
-
-    let glowColor =
-        "#ffd76a";
-
-    if(p.team === "red"){
-        glowColor = "#ef4444";
-    }
-
-    if(p.team === "blue"){
-        glowColor = "#60a5fa";
-    }
-
-    if(p.team === "purple"){
-        glowColor = "#c084fc";
-    }
-
-    ctx.shadowColor =
-        glowColor;
-
-    ctx.shadowBlur =
-        p.id === myPlayerId
-        ? 20
-        : 12;
-
-    /*
-     * Shadow
-     */
-
-    ctx.shadowBlur = 0;
-
-    ctx.fillStyle =
-        "rgba(0,0,0,.35)";
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        x,
-        y+28,
-        22,
-        7,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    /*
-     * Avatar
-     */
-
-    ctx.font =
-        p.id === myPlayerId
-        ? "38px serif"
-        : "32px serif";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.textBaseline =
-        "middle";
-
-    ctx.fillText(
-        p.avatar || "🐇",
-        x,
-        y
-    );
-
-    /*
-     * Name plate
-     */
-
-    ctx.shadowBlur = 0;
-
-    ctx.font =
-        "600 10px Prompt";
-
-    const name =
-        p.name || "ผู้เล่น";
-
-    const width =
-        Math.max(
-            52,
-            ctx.measureText(name).width + 16
-        );
-
-    ctx.fillStyle =
-        "rgba(8,3,18,.78)";
-
-    roundRect(
-        x-width/2,
-        y+30,
-        width,
-        20,
-        8
-    );
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        glowColor;
-
-    ctx.globalAlpha = .6;
-
-    ctx.stroke();
-
-    ctx.globalAlpha = 1;
-
-    ctx.fillStyle =
-        "#fff";
-
-    ctx.fillText(
-        name,
-        x,
-        y+43
-    );
-
-    /*
-     * Team icon
-     */
-
-    ctx.font =
-        "10px serif";
-
-    ctx.fillText(
-        team.icon,
-        x+width/2+8,
-        y+28
-    );
-
-    /*
-     * Bubble
-     */
-
-    if(
-        p.bubble &&
-        (
-            p.id === myPlayerId
-            ? player.bubbleUntil > Date.now()
-            : p.bubbleUntil &&
-              getTime(p.bubbleUntil) >
-              Date.now()
-        )
-    ){
-
-        const bubble =
-            String(
-                p.bubble
-            ).slice(0,32);
-
-        const bw =
-            Math.min(
-                210,
-                Math.max(
-                    80,
-                    ctx.measureText(bubble).width+24
-                )
-            );
-
-        ctx.fillStyle =
-            "rgba(255,255,255,.94)";
-
-        roundRect(
-            x-bw/2,
-            y-72,
-            bw,
-            28,
-            12
-        );
-
-        ctx.fill();
-
-        ctx.fillStyle =
-            "#24172f";
-
-        ctx.font =
-            "10px Prompt";
-
-        ctx.fillText(
-            bubble,
-            x,
-            y-54
-        );
-
-    }
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   FESTIVAL OBJECTS
-========================================================= */
-
-function drawFestivalLantern(
-    x,
-    y,
-    size,
-    color
-){
-
-    ctx.save();
-
-    const glow =
-        ctx.createRadialGradient(
-            x,
-            y,
-            5,
-            x,
-            y,
-            size*2
-        );
-
-    glow.addColorStop(
-        0,
-        "rgba(255,220,100,.25)"
-    );
-
-    glow.addColorStop(
-        1,
-        "rgba(255,220,100,0)"
-    );
-
-    ctx.fillStyle =
-        glow;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        size*2,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-        color;
-
-    roundRect(
-        x-size*.55,
-        y-size*.7,
-        size*1.1,
-        size*1.4,
-        size*.3
-    );
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        "#ffd76a";
-
-    ctx.lineWidth = 2;
-
-    ctx.stroke();
-
-    ctx.fillStyle =
-        "#fff0b0";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        size*.32,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.restore();
-
-}
-
-
-function drawSmallLantern(
-    x,
-    y
-){
-
-    ctx.save();
-
-    ctx.shadowColor =
-        "#ffd76a";
-
-    ctx.shadowBlur = 18;
-
-    ctx.fillStyle =
-        "#ef4444";
-
-    roundRect(
-        x-13,
-        y-17,
-        26,
-        34,
-        8
-    );
-
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-
-    ctx.strokeStyle =
-        "#ffd76a";
-
-    ctx.stroke();
-
-    ctx.fillStyle =
-        "#fff0a8";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        5,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.restore();
-
-}
-
-
-function drawGiantLantern(
-    x,
-    y
-){
-
-    ctx.save();
-
-    const glow =
-        ctx.createRadialGradient(
-            x,
-            y,
-            10,
-            x,
-            y,
-            190
-        );
-
-    glow.addColorStop(
-        0,
-        "rgba(255,215,106,.28)"
-    );
-
-    glow.addColorStop(
-        1,
-        "rgba(255,215,106,0)"
-    );
-
-    ctx.fillStyle =
-        glow;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        190,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-        "#d93636";
-
-    roundRect(
-        x-75,
-        y-95,
-        150,
-        190,
-        45
-    );
-
-    ctx.fill();
-
-    ctx.strokeStyle =
-        "#ffd76a";
-
-    ctx.lineWidth = 5;
-
-    ctx.stroke();
-
-    ctx.fillStyle =
-        "#fff0a8";
-
-    ctx.font =
-        "800 52px Prompt";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.textBaseline =
-        "middle";
-
-    ctx.fillText(
-        "月",
-        x,
-        y
-    );
-
-    ctx.restore();
-
-}
-
-
-function drawMoonCake(
-    x,
-    y
-){
-
-    ctx.save();
-
-    ctx.shadowColor =
-        "rgba(255,215,106,.5)";
-
-    ctx.shadowBlur = 15;
-
-    ctx.fillStyle =
-        "#c98b3d";
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        x,
-        y,
-        22,
-        15,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-
-    ctx.strokeStyle =
-        "#f7d27a";
-
-    ctx.lineWidth = 2;
-
-    ctx.stroke();
-
-    ctx.fillStyle =
-        "#8b5a25";
-
-    ctx.font =
-        "700 10px serif";
-
-    ctx.textAlign =
-        "center";
-
-    ctx.textBaseline =
-        "middle";
-
-    ctx.fillText(
-        "月",
-        x,
-        y
-    );
-
-    ctx.restore();
-
-}
-
-
-function drawStall(
-    x,
-    y,
-    icon,
-    title
-){
-
-    ctx.save();
-
-    ctx.fillStyle =
-        "#3a174c";
-
-    roundRect(
-        x-75,
-        y,
-        150,
-        80,
-        12
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle =
-        "#7c2d73";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x-90,
-        y
-    );
-
-    ctx.lineTo(
-        x,
-        y-35
-    );
-
-    ctx.lineTo(
-        x+90,
-        y
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-    ctx.textAlign =
-        "center";
-
-    ctx.font =
-        "25px serif";
-
-    ctx.fillText(
-        icon,
-        x,
-        y+38
-    );
-
-    ctx.fillStyle =
-        "#ffe8a1";
-
-    ctx.font =
-        "600 10px Prompt";
-
-    ctx.fillText(
-        title,
-        x,
-        y+63
-    );
-
-    ctx.restore();
-
-}
-
-
-function drawWorldText(
-    x,
-    y,
-    text
-){
-
-    ctx.save();
-
-    ctx.textAlign =
-        "center";
-
-    ctx.font =
-        "700 13px Prompt";
-
-    ctx.shadowColor =
-        "rgba(0,0,0,.9)";
-
-    ctx.shadowBlur = 7;
-
-    ctx.fillStyle =
-        "#ffe7a0";
-
-    ctx.fillText(
-        text,
-        x,
-        y
-    );
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   UTILITY ROUND RECT
-========================================================= */
-
-function roundRect(
-    x,
-    y,
-    width,
-    height,
-    radius
-){
-
-    if(
-        ctx.roundRect
-    ){
-
-        ctx.beginPath();
-
-        ctx.roundRect(
-            x,
-            y,
-            width,
-            height,
-            radius
-        );
-
-        return;
-
-    }
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x+radius,
-        y
-    );
-
-    ctx.lineTo(
-        x+width-radius,
-        y
-    );
-
-    ctx.quadraticCurveTo(
-        x+width,
-        y,
-        x+width,
-        y+radius
-    );
-
-    ctx.lineTo(
-        x+width,
-        y+height-radius
-    );
-
-    ctx.quadraticCurveTo(
-        x+width,
-        y+height,
-        x+width-radius,
-        y+height
-    );
-
-    ctx.lineTo(
-        x+radius,
-        y+height
-    );
-
-    ctx.quadraticCurveTo(
-        x,
-        y+height,
-        x,
-        y+height-radius
-    );
-
-    ctx.lineTo(
-        x,
-        y+radius
-    );
-
-    ctx.quadraticCurveTo(
-        x,
-        y,
-        x+radius,
-        y
-    );
-
-    ctx.closePath();
-
-}
-
-
-/* =========================================================
-   RESIZE
-========================================================= */
-
-function resizeCanvas(){
-
-    W =
-        window.innerWidth;
-
-    H =
-        window.innerHeight;
-
-    canvas.width =
-        W * devicePixelRatio;
-
-    canvas.height =
-        H * devicePixelRatio;
-
-    canvas.style.width =
-        W + "px";
-
-    canvas.style.height =
-        H + "px";
-
-    ctx.setTransform(
-        devicePixelRatio,
-        0,
-        0,
-        devicePixelRatio,
-        0,
-        0
-    );
-
-    if(
-        !player.x ||
-        player.x > W
-    ){
-
-        player.x =
-            W/2;
-
-    }
-
-    if(
-        !player.y ||
-        player.y > H
-    ){
-
-        player.y =
-            H*.58;
-
-    }
-
-}
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-window.openInfo = function(){
-
-    document
-        .getElementById("infoModal")
-        .classList.remove("hidden");
-
-    playSound(500,.06);
-
-};
-
-window.closeInfo = function(){
-
-    document
-        .getElementById("infoModal")
-        .classList.add("hidden");
-
-};
-
-
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 let toastTimer;
 
 function showToast(text){
 
     const toast =
-        document.getElementById(
-            "toast"
-        );
+        document.getElementById("toast");
 
-    toast.textContent =
-        text;
+    toast.textContent=text;
 
-    toast.classList.add(
-        "show"
-    );
+    toast.classList.add("show");
 
-    clearTimeout(
-        toastTimer
-    );
+    clearTimeout(toastTimer);
 
-    toastTimer =
-        setTimeout(
-            ()=>{
-                toast.classList.remove(
-                    "show"
-                );
-            },
-            2300
-        );
-
-}
-
-
-/* =========================================================
-   LOOP
-========================================================= */
-
-function loop(){
-
-    update();
-
-    draw();
-
-    requestAnimationFrame(
-        loop
+    toastTimer=setTimeout(
+        ()=>{
+            toast.classList.remove("show");
+        },
+        2200
     );
 
 }
 
 
-/* =========================================================
-   INITIAL
-========================================================= */
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
 
-resizeCanvas();
+function escapeHTML(text){
 
-switchRoom("lobby");
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
-initFirebase();
-
-loop();
-
-
-/* =========================================================
-   DEMO CHAT
-========================================================= */
-
-setTimeout(()=>{
-
-    if(offlineMode){
-
-        addSystemChat(
-            "จันทร์น้อย 🐰",
-            "คืนนี้มีศึกชิงขนมด้วยนะ! 🥮"
-        );
-
-    }
-
-},1800);
-
-setTimeout(()=>{
-
-    if(offlineMode){
-
-        addSystemChat(
-            "โคมแดง ✨",
-            "ใครขึ้นไปปล่อยโคมที่หอชมโคมบ้าง? 🏮"
-        );
-
-    }
-
-},3500);
-
-setTimeout(()=>{
-
-    if(offlineMode){
-
-        addSystemChat(
-            "กระต่ายฟ้า 🐇",
-            "ตอนนี้ผมได้คะแนนไปแล้ว 23 คะแนน!"
-        );
-
-    }
-
-},5200);
+}
 
 
-/* =========================================================
-   ESCAPE
-========================================================= */
+/* =====================================================
+   CLICK SOUND
+===================================================== */
 
-window.addEventListener(
-    "keydown",
+document.addEventListener(
+    "click",
     e=>{
 
-        if(e.key === "Escape"){
+        if(
+            e.target.tagName==="BUTTON" ||
+            e.target.classList.contains("object")
+        ){
 
-            document
-                .getElementById(
-                    "infoModal"
-                )
-                .classList.add(
-                    "hidden"
-                );
+            beep(420,.04);
 
         }
 
     }
 );
 
+
+/* =====================================================
+   INITIAL NAME
+===================================================== */
+
+document
+    .getElementById("nameInput")
+    .addEventListener(
+        "keydown",
+        e=>{
+
+            if(e.key==="Enter"){
+
+                createRoom();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   PERIODIC PLAYER SYNC
+===================================================== */
+
+setInterval(()=>{
+
+    if(
+        !peer ||
+        !roomId ||
+        document.getElementById("startScreen")
+            .style.display!=="none"
+    )
+        return;
+
+    updateOnlineCount();
+
+},2000);
+
 </script>
 
 </body>
 </html>
+```
